@@ -2,11 +2,11 @@
 | Task | Description | Start Date | End Date | Milestone |
 | --- | --- | --- | --- | --- |
 | 1 | Research relevant issues that educators and students face with remote learning. | 09/28/20 | 10/05/20 |
-| 2 | Create and release a survey to collect further data. | 10/05/20 | 10/20/20 |
+| 2 | Create student and teacher survey questions to collect further data. | 10/05/20 | 10/20/20 |
 | 3 | Compile the data and identify key problems to focus on pertaining to increasing educator-student interaction in remote learning. | 10/20/20 | 10/30/20 | Complete preliminary research and analysis. |
 | 4 | Identify ways an application can solve these problems. | 10/30/20 | 11/06/20 |
-| 5 | Investigate the iOS platform for feasibility. | 11/06/20 | 11/11/20 |
-| 6 | Investigate the Android platform for feasibility. | 11/06/20 | 11/11/20 |
+| 5 | Investigate feasibility of web-based development for desktop and mobile devices. | 11/06/20 | 11/11/20 |
+| 6 | Investigate feasibility of backend and database development for application. | 11/06/20 | 11/11/20 |
 | 7 | Mockup the user interface for the application client | 11/11/20 | 12/02/20 |
 | 8 | Design human-computer interactions for the application to achieve its goals. | 11/11/20 | 12/02/20 | Complete requirements and design for the project. |
 | 9 | Implement client-side, user facing part of the application. | 12/02/20 | 03/15/21 |

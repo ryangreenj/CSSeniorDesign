@@ -1,10 +1,10 @@
 ## Assignment 5 - Task List
 1. Research relevant issues that educators and students face with remote learning. - RG
-2. Create and release a survey to collect further data. - JC
+2. Create student and teacher survey questions to collect further data. - JC
 3. Compile the data and identify key problems to focus on pertaining to increasing educator-student interaction in remote learning. - JC
 4. Identify ways an application can solve these problems. - RG
-5. Investigate the iOS platform for feasibility. - JC
-6. Investigate the Android platform for feasibility. - RG
+5. Investigate feasibility of web-based development for desktop and mobile devices. - JC
+6. Investigate feasibility of backend and database development for application. - RG
 7. Mockup the user interface for the application client.. - RG
 8. Design human-computer interactions for the application to achieve its goals. - JC
 9. Implement client-side, user facing part of the application. - Both
