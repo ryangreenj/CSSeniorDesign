@@ -9,29 +9,29 @@
 We have enhanced our user stories to closer match our project direction, with a big focus on stakeholder requirements. They are broken down into several categories
 
 ### Broad
-- "As an **educator**, I want to **be able to have a method of interacting with students** so that I can **gauge their understanding of a topic**."
-- "As an **educator**, I want to **get real-time feedback from students during lectures**."
-- "As a **student**, I want to **feel like this tool reinforces my knowledge of the current material**."
+- B1 - "As an **educator**, I want to **be able to have a method of interacting with students** so that I can **gauge their understanding of a topic**."
+- B2 - "As an **educator**, I want to **get real-time feedback from students during lectures**."
+- B3 - "As a **student**, I want to **feel like this tool reinforces my knowledge of the current material**."
 
 ### Asking Questions
-- "As an **educator**, I want to **be able to ask students multiple choice questions**."
-- "As an **educator**, I want to **be able to ask students questions which require them to type out a response**."
-- "As an **educator**, I want to **be able to release questions at different times throughout the class**."
-- "As an **educator**, I want to **have a dashboard where I can view and customize my questions to students**."
+- E1 - "As an **educator**, I want to **be able to ask students multiple choice questions**."
+- E2 - "As an **educator**, I want to **be able to ask students questions which require them to type out a response**."
+- E3 - "As an **educator**, I want to **be able to release questions at different times throughout the class**."
+- E4 - "As an **educator**, I want to **have a dashboard where I can view and customize my questions to students**."
 
 ### Answering Questions
-- "As a **student**, I want to **engage and interact with any prompts my educator may provide** to **feel connected during remote education**.”
-- "As a **student**, I want to **answer any questions the educator may release**.”
+- S1 - "As a **student**, I want to **engage and interact with any prompts my educator may provide** to **feel connected during remote education**.”
+- S2 - "As a **student**, I want to **answer any questions the educator may release**.”
 
 ### Viewing Answers
-- "As an **educator**, I want to **see responses from each student** so I **know who is struggling**."
-- "As an **educator**, I want to **see aggregated responses from my students** to **know how my class as a whole understands something**."
+- A1 - "As an **educator**, I want to **see responses from each student** so I **know who is struggling**."
+- A2 - "As an **educator**, I want to **see aggregated responses from my students** to **know how my class as a whole understands something**."
 
 ### Dashboard
-- "As an **educator**, I want to **see all necessary information in one place**."
+- D1 - "As an **educator**, I want to **see all necessary information in one place**."
 
 ### Interactions
-- "As an **educator**, I want to **hear from students if something is not clear**."
-- "As a **student**, I want to **easily get my teachers attention if something doesn't make sense**."
-- "As a **student**, I want to **easily get my instructors attention if the class has a problem**."
-- "As a **student**, I want to **give my educator feedback on their teaching content**."
+- I1 - "As an **educator**, I want to **hear from students if something is not clear**."
+- I2 - "As a **student**, I want to **easily get my teachers attention if something doesn't make sense**."
+- I3 - "As a **student**, I want to **easily get my instructors attention if the class has a problem**."
+- I4 - "As a **student**, I want to **give my educator feedback on their teaching content**."
