@@ -1,0 +1,2 @@
+rootProject.name = 'e-ducation'
+include ':components:web'
