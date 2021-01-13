@@ -13,6 +13,10 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.7.RELEASE'
+}
+
 bootJar {
     enabled = false
 }
