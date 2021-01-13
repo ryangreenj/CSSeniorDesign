@@ -1,0 +1,29 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+
+group 'com.e-ducation'
+version '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.7.RELEASE'
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+
+
