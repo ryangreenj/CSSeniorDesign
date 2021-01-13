@@ -1,3 +1,4 @@
 rootProject.name = 'e-ducation'
 include ':components:web'
 include ':components:tester-helper'
+include ':components:user'

@@ -33,6 +33,7 @@ test {
 
 dependencies {
 	implementation project (':components:web')
+	implementation project (':components:user')
 
 	// TODO - Can probably remove most of these
 	// TODO - Inspect dependencies and versions for each module
