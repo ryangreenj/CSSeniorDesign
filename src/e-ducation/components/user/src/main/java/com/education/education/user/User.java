@@ -18,10 +18,8 @@ public class User implements UserDetails {
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-
-
     /**  GETTERS  **/
-    // TODO - use @JsonIgnore as much as possible to supress potentially dangerous information from leaking
+    // TODO - use @JsonIgnore as much as possible to suppress potentially dangerous information from leaking
     public String getId() {
         return id;
     }
