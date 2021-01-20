@@ -14,13 +14,21 @@ public class UserService implements UserDetailsService {
 
     private final UserDataAccessService userDataAccessService;
     @Autowired
-    public UserService(@Qualifier("MockUserDataAccessService") UserDataAccessService userDataAccessService)
+    public UserService(@Qualifier("MongoUserDataAccessService") UserDataAccessService userDataAccessService)
     {
         this.userDataAccessService = userDataAccessService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try{
+            return userDataAccessService.getUser(username);
+        } catch (UserDataFailure userDataFailure) {
+            throw new UsernameNotFoundException(userDataFailure.getMessage());
+        }
+    }
+
+    public User getUser(String username){
         return userDataAccessService.getUser(username);
     }
 

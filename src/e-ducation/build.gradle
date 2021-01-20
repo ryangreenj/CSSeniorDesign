@@ -34,6 +34,7 @@ test {
 dependencies {
 	implementation project (':components:web')
 	implementation project (':components:user')
+	implementation project (':components:authentication')
 
 	// TODO - Can probably remove most of these
 	// TODO - Inspect dependencies and versions for each module
@@ -44,7 +45,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.3.7.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.7.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.3.7.RELEASE'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.3.7.RELEASE'
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.3.7.RELEASE'
 	implementation 'com.h2database:h2:1.4.200'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'

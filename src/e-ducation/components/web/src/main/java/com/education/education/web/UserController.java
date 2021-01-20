@@ -43,8 +43,9 @@ public class UserController {
     // TODO - This should probs be deleted or heavily restricted
     @GetMapping("/all")
     public List<UserResponse> getUsers() {
-        return userService.getAllUsers().stream()
+        List<UserResponse> u = userService.getAllUsers().stream()
                 .map(UserToUserResponseMapper::mapUserToUserResponse)
                 .collect(toList());
+        return u;
     }
 }

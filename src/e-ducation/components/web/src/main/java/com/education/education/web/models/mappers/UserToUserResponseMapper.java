@@ -7,7 +7,7 @@ import static com.education.education.web.models.UserResponse.aUserResponseBuild
 
 public class UserToUserResponseMapper {
 
-    public static UserResponse mapUserToUserResponse(User user){
+    public static UserResponse mapUserToUserResponse(final User user){
         return aUserResponseBuilder()
                 .username(user.getUsername())
                 .id(user.getId())

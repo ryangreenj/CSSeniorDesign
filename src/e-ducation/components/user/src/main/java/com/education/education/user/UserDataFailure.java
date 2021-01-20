@@ -10,4 +10,9 @@ public class UserDataFailure extends RuntimeException{
     {
         return new UserDataFailure("Failed to find username in user collection. | User: " + user);
     }
+
+    public static UserDataFailure failureToSaveUser(String message)
+    {
+        return new UserDataFailure("Failed to save user to mongo repository. | Message: " + message);
+    }
 }
