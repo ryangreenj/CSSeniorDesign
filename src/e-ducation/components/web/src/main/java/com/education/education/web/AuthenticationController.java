@@ -40,7 +40,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody final AuthenticationRequest authenticationRequest) {
+    public AuthenticationResponse createAuthenticationToken(@RequestBody final AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -49,12 +49,11 @@ public class AuthenticationController {
             throw InvalidUserCredentials(authenticationRequest.getUsername());
         }
 
-
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, userService.getUser(authenticationRequest.getUsername())));
+        return new AuthenticationResponse(jwt, userService.getUser(authenticationRequest.getUsername()));
     }
 
 }

@@ -4,6 +4,8 @@ import com.education.education.user.User;
 import com.education.education.user.UserService;
 import com.education.education.web.helpers.RandomUser;
 import com.education.education.web.models.UserRequest;
+import com.education.education.web.models.UserResponse;
+import com.education.education.web.models.mappers.UserToUserResponseMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,10 @@ import java.util.List;
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static com.education.education.testerhelper.GenerateMany.generateListOf;
+import static com.education.education.testerhelper.JsonString.asJsonString;
 import static com.education.education.user.UserDataFailure.failureToSaveUser;
 import static com.education.education.web.helpers.RandomUser.randomUserRequest;
+import static java.util.stream.Collectors.toList;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,7 +47,7 @@ class UserControllerTest {
     void insertUser_shouldReturnWithCreated_andCallInsertUser() throws Exception {
         final UserRequest userRequest = randomUserRequest();
 
-        this.mockMvc.perform(post("/user/")
+        this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userRequest)))
                 .andExpect(status().isCreated());
@@ -59,7 +63,7 @@ class UserControllerTest {
         doThrow(failureToSaveUser(exceptionMessage)).when(userService)
                 .createUser(userRequest.getUsername(),userRequest.getPassword());
 
-        this.mockMvc.perform(post("/user/")
+        this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userRequest)))
                 .andExpect(status().isServiceUnavailable());
@@ -67,21 +71,19 @@ class UserControllerTest {
 
     @Test
     void getUsers_shouldReturnWithOk_andReturnAllUsers() throws Exception {
-        final List<User> users = generateListOf(RandomUser::randomUser, getRandomNumberBetween(2,4));
+        final List<User> userList = generateListOf(RandomUser::randomUser, getRandomNumberBetween(2, 4));
 
-        when(userService.getAllUsers()).thenReturn(users);
+
+        final List<UserResponse> userResponseList = userList
+                .stream()
+                .map(UserToUserResponseMapper::mapUserToUserResponse)
+                .collect(toList());
+
+        when(userService.getAllUsers()).thenReturn(userList);
         this.mockMvc.perform(get("/user/all"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(asJsonString(users)));
+                .andExpect(content().json(asJsonString(userResponseList)));
 
         verify(userService, times(1)).getAllUsers();
-    }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -1,5 +1,9 @@
 package com.education.education.authentication.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
 public class UserException extends RuntimeException{
 
     private UserException(String message) {
