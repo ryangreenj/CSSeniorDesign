@@ -3,6 +3,7 @@ package com.education.education.web.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserRequest {
+
     private final String username;
     private final String password;
 

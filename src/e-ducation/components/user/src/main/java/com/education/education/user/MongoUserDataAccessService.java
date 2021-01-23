@@ -19,12 +19,12 @@ public class MongoUserDataAccessService implements UserDataAccessService {
     private final UserRepository userRepository;
 
     @Autowired
-    public MongoUserDataAccessService(UserRepository userRepository){
+    public MongoUserDataAccessService(final UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
     @Override
-    public void insertUser(String username, String password){
+    public void insertUser(final String username, final String password){
         try{
             userRepository.save(aUserEntityBuilder().username(username).password(password).build());
         } catch (MongoException mongoException) {
@@ -39,12 +39,12 @@ public class MongoUserDataAccessService implements UserDataAccessService {
     }
 
     @Override
-    public User getUser(String userId) {
+    public User getUser(final String userId) {
         UserEntity userEntity = userRepository.findUserEntityById(userId);
         return userEntity != null ? UserEntityToUserMapper.mapUserEntityToUser(userEntity) : getUserByUsername(userId);
     }
 
-    private User getUserByUsername(String username){
+    private User getUserByUsername(final String username){
         UserEntity userEntity = userRepository.findUserEntityByUsername(username);
         return userEntity != null ? UserEntityToUserMapper.mapUserEntityToUser(userEntity) : null;
     }

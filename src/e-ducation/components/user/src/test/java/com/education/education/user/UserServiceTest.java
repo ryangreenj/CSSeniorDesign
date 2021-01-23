@@ -60,7 +60,6 @@ class UserServiceTest {
         verify(userDataAccessService, times(1)).insertUser(username, password);
     }
 
-
     @Test
     void insertUser_shouldThrowUserDataFailure_whenInsertUserThrowsUserDataFailure() {
         final String exceptionMessage = getRandomAlphaNumericString(getRandomNumberBetween(5,50));
@@ -74,7 +73,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getAllUsers() {
+    void getAllUsers_shouldReturnAllUsers() {
         final List<User> users = generateListOf(RandomUser::randomUser, getRandomNumberBetween(2,4));
 
         when(userDataAccessService.getAllUsers()).thenReturn(users);

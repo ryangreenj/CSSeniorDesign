@@ -14,13 +14,12 @@ public class UserService implements UserDetailsService {
 
     private final UserDataAccessService userDataAccessService;
     @Autowired
-    public UserService(@Qualifier("MongoUserDataAccessService") UserDataAccessService userDataAccessService)
-    {
+    public UserService(@Qualifier("MongoUserDataAccessService") final UserDataAccessService userDataAccessService) {
         this.userDataAccessService = userDataAccessService;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername( final String username) throws UsernameNotFoundException {
         try{
             return userDataAccessService.getUser(username);
         } catch (UserDataFailure userDataFailure) {
@@ -28,7 +27,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public User getUser(String username){
+    public User getUser( final String username){
         return userDataAccessService.getUser(username);
     }
 

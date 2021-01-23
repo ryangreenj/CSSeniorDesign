@@ -6,12 +6,12 @@ public class UserDataFailure extends RuntimeException{
         super(message);
     }
 
-    public static UserDataFailure UsernameOrIdNotFound(String user)
+    public static UserDataFailure UsernameOrIdNotFound(final String user)
     {
         return new UserDataFailure("Failed to find username in user collection. | User: " + user);
     }
 
-    public static UserDataFailure failureToSaveUser(String message)
+    public static UserDataFailure failureToSaveUser(final String message)
     {
         return new UserDataFailure("Failed to save user to mongo repository. | Message: " + message);
     }

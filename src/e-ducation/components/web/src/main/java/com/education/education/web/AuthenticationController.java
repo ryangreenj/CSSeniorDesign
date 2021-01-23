@@ -33,14 +33,14 @@ public class AuthenticationController {
     private final JwtUtil jwtTokenUtil;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, UserService userDetailsService, JwtUtil jwtTokenUtil) {
+    public AuthenticationController(final AuthenticationManager authenticationManager, final UserService userDetailsService, final JwtUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;
         this.userService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody final AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
