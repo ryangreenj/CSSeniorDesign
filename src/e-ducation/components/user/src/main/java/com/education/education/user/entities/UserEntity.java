@@ -10,9 +10,21 @@ import javax.persistence.Id;
 public class UserEntity {
 
     @Id
-    public String id;
-    public String username;
-    public String password;
+    private String id;
+    private String username;
+    private String password;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     @Override
     public String toString() {

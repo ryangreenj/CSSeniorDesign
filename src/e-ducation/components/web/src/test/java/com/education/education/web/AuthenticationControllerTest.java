@@ -6,6 +6,7 @@ import com.education.education.web.helpers.RandomAuthentication;
 import com.education.education.web.models.AuthenticationRequest;
 import com.education.education.web.models.UserRequest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
@@ -38,6 +40,12 @@ class AuthenticationControllerTest {
     @MockBean
     private AuthenticationManager authenticationManager;
 
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
     @Test
     void createAuthenticationToken_shouldReturnWithOk_AndReturnAuthenticationResponse_shouldCallAuthenticate() throws Exception {
         final AuthenticationRequest authenticationRequest = randomAuthenticationRequest();
@@ -54,7 +62,7 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    void createAuthenticationToken_shouldThrowUserException() throws Exception {
+    void createAuthenticationToken_shouldThrowUserException_whenAuthenticationManagerFails() throws Exception {
         final AuthenticationRequest authenticationRequest = randomAuthenticationRequest();
 
         final String exceptionMessage = getRandomAlphaNumericString(getRandomNumberBetween(5,25));
@@ -66,7 +74,7 @@ class AuthenticationControllerTest {
         this.mockMvc.perform(post("/authenticate")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(authenticationRequest)))
-                .andExpect(status().isServiceUnavailable());
+                .andExpect(status().isForbidden());
     }
 
 }

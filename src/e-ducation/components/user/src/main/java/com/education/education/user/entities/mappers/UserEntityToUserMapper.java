@@ -8,9 +8,9 @@ public class UserEntityToUserMapper {
 
     public static User mapUserEntityToUser(UserEntity userEntity){
         return User.aUserBuilder()
-                .username(userEntity.username)
-                .password(userEntity.password)
-                .id(userEntity.id)
+                .username(userEntity.getUsername())
+                .password(userEntity.getPassword())
+                .id(userEntity.getId())
                 .build();
     }
 }

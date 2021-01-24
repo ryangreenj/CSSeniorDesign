@@ -49,10 +49,7 @@ public class AuthenticationController {
             throw InvalidUserCredentials(authenticationRequest.getUsername());
         }
 
-        final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-
+        final String jwt = jwtTokenUtil.generateToken(userService.loadUserByUsername(authenticationRequest.getUsername()));
         return new AuthenticationResponse(jwt, userService.getUser(authenticationRequest.getUsername()));
     }
 
