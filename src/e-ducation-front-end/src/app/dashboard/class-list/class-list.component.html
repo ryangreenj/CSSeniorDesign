@@ -1,0 +1,9 @@
+<ul *ngIf="classes">
+    <li *ngFor="let class of classes">
+        <mat-card [routerLink]="['../', class.id]">
+            <p>{{ class.code }}</p>
+            <p>{{ class.name }}</p>
+            <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}
+        </mat-card>
+    </li>
+</ul>

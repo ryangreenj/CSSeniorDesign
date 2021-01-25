@@ -15,14 +15,15 @@
                 </mat-form-field>
                 
                 <div class="submitOptions">
-                    <button mat-raised-button class="submitButton" color="primary" type="submit">Login</button>
+                    <!-- TEMPORARILY ROUTE TO DASHBOARD -->
+                    <button mat-raised-button class="submitButton" color="primary" type="submit" [routerLink]="'/dashboard'">Login</button>
                     <mat-checkbox>Remember me!</mat-checkbox>
                 </div>
             </form>
         </mat-card>
         <div class="otherLinks">
-            <a href="#" routerLink="/forgotPassword">Forgot Password?</a>
-            <a href="#" routerLink="/register">Create an Account</a>
+            <a routerLink="/forgotPassword">Forgot Password?</a>
+            <a routerLink="/register">Create an Account</a>
         </div>
     </div>
 </div>

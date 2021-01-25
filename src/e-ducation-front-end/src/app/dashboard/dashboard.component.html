@@ -1,0 +1,13 @@
+
+<mat-drawer-container class="container">
+    <mat-drawer mode="side" opened class="sidebar">
+        <p>Side bar</p>
+        <a routerLink="classlist">Class List</a>
+        <ul *ngIf="classes">
+            <li *ngFor="let class of classes">
+                <p><a [routerLink]="[class.id]">{{ class.code }}</a></p>
+            </li>
+        </ul>
+    </mat-drawer>
+    <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
+</mat-drawer-container>

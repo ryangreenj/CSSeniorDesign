@@ -10,16 +10,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ClassListComponent } from './dashboard/class-list/class-list.component';
+import { ClassDetailComponent } from './dashboard/class-detail/class-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DashboardComponent,
+    ClassListComponent,
+    ClassDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +38,8 @@ import { RegisterComponent } from './register/register.component';
     MatCardModule,
     MatCheckboxModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
