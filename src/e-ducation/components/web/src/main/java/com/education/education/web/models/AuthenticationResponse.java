@@ -21,9 +21,4 @@ public class AuthenticationResponse {
     public User getUserResponse(){
         return userResponse;
     }
-
-//    public static AuthenticationResponseBuilder anAuthenticationResponseBuilder(){
-//        return AuthenticationResponse.builder();
-//    }
-
 }

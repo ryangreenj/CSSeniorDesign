@@ -49,29 +49,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
-//        // This avoids the jwt for new users and authentication while still ensuring that there is some form of security...
-//        // TODO - set actual private key
+        // Since these calls avoid the jwt, it requires a private key so it has some security
+        // TODO - uncomment
 //        if ( httpServletRequest.getRequestURI().equals("/user")
 //                && httpServletRequest.getMethod().equals("POST")
-//                && !httpServletRequest.getHeader("Secret").equals("SECRET")) {
-////                && !httpServletRequest.getHeader("Secret").equals(System.getenv("SECRET_KEY"))) {
+//                && !httpServletRequest.getHeader("Secret").equals(System.getenv("SECRET_KEY"))) {
 //
 //            throw invalidKeyWhenCreatingUser();
 //        }
-//        // TODO - set actual private key
 //        if ( httpServletRequest.getRequestURI().equals("/authenticate")
 //                && httpServletRequest.getMethod().equals("POST")
-//                && !httpServletRequest.getHeader("Secret").equals("SECRET")) {
-////                && !httpServletRequest.getHeader("Secret").equals(System.getenv("SECRET_KEY"))) {
+//                && !httpServletRequest.getHeader("Secret").equals(System.getenv("SECRET_KEY"))) {
 //
 //            throw invalidKeyWhenAuthenticatingUser();
 //        }
-
-        // TODO when editing users -- we need to use something like this to make sure that users are only
-        //      able to edit their own profiles
-        //      if (  httpServletRequest.getRequestURI() contains some userId)
-        //          allow access
-        //          System.out.println("Method: " + httpServletRequest.getMethod());=
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
