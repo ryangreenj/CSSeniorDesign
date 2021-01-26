@@ -4,19 +4,21 @@ plugins {
     id 'java'
 }
 
-
-group 'com.e-ducation'
+group 'com.education'
 version '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.11'
+sourceCompatibility = '1.12'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation project (':components:user')
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.3.7.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.3.7.RELEASE'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.7.RELEASE'
+    testImplementation project (':components:tester-helper')
 }
 
 bootJar {
@@ -26,6 +28,3 @@ bootJar {
 jar {
     enabled = true
 }
-
-
-
