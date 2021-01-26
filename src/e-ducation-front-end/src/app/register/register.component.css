@@ -1,0 +1,22 @@
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-width {
+    width: 100%;
+}
+
+td {
+    padding-right: 8px;
+}
+
+mat-card {
+    margin: 40px;
+}
+
+.submitButton {
+    margin-top: 20px;
+}

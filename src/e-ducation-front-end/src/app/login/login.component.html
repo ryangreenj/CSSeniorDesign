@@ -1,0 +1,29 @@
+
+<div class="container">
+    <div class="cardArea">
+        <mat-card>
+            <form class="loginForm">
+                <h1>Login</h1>
+                <mat-form-field class="inputField">
+                    <mat-label>Username</mat-label>
+                    <input matInput placeholder="Enter Username">
+                </mat-form-field>
+                
+                <mat-form-field class="inputField">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" placeholder="Enter Password">
+                </mat-form-field>
+                
+                <div class="submitOptions">
+                    <!-- TEMPORARILY ROUTE TO DASHBOARD -->
+                    <button mat-raised-button class="submitButton" color="primary" type="submit" [routerLink]="'/dashboard'">Login</button>
+                    <mat-checkbox>Remember me!</mat-checkbox>
+                </div>
+            </form>
+        </mat-card>
+        <div class="otherLinks">
+            <a routerLink="/forgotPassword">Forgot Password?</a>
+            <a routerLink="/register">Create an Account</a>
+        </div>
+    </div>
+</div>
