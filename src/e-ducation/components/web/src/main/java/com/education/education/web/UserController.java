@@ -1,6 +1,5 @@
 package com.education.education.web;
 
-import com.education.education.user.User;
 import com.education.education.user.UserService;
 import com.education.education.web.models.UserRequest;
 import com.education.education.web.models.UserResponse;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

@@ -35,6 +35,7 @@ dependencies {
 	implementation project (':components:web')
 	implementation project (':components:user')
 	implementation project (':components:course')
+	implementation project (':components:session')
 	implementation project (':components:authentication')
 
 	// TODO - Can probably remove most of these

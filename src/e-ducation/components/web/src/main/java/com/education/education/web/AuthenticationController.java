@@ -4,13 +4,10 @@ import com.education.education.authentication.JwtUtil;
 import com.education.education.user.UserService;
 import com.education.education.web.models.AuthenticationRequest;
 import com.education.education.web.models.AuthenticationResponse;
-import com.education.education.web.models.mappers.UserToUserResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import static com.education.education.authentication.exceptions.UserException.InvalidUserCredentials;
-import static com.education.education.web.models.mappers.UserToUserResponseMapper.mapUserToUserResponse;
 
 
 @RestController

@@ -1,4 +1,4 @@
-package com.education.education.course;
+package com.education.education.session;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,5 +9,5 @@ public class UserResponse {
 
     private final String id;
     private final String response;
-    private final Profile profileId;
+    private final String profileId;
 }

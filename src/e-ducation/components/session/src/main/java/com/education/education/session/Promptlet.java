@@ -1,4 +1,4 @@
-package com.education.education.course;
+package com.education.education.session;
 
 import lombok.Builder;
 import lombok.Getter;

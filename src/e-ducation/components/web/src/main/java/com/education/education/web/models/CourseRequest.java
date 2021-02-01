@@ -3,13 +3,15 @@ package com.education.education.web.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class CourseRequest {
 
-    private final String courseName;
+    private final List<String> courseIds;
 
     public CourseRequest(
-            @JsonProperty("courseName") final String courseName) {
-        this.courseName = courseName;
+            @JsonProperty("ids") final List<String> courseIds) {
+        this.courseIds = courseIds;
     }
 }

@@ -1,17 +1,14 @@
 package com.education.education.testerhelper;
 
 import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.jupiter.api.Assertions.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.instanceOf;
 class GenerateManyTest {
 
     @Test

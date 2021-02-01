@@ -1,4 +1,4 @@
-package com.education.education.course;
+package com.education.education.session;
 
 public enum PROMPTLET_TYPE {
     OPEN_RESPONSE,

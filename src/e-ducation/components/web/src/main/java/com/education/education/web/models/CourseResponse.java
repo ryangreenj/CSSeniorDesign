@@ -1,4 +1,4 @@
-package com.education.education.course;
+package com.education.education.web.models;
 
 import com.education.education.session.Session;
 import lombok.Builder;
@@ -8,13 +8,13 @@ import java.util.List;
 
 @Builder
 @Getter
-public class Course {
+public class CourseResponse {
 
     private final String id;
     private final String className;
     private final List<String> sessionIds;
 
-    public static CourseBuilder aCourseBuilder(){
-        return Course.builder();
+    public static CourseResponseBuilder aCourseResponseBuilder(){
+        return CourseResponse.builder();
     }
 }

@@ -4,4 +4,5 @@ include ':components:tester-helper'
 include ':components:user'
 include ':components:authentication'
 include 'components:course'
+include 'components:session'
 

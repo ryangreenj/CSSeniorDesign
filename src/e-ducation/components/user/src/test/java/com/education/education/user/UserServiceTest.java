@@ -11,13 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
-import static com.education.education.user.helpers.RandomUser.randomUser;
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static com.education.education.testerhelper.GenerateMany.generateListOf;
 import static com.education.education.user.UserDataFailure.failureToSaveUser;
+import static com.education.education.user.helpers.RandomUser.randomUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;

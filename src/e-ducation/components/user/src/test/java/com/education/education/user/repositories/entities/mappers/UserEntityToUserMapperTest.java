@@ -5,8 +5,8 @@ import com.education.education.user.repositories.entities.UserEntity;
 import org.junit.jupiter.api.Test;
 
 import static com.education.education.user.User.aUserBuilder;
-import static com.education.education.user.repositories.entities.mappers.UserEntityToUserMapper.mapUserEntityToUser;
 import static com.education.education.user.helpers.RandomUserEntity.randomUserEntity;
+import static com.education.education.user.repositories.entities.mappers.UserEntityToUserMapper.mapUserEntityToUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class UserEntityToUserMapperTest {

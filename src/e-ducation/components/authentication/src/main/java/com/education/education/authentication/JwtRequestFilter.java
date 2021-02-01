@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.education.education.authentication.exceptions.UserException.invalidKeyWhenAuthenticatingUser;
-import static com.education.education.authentication.exceptions.UserException.invalidKeyWhenCreatingUser;
-
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {

@@ -1,9 +1,9 @@
 package com.education.education.user;
 
 
+import com.education.education.user.repositories.UserRepository;
 import com.education.education.user.repositories.entities.UserEntity;
 import com.education.education.user.repositories.entities.mappers.UserEntityToUserMapper;
-import com.education.education.user.repositories.UserRepository;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

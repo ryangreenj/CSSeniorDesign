@@ -1,7 +1,6 @@
 package com.education.education.web.models;
 
 import com.education.education.user.User;
-import lombok.Builder;
 
 //@Builder
 public class AuthenticationResponse {

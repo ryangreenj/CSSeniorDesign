@@ -14,9 +14,9 @@ import static com.education.education.testerhelper.Chance.getRandomAlphaNumericS
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest(classes = {MongoCourseDataAccessService.class})
 class MongoCourseDataAccessServiceTest {
