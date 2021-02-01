@@ -4,6 +4,7 @@ plugins {
 
 group 'com.education'
 version '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.11'
 
 repositories {
     mavenCentral()
@@ -23,6 +24,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.7.RELEASE'
 }
 
-test {
-    useJUnitPlatform()
+
+jar {
+    enabled = true
 }
+
