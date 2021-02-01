@@ -1,6 +1,6 @@
 package com.education.education.user;
 
-import com.education.education.user.entities.UserEntity;
+import com.education.education.user.repositories.entities.UserEntity;
 import com.education.education.user.repositories.UserRepository;
 import com.mongodb.MongoException;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
-import static com.education.education.user.entities.mappers.UserEntityToUserMapper.mapUserEntityToUser;
+import static com.education.education.user.repositories.entities.mappers.UserEntityToUserMapper.mapUserEntityToUser;
 import static com.education.education.user.helpers.RandomUserEntity.randomUserEntity;
 import static com.education.education.user.helpers.RandomUserEntity.randomUserEntity_noId;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 class MongoUserDataAccessServiceTest {
 
     private MongoUserDataAccessService mongoUserDataAccessService;
+
     @MockBean
     private UserRepository userRepository;
 

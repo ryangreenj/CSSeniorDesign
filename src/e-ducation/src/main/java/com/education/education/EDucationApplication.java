@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 })
 @EnableMongoRepositories(basePackageClasses = {
 		com.education.education.user.repositories.UserRepository.class,
-		com.education.education.course.CourseRepository.class
+		com.education.education.course.repositories.CourseRepository.class
 })
 public class EDucationApplication {
 

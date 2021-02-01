@@ -1,4 +1,4 @@
-package com.education.education.user.entities;
+package com.education.education.user.repositories.entities;
 
 import lombok.Builder;
 import org.springframework.data.mongodb.core.mapping.Document;

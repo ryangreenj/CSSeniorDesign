@@ -1,8 +1,8 @@
-package com.education.education.user.entities.mappers;
+package com.education.education.user.repositories.entities.mappers;
 
 
 import com.education.education.user.User;
-import com.education.education.user.entities.UserEntity;
+import com.education.education.user.repositories.entities.UserEntity;
 
 public class UserEntityToUserMapper {
 

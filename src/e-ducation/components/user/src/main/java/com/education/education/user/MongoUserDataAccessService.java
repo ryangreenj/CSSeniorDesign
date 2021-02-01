@@ -1,8 +1,8 @@
 package com.education.education.user;
 
 
-import com.education.education.user.entities.UserEntity;
-import com.education.education.user.entities.mappers.UserEntityToUserMapper;
+import com.education.education.user.repositories.entities.UserEntity;
+import com.education.education.user.repositories.entities.mappers.UserEntityToUserMapper;
 import com.education.education.user.repositories.UserRepository;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.education.education.user.entities.UserEntity.aUserEntityBuilder;
+import static com.education.education.user.repositories.entities.UserEntity.aUserEntityBuilder;
 
 @Repository("MongoUserDataAccessService")
 public class MongoUserDataAccessService implements UserDataAccessService {

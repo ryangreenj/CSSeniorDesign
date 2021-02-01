@@ -1,11 +1,12 @@
 package com.education.education.course;
 
+import com.education.education.course.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-import static com.education.education.course.CourseEntity.aCourseEntityBuilder;
+import static com.education.education.course.repositories.entities.CourseEntity.aCourseEntityBuilder;
 
 @Repository("MongoCourseDataAccessService")
 public class MongoCourseDataAccessService implements CourseDataAccessService{

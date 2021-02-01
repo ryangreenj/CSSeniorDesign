@@ -1,6 +1,6 @@
 package com.education.education.user.repositories;
 
-import com.education.education.user.entities.UserEntity;
+import com.education.education.user.repositories.entities.UserEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

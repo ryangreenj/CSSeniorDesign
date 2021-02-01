@@ -1,4 +1,4 @@
-package com.education.education.course;
+package com.education.education.course.repositories.entities;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +13,9 @@ import java.util.List;
 public class CourseEntity {
 
     @Id
-    private String id;
-    private String className;
-    private List<String> sessionIds;
+    private final String id;
+    private final String className;
+    private final List<String> sessionIds;
 
     public static CourseEntityBuilder aCourseEntityBuilder()
     {
