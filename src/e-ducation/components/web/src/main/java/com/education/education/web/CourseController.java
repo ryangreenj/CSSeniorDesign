@@ -38,15 +38,6 @@ public class CourseController {
         courseService.createCourse(courseCreationRequest.getCourseName());
     }
 
-    /**  MAKE CUSTOM RETURN TYPE  **/
-    @GetMapping("/all")
-    public List<CourseResponse> getCourses(){
-        return courseService.getAllCourses()
-                .stream()
-                .map(CourseToCourseResponseMapper::mapCourseToCourseResponse)
-                .collect(Collectors.toList());
-    }
-
     @GetMapping("")
     public List<CourseResponse> getCourses(@RequestBody final CourseRequest courseRequest){
         return courseService.getCourses(courseRequest.getCourseIds())
@@ -54,6 +45,16 @@ public class CourseController {
                 .map(CourseToCourseResponseMapper::mapCourseToCourseResponse)
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/all")
+    public List<CourseResponse> getAllCourses(){
+        return courseService.getAllCourses()
+                .stream()
+                .map(CourseToCourseResponseMapper::mapCourseToCourseResponse)
+                .collect(Collectors.toList());
+    }
+
+
 
     @PostMapping("/session")
     @ResponseStatus(HttpStatus.CREATED)
