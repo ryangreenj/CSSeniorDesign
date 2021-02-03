@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService, SharedData } from "../../data.service";
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClassData, DataService, SharedData } from "../../data.service";
 
 @Component({
   selector: 'app-class-list',
@@ -10,10 +11,16 @@ export class ClassListComponent implements OnInit {
   
   sharedData: SharedData;
   
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data)
   }
-
+  
+  public routeToClass(destClass: ClassData) {
+    this.sharedData.activeClass = destClass;
+    this.dataService.changeData(this.sharedData);
+    this.router.navigate(['../class'], { relativeTo: this.route });
+    
+  }
 }

@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataService {
   
-  private dataSource = new BehaviorSubject<SharedData>(new SharedData())
+  private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
   
   constructor() { }
@@ -25,7 +25,7 @@ export class SharedData {
     { "id": '103', "code": "SPN1001", "name": "Spanish 1", "status": true }
   ];
   
-  activeClass: ClassData
+  activeClass: ClassData;
 }
 
 export type ClassData = {
@@ -33,4 +33,9 @@ export type ClassData = {
   code: string
   name: string
   status: boolean
+}
+
+export type Session = {
+  courseId: string
+  sessionName: string
 }

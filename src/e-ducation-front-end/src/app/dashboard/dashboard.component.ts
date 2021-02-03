@@ -14,14 +14,13 @@ export class DashboardComponent implements OnInit {
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.dataService.currentData.subscribe(data => this.sharedData = data)
+    this.dataService.currentData.subscribe(data => this.sharedData = data);
   }
   
   public routeToClass(destClass: ClassData) {
     this.sharedData.activeClass = destClass;
     this.dataService.changeData(this.sharedData);
     this.router.navigate(['class'], { relativeTo: this.route });
-    
   }
-
+  
 }
