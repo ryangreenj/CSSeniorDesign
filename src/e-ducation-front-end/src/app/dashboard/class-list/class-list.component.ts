@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService, SharedData } from "../../data.service";
 
 @Component({
   selector: 'app-class-list',
@@ -7,17 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClassListComponent implements OnInit {
   
-  // TODO: Figure a good way to pass this data between components without re-requesting every time. Probably with a service
-  classes: { id: number, code: string, name: string, status: boolean }[] = [
-    { "id": 100, "code": "CS101", "name": "Computer Science 1", "status": false },
-    { "id": 101, "code": "EECE3093C", "name": "Software Engineering", "status": false },
-    { "id": 102, "code": "COMM1017", "name": "Intro to Public Speaking", "status": false },
-    { "id": 103, "code": "SPN1001", "name": "Spanish 1", "status": true }
-  ];
+  sharedData: SharedData;
   
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.dataService.currentData.subscribe(data => this.sharedData = data)
   }
 
 }
