@@ -2,7 +2,7 @@
     <li *ngFor="let class of sharedData.classes">
         <mat-card (click)="routeToClass(class)">
             <p>{{ class.code }}</p>
-            <p>{{ class.name }}</p>
+            <p>{{ class.className }}</p>
             <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}
         </mat-card>
     </li>

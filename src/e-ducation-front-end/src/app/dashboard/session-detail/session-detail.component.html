@@ -1,1 +1,4 @@
-<p>session-detail works!</p>
+<div *ngIf="sharedData.currentSession">
+    <h1>{{ sharedData.currentSession.sessionName }}</h1>
+    <h2>Promptlets:</h2>
+</div>

@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   }
   
   public routeToClass(destClass: ClassData) {
-    this.sharedData.activeClass = destClass;
+    this.sharedData.currentClass = destClass;
     this.dataService.changeData(this.sharedData);
     this.router.navigate(['class'], { relativeTo: this.route });
   }
