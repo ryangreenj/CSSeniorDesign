@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService, SharedData } from 'src/app/data.service';
 
 @Component({
   selector: 'app-class-detail',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./class-detail.component.css']
 })
 export class ClassDetailComponent implements OnInit {
-
-  constructor() { }
+  
+  sharedData: SharedData;
+  
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
+    this.dataService.currentData.subscribe(data => this.sharedData = data)
   }
-
+  
 }

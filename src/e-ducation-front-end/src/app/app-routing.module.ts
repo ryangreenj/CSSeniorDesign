@@ -16,7 +16,7 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: 'classlist', component: ClassListComponent },
-      { path: ':classid', component: ClassDetailComponent }
+      { path: 'class', component: ClassDetailComponent }
     ]
   }
 ];
