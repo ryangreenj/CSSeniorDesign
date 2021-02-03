@@ -17,6 +17,7 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ClassListComponent } from './dashboard/class-list/class-list.component';
 import { ClassDetailComponent } from './dashboard/class-detail/class-detail.component';
+import { SessionDetailComponent } from './dashboard/session-detail/session-detail.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ClassDetailComponent } from './dashboard/class-detail/class-detail.comp
     RegisterComponent,
     DashboardComponent,
     ClassListComponent,
-    ClassDetailComponent
+    ClassDetailComponent,
+    SessionDetailComponent
   ],
   imports: [
     BrowserModule,

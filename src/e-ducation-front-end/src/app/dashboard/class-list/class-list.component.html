@@ -1,6 +1,6 @@
 <ul *ngIf="sharedData.classes">
     <li *ngFor="let class of sharedData.classes">
-        <mat-card [routerLink]="['../class']">
+        <mat-card (click)="routeToClass(class)">
             <p>{{ class.code }}</p>
             <p>{{ class.name }}</p>
             <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}
