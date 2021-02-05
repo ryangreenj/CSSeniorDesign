@@ -1,12 +1,14 @@
 package com.education.education.web;
 
-import com.education.education.course.Course;
 import com.education.education.course.CourseService;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseRequest;
 import com.education.education.web.models.CourseResponse;
-import com.education.education.web.models.SessionRequest;
+import com.education.education.web.models.SessionCreationRequest;
+import com.education.education.web.models.SessionResponse;
+import com.education.education.web.models.SessionRetrievalRequest;
 import com.education.education.web.models.mappers.CourseToCourseResponseMapper;
+import com.education.education.web.models.mappers.SessionToSessionResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.education.education.web.models.mappers.SessionToSessionResponseMapper.mapSessionToSessionResponse;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/course")
@@ -43,7 +48,7 @@ public class CourseController {
         return courseService.getCourses(courseRequest.getCourseIds())
                 .stream()
                 .map(CourseToCourseResponseMapper::mapCourseToCourseResponse)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @GetMapping("/all")
@@ -51,14 +56,20 @@ public class CourseController {
         return courseService.getAllCourses()
                 .stream()
                 .map(CourseToCourseResponseMapper::mapCourseToCourseResponse)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
-
-
 
     @PostMapping("/session")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createSession(@RequestBody final SessionRequest sessionRequest){
-        courseService.addSession(sessionRequest.getCourseId(), sessionRequest.getSessionName());
+    public void createSession(@RequestBody final SessionCreationRequest sessionCreationRequest){
+        courseService.addSession(sessionCreationRequest.getCourseId(), sessionCreationRequest.getSessionName());
+    }
+
+    @GetMapping("/session")
+    public List<SessionResponse> getSession(@RequestBody final SessionRetrievalRequest sessionRetrievalRequest){
+        return courseService.getSessions(sessionRetrievalRequest.getSessionIds())
+                .stream()
+                .map(SessionToSessionResponseMapper::mapSessionToSessionResponse)
+                .collect(toList());
     }
 }

@@ -1,6 +1,7 @@
 package com.education.education.course;
 
 import com.education.education.course.repositories.entities.mappers.CourseEntityToCourseMapper;
+import com.education.education.session.Session;
 import com.education.education.session.SessionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -45,9 +46,10 @@ public class CourseService {
         return courseDataAccessService.getAllCourses()
                 .stream()
                 .map(CourseEntityToCourseMapper::mapCourseEntityToCourse)
-//                .map(x -> mapCourseEntityToCourse(x, new ArrayList<>()))
                 .collect(Collectors.toList());
     }
 
-
+    public List<Session> getSessions(final List<String> sessionIds){
+        return sessionService.getSessions(sessionIds);
+    }
 }

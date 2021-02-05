@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface SessionRepository extends MongoRepository<SessionEntity, String> {
 
-    List<SessionEntity> findSessionEntitiesById(List<String> ids);
+    SessionEntity findSessionEntityById(String id);
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.education.education.session.repositories.entities.SessionEntity.aSessionEntityBuilder;
 
@@ -37,7 +38,7 @@ public class MongoSessionDataAccessService implements SessionDataAccessService{
     @Override
     public List<SessionEntity> getSessions(List<String> sessions) {
         try{
-            return sessionRepository.findSessionEntitiesById(sessions);
+            return sessions.stream().map(sessionRepository::findSessionEntityById).collect(Collectors.toList());
         } catch (MongoException mongoException){
             throw new RuntimeException("TEMp");
         }

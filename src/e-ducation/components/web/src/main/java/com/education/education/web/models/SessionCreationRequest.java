@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class SessionRequest {
+public class SessionCreationRequest {
 
     private final String courseId;
     private final String sessionName;
 
-    public SessionRequest(
+    public SessionCreationRequest(
             @JsonProperty("courseId") final String courseId,
             @JsonProperty("sessionName") final String sessionName
             ) {
