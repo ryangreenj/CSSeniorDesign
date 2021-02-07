@@ -30,11 +30,6 @@ public class CourseService {
         courseDataAccessService.insertCourse(courseName);
     }
 
-    public void addSession(final String courseId, final String sessionName){
-        final String sessionId = sessionService.createSession(sessionName);
-        courseDataAccessService.addSessionToCourse(courseId,sessionId);
-    }
-
     public List<Course> getCourses(final List<String> courseIds) {
         return courseDataAccessService.getCourses(courseIds)
                 .stream()
@@ -47,6 +42,11 @@ public class CourseService {
                 .stream()
                 .map(CourseEntityToCourseMapper::mapCourseEntityToCourse)
                 .collect(Collectors.toList());
+    }
+    public String addSession(final String courseId, final String sessionName){
+        final String sessionId = sessionService.createSession(sessionName);
+        courseDataAccessService.addSessionToCourse(courseId,sessionId);
+        return sessionId;
     }
 
     public List<Session> getSessions(final List<String> sessionIds){
