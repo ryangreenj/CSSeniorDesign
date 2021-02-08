@@ -45,7 +45,7 @@ class UserServiceTest {
         when(userDataAccessService.getUser(user.getUsername())).thenReturn(user);
         final UserDetails actual = userService.loadUserByUsername(user.getUsername());
 
-        verify(userDataAccessService, times(1)).getUser(user.getUsername());
+        verify(userDataAccessService).getUser(user.getUsername());
         assertThat(actual).isEqualTo(user);
     }
 
@@ -57,7 +57,7 @@ class UserServiceTest {
         doNothing().when(userDataAccessService).insertUser(username, password);
 
         userService.createUser(username,password);
-        verify(userDataAccessService, times(1)).insertUser(username, password);
+        verify(userDataAccessService).insertUser(username, password);
     }
 
     @Test
@@ -79,7 +79,7 @@ class UserServiceTest {
         when(userDataAccessService.getAllUsers()).thenReturn(users);
         final List<User> actual = userService.getAllUsers();
 
-        verify(userDataAccessService, times(1)).getAllUsers();
+        verify(userDataAccessService).getAllUsers();
         Assertions.assertThat(actual).isEqualTo(users);
     }
 
@@ -90,7 +90,7 @@ class UserServiceTest {
         when(userDataAccessService.getUser(user.getId())).thenReturn(user);
         final User actual = userService.getUser(user.getId());
 
-        verify(userDataAccessService, times(1)).getUser(user.getId());
+        verify(userDataAccessService).getUser(user.getId());
         assertThat(actual).isEqualTo(user);
     }
 }

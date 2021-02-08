@@ -16,7 +16,7 @@ public class SessionEntity {
     @Id
     private final String id;
     private final String sessionName;
-    private final List<Promptlet> promptlets;
+    private final List<String> promptlets;
 
     public static SessionEntityBuilder aSessionEntityBuilder(){
         return SessionEntity.builder();

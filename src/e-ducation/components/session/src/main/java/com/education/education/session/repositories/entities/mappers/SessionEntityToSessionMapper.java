@@ -13,7 +13,7 @@ public class SessionEntityToSessionMapper {
         return aSessionBuilder()
                 .id(sessionEntity.getId())
                 .sessionName(sessionEntity.getSessionName())
-                .promptletIds(new ArrayList<>())
+                .promptletIds(sessionEntity.getPromptlets())
                 .build();
     }
 }

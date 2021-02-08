@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.education.education.session.repositories.entities.SessionEntity.aSessionEntityBuilder;
+import static java.util.stream.Collectors.toList;
 
 @Repository("MongoSessionDataAccessService")
 public class MongoSessionDataAccessService implements SessionDataAccessService{
@@ -31,16 +32,19 @@ public class MongoSessionDataAccessService implements SessionDataAccessService{
                             .promptlets(new ArrayList<>())
                             .build()).getId();
         } catch (MongoException mongoException){
-            throw new RuntimeException("TEMp");
+            throw new RuntimeException("Mongo save failed");
         }
     }
 
     @Override
     public List<SessionEntity> getSessions(List<String> sessions) {
         try{
-            return sessions.stream().map(sessionRepository::findSessionEntityById).collect(Collectors.toList());
+            return sessions
+                    .stream()
+                    .map(sessionRepository::findSessionEntityById)
+                    .collect(toList());
         } catch (MongoException mongoException){
-            throw new RuntimeException("TEMp");
+            throw new RuntimeException("Mongo retrieval failed");
         }
     }
 }
