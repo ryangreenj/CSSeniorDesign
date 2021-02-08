@@ -37,6 +37,13 @@ public class MongoSessionDataAccessService implements SessionDataAccessService{
     }
 
     @Override
+    public void addPromptletToSession(String sessionId, String promptletId) {
+        final SessionEntity sessionEntity = sessionRepository.findSessionEntityById(sessionId);
+        sessionEntity.getPromptlets().add(promptletId);
+        sessionRepository.save(sessionEntity);
+    }
+
+    @Override
     public List<SessionEntity> getSessions(List<String> sessions) {
         try{
             return sessions

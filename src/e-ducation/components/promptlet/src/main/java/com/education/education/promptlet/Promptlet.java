@@ -1,4 +1,4 @@
-package com.education.education.session;
+package com.education.education.promptlet;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +11,12 @@ public class Promptlet {
 
     private final String id;
     private final String prompt;
-    private final PROMPTLET_TYPE PROMPTLET_type;
+    private final PROMPTLET_TYPE PROMPTLET_TYPE;
     private final List<String> responsePool;
     private final List<String> correctAnswer;
-    private final List<UserResponse> userResponses;
+    private final List<String> userResponses;
+
+    public static PromptletBuilder aPromptletBuilder(){
+        return Promptlet.builder();
+    }
 }

@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+    implementation project (':components:promptlet')
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.3.7.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:2.3.7.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.7.RELEASE'

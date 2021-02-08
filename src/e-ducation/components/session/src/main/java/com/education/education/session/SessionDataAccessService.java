@@ -8,5 +8,7 @@ public interface SessionDataAccessService {
 
     String insertSession(final String sessionName);
 
+    void addPromptletToSession(final String sessionId, final String promptletId);
+
     List<SessionEntity> getSessions(final List<String> sessions);
 }

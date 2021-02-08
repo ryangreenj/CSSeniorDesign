@@ -5,4 +5,5 @@ include ':components:user'
 include ':components:authentication'
 include 'components:course'
 include 'components:session'
+include 'components:promptlet'
 

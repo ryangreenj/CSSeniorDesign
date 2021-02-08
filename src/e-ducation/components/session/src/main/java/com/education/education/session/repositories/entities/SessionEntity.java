@@ -1,6 +1,5 @@
 package com.education.education.session.repositories.entities;
 
-import com.education.education.session.Promptlet;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,8 +8,8 @@ import javax.persistence.Id;
 import java.util.List;
 
 @Builder
-@Document(collection = "Sessions")
 @Getter
+@Document(collection = "Sessions")
 public class SessionEntity {
 
     @Id
@@ -22,3 +21,4 @@ public class SessionEntity {
         return SessionEntity.builder();
     }
 }
+

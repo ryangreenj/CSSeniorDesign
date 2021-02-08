@@ -1,16 +1,15 @@
 package com.education.education.course;
 
 import com.education.education.course.repositories.entities.mappers.CourseEntityToCourseMapper;
+import com.education.education.promptlet.PROMPTLET_TYPE;
+import com.education.education.promptlet.Promptlet;
 import com.education.education.session.Session;
 import com.education.education.session.SessionService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.education.education.course.repositories.entities.mappers.CourseEntityToCourseMapper.mapCourseEntityToCourse;
 
 @Service
 public class CourseService {
@@ -51,5 +50,15 @@ public class CourseService {
 
     public List<Session> getSessions(final List<String> sessionIds){
         return sessionService.getSessions(sessionIds);
+    }
+
+    public String addPromptletToSession(final String sessionId, final String prompt,
+                                        final String promptlet_type, final List<String> answerPool,
+                                        final List<String> correctAnswer){
+        return sessionService.addPromptletToSession(sessionId, prompt, PROMPTLET_TYPE.fromString(promptlet_type), answerPool, correctAnswer);
+    }
+
+    public List<Promptlet> getPromptlets(final List<String> promptletIds){
+        return sessionService.getPromptlets(promptletIds);
     }
 }

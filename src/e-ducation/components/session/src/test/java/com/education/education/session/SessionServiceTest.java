@@ -1,5 +1,6 @@
 package com.education.education.session;
 
+import com.education.education.promptlet.PromptletService;
 import com.education.education.session.helpers.RandomSessionEntity;
 import com.education.education.session.repositories.entities.SessionEntity;
 import com.education.education.session.repositories.entities.mappers.SessionEntityToSessionMapper;
@@ -30,11 +31,14 @@ class SessionServiceTest {
     @Qualifier("MongoSessionDataAccessService")
     private SessionDataAccessService sessionDataAccessService;
 
+    @MockBean
+    private PromptletService promptletService;
+
     private SessionService sessionService;
 
     @BeforeEach
     public void setup(){
-        this.sessionService = new SessionService(sessionDataAccessService);
+        this.sessionService = new SessionService(sessionDataAccessService, promptletService);
     }
 
     @Test
