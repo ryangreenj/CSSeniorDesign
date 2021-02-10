@@ -9,12 +9,17 @@ import { ClassData, DataService, SharedData } from '../data.service';
 })
 export class DashboardComponent implements OnInit {
   
+  userId: string;
   sharedData: SharedData;
   
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
+    
+    // Load class data for user
+    this.sharedData.classes = this.dataService.loadClassData();
+    this.dataService.changeData(this.sharedData);
   }
   
   public routeToClass(destClass: ClassData) {

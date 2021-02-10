@@ -18,6 +18,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ClassListComponent } from './dashboard/class-list/class-list.component';
 import { ClassDetailComponent } from './dashboard/class-detail/class-detail.component';
 import { SessionDetailComponent } from './dashboard/session-detail/session-detail.component';
+import { PromptletDetailComponent } from './dashboard/promptlet-detail/promptlet-detail.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SessionDetailComponent } from './dashboard/session-detail/session-detai
     DashboardComponent,
     ClassListComponent,
     ClassDetailComponent,
-    SessionDetailComponent
+    SessionDetailComponent,
+    PromptletDetailComponent
   ],
   imports: [
     BrowserModule,

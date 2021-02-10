@@ -1,0 +1,16 @@
+<div *ngIf="sharedData.currentPromptlet">
+    <h1>{{ sharedData.currentPromptlet.prompt }}</h1>
+    <p>Type: {{ sharedData.currentPromptlet.promptlet_type }}</p>
+    <p>Answers: </p>
+    <ul *ngIf="sharedData.currentPromptlet.answerPool">
+        <li *ngFor="let answer of sharedData.currentPromptlet.answerPool">
+            <p>{{ answer }}</p>
+        </li>
+    </ul>
+    <p>Correct Answer(s): </p>
+    <ul *ngIf="sharedData.currentPromptlet.correctAnswer">
+        <li *ngFor="let correctAnswer of sharedData.currentPromptlet.correctAnswer">
+            <p>{{ correctAnswer }}</p>
+        </li>
+    </ul>
+</div>

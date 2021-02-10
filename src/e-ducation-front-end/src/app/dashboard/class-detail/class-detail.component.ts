@@ -14,12 +14,12 @@ export class ClassDetailComponent implements OnInit {
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.dataService.currentData.subscribe(data => this.sharedData = data)
+    this.dataService.currentData.subscribe(data => this.sharedData = data);
   }
   
   public routeToSession(destSession: string) {
     this.sharedData.currentSessionId = destSession;
-    this.sharedData.currentSession = this.dataService.getSessionData(destSession);
+    this.sharedData.currentSession = this.dataService.loadSessionData(destSession);
     this.dataService.changeData(this.sharedData);
     this.router.navigate(['session'], { relativeTo: this.route });
   }
