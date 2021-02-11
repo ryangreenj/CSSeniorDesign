@@ -1,6 +1,5 @@
 package com.education.education.session;
 
-import com.education.education.session.helpers.RandomSessionEntity;
 import com.education.education.session.repositories.SessionRepository;
 import com.education.education.session.repositories.entities.SessionEntity;
 import com.education.education.testerhelper.GenerateMany;
@@ -19,7 +18,6 @@ import static com.education.education.testerhelper.Chance.getRandomNumberBetween
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
