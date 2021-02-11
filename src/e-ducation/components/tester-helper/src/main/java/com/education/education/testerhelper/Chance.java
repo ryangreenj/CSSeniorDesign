@@ -38,4 +38,9 @@ public class Chance {
     public static Boolean getRandomBoolean(){
         return new Random().nextInt() % 2 == 1;
     }
+
+    public static <T extends Enum<?>> T getRandomEnum(Class<T> clazz){
+        int x = new Random().nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
+    }
 }
