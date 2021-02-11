@@ -1,5 +1,6 @@
 package com.education.education.session;
 
+import com.education.education.session.helpers.RandomSessionEntity;
 import com.education.education.session.repositories.SessionRepository;
 import com.education.education.session.repositories.entities.SessionEntity;
 import com.education.education.testerhelper.GenerateMany;
@@ -18,6 +19,7 @@ import static com.education.education.testerhelper.Chance.getRandomNumberBetween
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -67,5 +69,21 @@ class MongoSessionDataAccessServiceTest {
 
         actualSessions.forEach(x -> assertThat(x.getId()).isIn(sessionIds));
 
+    }
+
+    @Test
+    void addPromptletToSession_shouldFindSessionEntity_andSaveSessionWithNewPromptletId(){
+        final String sessionId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
+        final SessionEntity sessionEntity = getRandomSessionEntity().id(sessionId).build();
+        final String promptletId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
+
+        when(sessionRepository.findSessionEntityById(sessionId)).thenReturn(sessionEntity);
+        when(sessionRepository.save(any())).thenReturn(SessionEntity.aSessionEntityBuilder().build());
+
+        sessionEntity.getPromptlets().add(promptletId);
+
+        mongoSessionDataAccessService.addPromptletToSession(sessionId, promptletId);
+
+        verify(sessionRepository).save(sessionEntity);
     }
 }
