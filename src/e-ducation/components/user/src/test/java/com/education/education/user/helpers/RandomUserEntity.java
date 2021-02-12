@@ -1,10 +1,10 @@
 package com.education.education.user.helpers;
 
-import com.education.education.user.entities.UserEntity;
+import com.education.education.user.repositories.entities.UserEntity;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
-import static com.education.education.user.entities.UserEntity.aUserEntityBuilder;
+import static com.education.education.user.repositories.entities.UserEntity.aUserEntityBuilder;
 
 public class RandomUserEntity {
 

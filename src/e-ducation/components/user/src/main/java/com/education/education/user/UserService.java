@@ -31,8 +31,8 @@ public class UserService implements UserDetailsService {
         return userDataAccessService.getUser(username);
     }
 
-    public void createUser(final String username, final String password){
-        userDataAccessService.insertUser(username, password);
+    public String createUser(final String username, final String password, final String profileId){
+        return userDataAccessService.insertUser(username, password, profileId);
     }
 
     // TODO - this for testing only, remove before deploy

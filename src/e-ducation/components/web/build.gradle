@@ -15,6 +15,10 @@ repositories {
 
 dependencies {
     implementation project (':components:user')
+    implementation project (':components:course')
+    implementation project (':components:profile')
+    implementation project (':components:session')
+    implementation project (':components:promptlet')
     implementation project (':components:authentication')
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.3.7.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.3.7.RELEASE'

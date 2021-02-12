@@ -1,7 +1,7 @@
 package com.education.education.user;
 
-import com.education.education.user.entities.UserEntity;
 import com.education.education.user.repositories.UserRepository;
+import com.education.education.user.repositories.entities.UserEntity;
 import com.mongodb.MongoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +11,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
-import static com.education.education.user.entities.mappers.UserEntityToUserMapper.mapUserEntityToUser;
 import static com.education.education.user.helpers.RandomUserEntity.randomUserEntity;
 import static com.education.education.user.helpers.RandomUserEntity.randomUserEntity_noId;
+import static com.education.education.user.repositories.entities.mappers.UserEntityToUserMapper.mapUserEntityToUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 class MongoUserDataAccessServiceTest {
 
     private MongoUserDataAccessService mongoUserDataAccessService;
+
     @MockBean
     private UserRepository userRepository;
 
@@ -34,15 +35,18 @@ class MongoUserDataAccessServiceTest {
     }
 
     @Test
-    void insertUser_shouldSaveToUserRepository() {
+    void insertUser_shouldSaveToUserRepository_andReturnUserId() {
         final UserEntity userEntity = randomUserEntity_noId();
+        final String userId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
 
-        mongoUserDataAccessService.insertUser(userEntity.getUsername(), userEntity.getPassword());
+        when(mongoUserDataAccessService.insertUser(userEntity.getUsername(), userEntity.getPassword(), userEntity.getProfileId())).thenReturn(userId);
+        final String actualId = mongoUserDataAccessService.insertUser(userEntity.getUsername(), userEntity.getPassword(), userEntity.getProfileId());
 
         ArgumentCaptor<UserEntity> userEntityCaptor = ArgumentCaptor.forClass(UserEntity.class);
         verify(userRepository).save(userEntityCaptor.capture());
 
         assertThat(userEntity).isEqualToComparingFieldByField(userEntityCaptor.getValue());
+        assertThat(actualId).isEqualTo(userId);
     }
 
     @Test
@@ -54,7 +58,8 @@ class MongoUserDataAccessServiceTest {
         assertThrows(UserDataFailure.class,
                () -> mongoUserDataAccessService.insertUser(
                        userEntity.getUsername(),
-                       userEntity.getPassword()));
+                       userEntity.getPassword(),
+                       userEntity.getProfileId()));
     }
 
     @Test
