@@ -2,7 +2,6 @@ package com.education.education.promptlet.helpers;
 
 import com.education.education.promptlet.PROMPTLET_TYPE;
 import com.education.education.promptlet.Promptlet;
-import com.education.education.promptlet.repositories.entities.PromptletEntity;
 import com.education.education.testerhelper.GenerateMany;
 
 import java.util.ArrayList;

@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.education.education.course.helpers.RandomCourseEntity.randomCourseEntity_new;
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
@@ -20,7 +19,6 @@ import static com.education.education.testerhelper.Chance.getRandomNumberBetween
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;

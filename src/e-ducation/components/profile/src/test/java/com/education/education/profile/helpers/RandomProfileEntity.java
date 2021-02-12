@@ -1,7 +1,6 @@
 package com.education.education.profile.helpers;
 
 import com.education.education.profile.repositories.entities.ProfileEntity;
-import com.education.education.testerhelper.Chance;
 import com.education.education.testerhelper.GenerateMany;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;

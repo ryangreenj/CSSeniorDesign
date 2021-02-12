@@ -5,7 +5,6 @@ import com.education.education.promptlet.Promptlet;
 import com.education.education.promptlet.repositories.entities.PromptletEntity;
 
 import static com.education.education.promptlet.Promptlet.aPromptletBuilder;
-import static com.education.education.promptlet.repositories.entities.PromptletEntity.aPromptletEntityBuilder;
 
 public class PromptletEntityToPromptletMapper {
 

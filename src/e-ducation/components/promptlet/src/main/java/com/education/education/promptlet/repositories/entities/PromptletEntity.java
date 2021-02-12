@@ -1,6 +1,5 @@
 package com.education.education.promptlet.repositories.entities;
 
-import com.education.education.promptlet.PROMPTLET_TYPE;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;

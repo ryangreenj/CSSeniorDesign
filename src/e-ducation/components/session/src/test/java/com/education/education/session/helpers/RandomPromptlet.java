@@ -2,11 +2,9 @@ package com.education.education.session.helpers;
 
 import com.education.education.promptlet.PROMPTLET_TYPE;
 import com.education.education.promptlet.Promptlet;
-import com.education.education.testerhelper.Chance;
 import com.education.education.testerhelper.GenerateMany;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomBoolean;

@@ -1,8 +1,6 @@
 package com.education.education.web;
 
-import com.education.education.profile.Profile;
 import com.education.education.profile.ProfileService;
-import com.education.education.user.UserService;
 import com.education.education.web.models.CourseJoinRequest;
 import com.education.education.web.models.ProfileCreationRequest;
 import com.education.education.web.models.ProfileCreationResponse;
@@ -17,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.education.education.web.models.ProfileCreationResponse.aProfileCreationResponseBuilder;
 import static com.education.education.web.models.mappers.ProfileToProfileRetrievalResponseMapper.mapProfileToProfileRetrievalResponse;

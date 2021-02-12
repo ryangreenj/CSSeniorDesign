@@ -1,7 +1,6 @@
 package com.education.education.course.helpers;
 
 import com.education.education.session.Session;
-import com.education.education.testerhelper.GenerateMany;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;

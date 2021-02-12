@@ -1,6 +1,5 @@
 package com.education.education.web.models;
 
-import com.education.education.session.Session;
 import lombok.Builder;
 import lombok.Getter;
 

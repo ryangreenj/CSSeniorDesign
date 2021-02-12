@@ -1,6 +1,5 @@
 package com.education.education.user;
 
-import com.education.education.testerhelper.Chance;
 import com.education.education.user.repositories.UserRepository;
 import com.education.education.user.repositories.entities.UserEntity;
 import com.mongodb.MongoException;

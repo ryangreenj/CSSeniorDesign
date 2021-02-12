@@ -1,7 +1,5 @@
 package com.education.education.profile;
 
-import com.education.education.course.MongoCourseDataAccessService;
-import com.education.education.profile.helpers.RandomProfile;
 import com.education.education.profile.helpers.RandomProfileEntity;
 import com.education.education.profile.repositories.ProfileRepository;
 import com.education.education.profile.repositories.entities.ProfileEntity;
@@ -14,7 +12,6 @@ import static com.education.education.profile.repositories.entities.mappers.Prof
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

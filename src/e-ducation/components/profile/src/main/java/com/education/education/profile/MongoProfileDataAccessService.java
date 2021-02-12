@@ -1,9 +1,7 @@
 package com.education.education.profile;
 
-import com.education.education.course.repositories.CourseRepository;
 import com.education.education.profile.repositories.ProfileRepository;
 import com.education.education.profile.repositories.entities.ProfileEntity;
-import com.education.education.profile.repositories.entities.mappers.ProfileEntityToProfileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static com.education.education.web.helpers.RandomSession.randomSessionBuilder;
 import static com.education.education.web.models.SessionResponse.aSessionResponseBuilder;
 import static com.education.education.web.models.mappers.SessionToSessionResponseMapper.mapSessionToSessionResponse;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class SessionToSessionResponseMapperTest {

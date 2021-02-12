@@ -1,7 +1,5 @@
 package com.education.education.profile;
 
-import com.education.education.profile.Profile;
-
 public interface ProfileDataAccessService {
 
     String createProfile(final String username);

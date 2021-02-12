@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static com.education.education.profile.helpers.RandomProfileEntity.getRandomProfileEntityBuilder;
 import static com.education.education.profile.repositories.entities.mappers.ProfileEntityToProfileMapper.mapProfileEntityToProfile;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ProfileEntityToProfileMapperTest {
 

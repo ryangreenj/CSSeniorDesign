@@ -1,7 +1,6 @@
 package com.education.education.web.helpers;
 
 import com.education.education.session.Session;
-import com.education.education.testerhelper.GenerateMany;
 import com.education.education.web.models.SessionCreationRequest;
 import com.education.education.web.models.SessionRetrievalRequest;
 

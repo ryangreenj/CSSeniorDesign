@@ -7,9 +7,7 @@ import com.education.education.session.helpers.RandomPromptlet;
 import com.education.education.session.helpers.RandomSessionEntity;
 import com.education.education.session.repositories.entities.SessionEntity;
 import com.education.education.session.repositories.entities.mappers.SessionEntityToSessionMapper;
-import com.education.education.testerhelper.Chance;
 import com.education.education.testerhelper.GenerateMany;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,13 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

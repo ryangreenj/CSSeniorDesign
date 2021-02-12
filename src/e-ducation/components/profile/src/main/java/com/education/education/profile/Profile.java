@@ -1,6 +1,5 @@
 package com.education.education.profile;
 
-import com.education.education.course.Course;
 import lombok.Builder;
 import lombok.Getter;
 

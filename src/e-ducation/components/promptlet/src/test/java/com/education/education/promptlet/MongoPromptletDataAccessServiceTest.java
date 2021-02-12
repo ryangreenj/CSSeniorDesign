@@ -2,7 +2,6 @@ package com.education.education.promptlet;
 
 import com.education.education.promptlet.repositories.PromptletRepository;
 import com.education.education.promptlet.repositories.entities.PromptletEntity;
-import com.education.education.promptlet.repositories.entities.mappers.PromptletEntityToPromptletMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
