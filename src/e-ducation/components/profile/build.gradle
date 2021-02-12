@@ -4,8 +4,7 @@ plugins {
     id 'java'
 }
 
-
-group 'com.e-ducation'
+group 'com.education'
 version '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.11'
 
@@ -14,15 +13,13 @@ repositories {
 }
 
 dependencies {
-    implementation project (':components:user')
     implementation project (':components:course')
-    implementation project (':components:profile')
-    implementation project (':components:session')
-    implementation project (':components:promptlet')
-    implementation project (':components:authentication')
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.3.7.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.3.7.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.7.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.3.7.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket:2.3.7.RELEASE'
     implementation 'org.projectlombok:lombok:1.18.10'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
