@@ -1,5 +1,6 @@
 package com.education.education.user;
 
+import com.education.education.testerhelper.Chance;
 import com.education.education.user.repositories.UserRepository;
 import com.education.education.user.repositories.entities.UserEntity;
 import com.mongodb.MongoException;
@@ -35,15 +36,18 @@ class MongoUserDataAccessServiceTest {
     }
 
     @Test
-    void insertUser_shouldSaveToUserRepository() {
+    void insertUser_shouldSaveToUserRepository_andReturnUserId() {
         final UserEntity userEntity = randomUserEntity_noId();
+        final String userId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
 
-        mongoUserDataAccessService.insertUser(userEntity.getUsername(), userEntity.getPassword());
+        when(mongoUserDataAccessService.insertUser(userEntity.getUsername(), userEntity.getPassword(), userEntity.getProfileId())).thenReturn(userId);
+        final String actualId = mongoUserDataAccessService.insertUser(userEntity.getUsername(), userEntity.getPassword(), userEntity.getProfileId());
 
         ArgumentCaptor<UserEntity> userEntityCaptor = ArgumentCaptor.forClass(UserEntity.class);
         verify(userRepository).save(userEntityCaptor.capture());
 
         assertThat(userEntity).isEqualToComparingFieldByField(userEntityCaptor.getValue());
+        assertThat(actualId).isEqualTo(userId);
     }
 
     @Test
@@ -55,7 +59,8 @@ class MongoUserDataAccessServiceTest {
         assertThrows(UserDataFailure.class,
                () -> mongoUserDataAccessService.insertUser(
                        userEntity.getUsername(),
-                       userEntity.getPassword()));
+                       userEntity.getPassword(),
+                       userEntity.getProfileId()));
     }
 
     @Test

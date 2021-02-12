@@ -18,6 +18,7 @@ class UserEntityToUserMapperTest {
                 .id(userEntity.getId())
                 .username(userEntity.getUsername())
                 .password(userEntity.getPassword())
+                .profileId(userEntity.getProfileId())
                 .build();
 
 

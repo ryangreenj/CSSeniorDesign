@@ -11,6 +11,7 @@ public class UserEntityToUserMapper {
                 .username(userEntity.getUsername())
                 .password(userEntity.getPassword())
                 .id(userEntity.getId())
+                .profileId(userEntity.getProfileId())
                 .build();
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface UserDataAccessService {
 
-    void insertUser(final String username, final String password);
+    String insertUser(final String username, final String password, final String profileId);
 
     List<User> getAllUsers();
 

@@ -43,15 +43,18 @@ class UserControllerTest {
     private UserService userService;
 
     @Test
-    void insertUser_shouldReturnWithCreated_andCallInsertUser() throws Exception {
+    void insertUser_shouldReturnWithCreated_andCallInsertUser_andReturnUserId() throws Exception {
         final UserRequest userRequest = randomUserRequest();
+        final String userId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
 
+        when(userService.createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getProfileId())).thenReturn(userId);
         this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userRequest)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().string(userId));
 
-        verify(userService, times(1)).createUser(userRequest.getUsername(), userRequest.getPassword());
+        verify(userService, times(1)).createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getProfileId());
     }
 
     @Test
@@ -60,7 +63,7 @@ class UserControllerTest {
 
         final String exceptionMessage = getRandomAlphaNumericString(getRandomNumberBetween(5,25));
         doThrow(failureToSaveUser(exceptionMessage)).when(userService)
-                .createUser(userRequest.getUsername(),userRequest.getPassword());
+                .createUser(userRequest.getUsername(),userRequest.getPassword(), userRequest.getProfileId());
 
         this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -21,6 +21,7 @@ public class RandomUser {
     public static UserRequest randomUserRequest(){
         return new UserRequest(
                 getRandomAlphaNumericString(getRandomNumberBetween(5,20)),
+                getRandomAlphaNumericString(getRandomNumberBetween(5,20)),
                 getRandomAlphaNumericString(getRandomNumberBetween(5,20)));
     }
 }

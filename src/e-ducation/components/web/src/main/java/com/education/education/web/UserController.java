@@ -32,8 +32,8 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody final UserRequest userRequest){
-        userService.createUser(userRequest.getUsername(), userRequest.getPassword());
+    public String createUser(@RequestBody final UserRequest userRequest){
+        return userService.createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getProfileId());
     }
 
     /**   PATH: /user/all   **/

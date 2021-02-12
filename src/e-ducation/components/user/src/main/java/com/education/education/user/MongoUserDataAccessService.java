@@ -24,10 +24,10 @@ public class MongoUserDataAccessService implements UserDataAccessService {
     }
 
     @Override
-    public void insertUser(final String username, final String password){
+    public String insertUser(final String username, final String password, final String profileId){
         try{
-            userRepository.save(
-                    aUserEntityBuilder().username(username).password(password).build());
+            return userRepository.save(
+                    aUserEntityBuilder().username(username).password(password).build()).getId();
         } catch (MongoException mongoException) {
             throw UserDataFailure.failureToSaveUser(mongoException.getMessage());
         }

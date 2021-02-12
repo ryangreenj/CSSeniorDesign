@@ -16,6 +16,7 @@ public class User implements UserDetails {
     private final String  id;
     private final String username;
     private final String password;
+    private final String profileId;
     private final Collection<? extends GrantedAuthority> authorities;
 
     /**  GETTERS  **/

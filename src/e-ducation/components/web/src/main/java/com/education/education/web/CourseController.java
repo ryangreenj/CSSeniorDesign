@@ -69,7 +69,7 @@ public class CourseController {
     }
 
     @GetMapping("/session")
-    public List<SessionResponse> getSession(@RequestBody final SessionRetrievalRequest sessionRetrievalRequest){
+    public List<SessionResponse> getSessions(@RequestBody final SessionRetrievalRequest sessionRetrievalRequest){
         return courseService.getSessions(sessionRetrievalRequest.getSessionIds())
                 .stream()
                 .map(SessionToSessionResponseMapper::mapSessionToSessionResponse)
@@ -77,6 +77,7 @@ public class CourseController {
     }
 
     @PostMapping("/session/promptlet")
+    @ResponseStatus(HttpStatus.CREATED)
     public String createPromptlet(@RequestBody final PromptletCreationRequest promptletCreationRequest){
         return courseService.addPromptletToSession(
                 promptletCreationRequest.getSessionId(),

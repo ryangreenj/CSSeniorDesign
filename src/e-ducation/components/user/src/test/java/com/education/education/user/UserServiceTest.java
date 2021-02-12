@@ -50,14 +50,17 @@ class UserServiceTest {
     }
 
     @Test
-    void insertUser_shouldCallInsertUser() {
+    void insertUser_shouldCallInsertUser_andReturnId() {
         final String username = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
         final String password = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
+        final String profileId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
+        final String userId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
 
-        doNothing().when(userDataAccessService).insertUser(username, password);
+        when(userDataAccessService.insertUser(username, password,profileId)).thenReturn(userId);
 
-        userService.createUser(username,password);
-        verify(userDataAccessService).insertUser(username, password);
+        final String actualId = userService.createUser(username,password,profileId);
+        verify(userDataAccessService).insertUser(username, password,profileId);
+        assertThat(actualId).isEqualTo(userId);
     }
 
     @Test
@@ -66,10 +69,11 @@ class UserServiceTest {
 
         final String username = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
         final String password = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
+        final String profileId = getRandomAlphaNumericString(getRandomNumberBetween(5,20));
 
-        doThrow(failureToSaveUser(exceptionMessage)).when(userDataAccessService).insertUser(username, password);
+        doThrow(failureToSaveUser(exceptionMessage)).when(userDataAccessService).insertUser(username, password,profileId);
 
-        assertThrows(UserDataFailure.class, () -> userService.createUser(username,password), "");
+        assertThrows(UserDataFailure.class, () -> userService.createUser(username,password,profileId), "");
     }
 
     @Test
