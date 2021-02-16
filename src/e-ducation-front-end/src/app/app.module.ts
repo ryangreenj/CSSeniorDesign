@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -45,7 +46,8 @@ import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog
   entryComponents: [
     CreateClassDialogComponent,
     EnrollClassDialogComponent,
-    CreateSessionDialogComponent
+    CreateSessionDialogComponent,
+    CreatePromptletDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,8 @@ import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog
     ReactiveFormsModule,
     MatSidenavModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

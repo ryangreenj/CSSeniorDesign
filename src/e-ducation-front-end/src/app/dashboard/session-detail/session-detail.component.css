@@ -1,0 +1,12 @@
+.header {
+    margin: 15px 40px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+button {
+    margin-right: 15px;
+    height: 60px;
+    width: 240px;
+    font-size: 18px;
+}
