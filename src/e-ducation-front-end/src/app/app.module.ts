@@ -11,6 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -19,6 +21,10 @@ import { ClassListComponent } from './dashboard/class-list/class-list.component'
 import { ClassDetailComponent } from './dashboard/class-detail/class-detail.component';
 import { SessionDetailComponent } from './dashboard/session-detail/session-detail.component';
 import { PromptletDetailComponent } from './dashboard/promptlet-detail/promptlet-detail.component';
+import { CreateClassDialogComponent } from './dialog/create-class-dialog/create-class-dialog.component';
+import { EnrollClassDialogComponent } from './dialog/enroll-class-dialog/enroll-class-dialog.component';
+import { CreateSessionDialogComponent } from './dialog/create-session-dialog/create-session-dialog.component';
+import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog/create-promptlet-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +36,16 @@ import { PromptletDetailComponent } from './dashboard/promptlet-detail/promptlet
     ClassListComponent,
     ClassDetailComponent,
     SessionDetailComponent,
-    PromptletDetailComponent
+    PromptletDetailComponent,
+    CreateClassDialogComponent,
+    EnrollClassDialogComponent,
+    CreateSessionDialogComponent,
+    CreatePromptletDialogComponent
+  ],
+  entryComponents: [
+    CreateClassDialogComponent,
+    EnrollClassDialogComponent,
+    CreateSessionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +58,9 @@ import { PromptletDetailComponent } from './dashboard/promptlet-detail/promptlet
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatDialogModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

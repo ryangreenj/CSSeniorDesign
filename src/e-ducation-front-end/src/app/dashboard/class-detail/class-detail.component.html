@@ -1,3 +1,7 @@
+<div class="header">
+    <button mat-raised-button (click)="openCreateSessionDialog()">+ Create New Session</button>
+</div>
+
 <div *ngIf="sharedData.currentClass">
     <h1>{{ sharedData.currentClass.className }}</h1>
     <h2>Sessions:</h2>
