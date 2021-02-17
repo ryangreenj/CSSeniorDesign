@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClassData, DataService, SharedData } from '../data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,19 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
   
-  classes: { id: number, code: string, name: string, status: boolean }[] = [
-    { "id": 100, "code": "CS101", "name": "Computer Science 1", "status": false },
-    { "id": 101, "code": "EECE3093C", "name": "Software Engineering", "status": false },
-    { "id": 102, "code": "COMM1017", "name": "Intro to Public Speaking", "status": false },
-    { "id": 103, "code": "SPN1001", "name": "Spanish 1", "status": true }
-  ];
+  userId: string;
+  sharedData: SharedData;
   
-  constructor() { }
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    // TODO: Load available classes from database
+    this.dataService.currentData.subscribe(data => this.sharedData = data);
+    
+    // Load class data for user
+    this.sharedData.classes = this.dataService.loadClassData();
+    this.dataService.changeData(this.sharedData);
   }
   
+  public routeToClass(destClass: ClassData) {
+    this.sharedData.currentClass = destClass;
+    this.dataService.changeData(this.sharedData);
+    this.router.navigate(['class'], { relativeTo: this.route });
+  }
   
-
 }

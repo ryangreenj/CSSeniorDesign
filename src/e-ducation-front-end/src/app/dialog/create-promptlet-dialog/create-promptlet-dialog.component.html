@@ -1,0 +1,29 @@
+
+<h1 mat-dialog-title>Create Promptlet</h1>
+<div mat-dialog-content>
+    <mat-form-field class="inputField">
+        <mat-label>Prompt</mat-label>
+        <input matInput placeholder="Enter your Prompt/Question">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Promptlet Type</mat-label>
+        <mat-select [(value)]="promptletType">
+            <mat-option value="MULTI_CHOICE">Multiple Choice</mat-option>
+            <mat-option value="MULTI_RESPONSE">Multiple Response</mat-option>
+            <mat-option value="OPEN_RESPONSE">Open Response</mat-option>
+            <mat-option value="SLIDER">Slider</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="inputField" *ngIf="promptletType == 'MULTI_CHOICE' || promptletType == 'MULTI_RESPONSE'">
+        <mat-label>Answer Choices</mat-label>
+        <textarea matInput placeholder="Enter possible answers, one on each line" rows="5"></textarea>
+    </mat-form-field>
+    <mat-form-field class="inputField" *ngIf="promptletType == 'MULTI_CHOICE' || promptletType == 'MULTI_RESPONSE'">
+        <mat-label>Correct Answer(s)</mat-label>
+        <textarea matInput placeholder="Enter correct answer(s), one on each line" rows="5"></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCreateClick()">Create</button>
+    <button mat-button (click)="onCancelClick()">Cancel</button>
+</div>

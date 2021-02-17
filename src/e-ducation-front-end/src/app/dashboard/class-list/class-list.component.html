@@ -1,8 +1,13 @@
-<ul *ngIf="classes">
-    <li *ngFor="let class of classes">
-        <mat-card [routerLink]="['../', class.id]">
+<div class="header">
+    <button mat-raised-button (click)="openEnrollClassDialog()">Enroll in a Class</button>
+    <button mat-raised-button (click)="openCreateClassDialog()">+ Create New Class</button>
+</div>
+
+<ul *ngIf="sharedData.classes">
+    <li *ngFor="let class of sharedData.classes">
+        <mat-card (click)="routeToClass(class)">
             <p>{{ class.code }}</p>
-            <p>{{ class.name }}</p>
+            <p>{{ class.className }}</p>
             <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}
         </mat-card>
     </li>

@@ -1,0 +1,13 @@
+<div class="header">
+    <button mat-raised-button (click)="openCreatePromptletDialog()">+ Create New Promptlet</button>
+</div>
+
+<div *ngIf="sharedData.currentSession">
+    <h1>{{ sharedData.currentSession.sessionName }}</h1>
+    <h2>Promptlets:</h2>
+    <ul *ngIf="sharedData.currentSession.promptletIds">
+        <li *ngFor="let promptlet of sharedData.currentSession.promptletIds">
+            <p><span (click)="routeToPromptlet(promptlet)">{{ promptlet }}</span></p>
+        </li>
+    </ul>
+</div>

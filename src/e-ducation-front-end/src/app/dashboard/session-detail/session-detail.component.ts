@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, SharedData } from 'src/app/data.service';
-import { CreateSessionDialogComponent } from 'src/app/dialog/create-session-dialog/create-session-dialog.component';
+import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-dialog/create-promptlet-dialog.component';
 
 @Component({
-  selector: 'app-class-detail',
-  templateUrl: './class-detail.component.html',
-  styleUrls: ['./class-detail.component.css']
+  selector: 'app-session-detail',
+  templateUrl: './session-detail.component.html',
+  styleUrls: ['./session-detail.component.css']
 })
-export class ClassDetailComponent implements OnInit {
+export class SessionDetailComponent implements OnInit {
   
   sharedData: SharedData;
   
@@ -19,19 +19,19 @@ export class ClassDetailComponent implements OnInit {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
   }
   
-  public routeToSession(destSession: string) {
-    this.sharedData.currentSessionId = destSession;
-    this.sharedData.currentSession = this.dataService.loadSessionData(destSession);
+  public routeToPromptlet(destPromptlet: string) {
+    this.sharedData.currentPromptletId = destPromptlet;
+    this.sharedData.currentPromptlet = this.dataService.loadPromptletData(destPromptlet);
     this.dataService.changeData(this.sharedData);
-    this.router.navigate(['session'], { relativeTo: this.route });
+    this.router.navigate(['promptlet'], { relativeTo: this.route });
   }
   
-  openCreateSessionDialog() {
+  openCreatePromptletDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "20%";
-    let dialogRef = this.dialog.open(CreateSessionDialogComponent, dialogConfig);
+    dialogConfig.width = "40%";
+    let dialogRef = this.dialog.open(CreatePromptletDialogComponent, dialogConfig);
     
     dialogRef.afterClosed().subscribe(result => {
       

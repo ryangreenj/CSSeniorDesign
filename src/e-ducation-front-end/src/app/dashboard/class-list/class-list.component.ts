@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CreateClassDialogComponent } from 'src/app/dialog/create-class-dialog/create-class-dialog.component';
+import { EnrollClassDialogComponent } from 'src/app/dialog/enroll-class-dialog/enroll-class-dialog.component';
+import { ClassData, DataService, SharedData } from "../../data.service";
 
 @Component({
   selector: 'app-class-list',
@@ -7,17 +12,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClassListComponent implements OnInit {
   
-  // TODO: Figure a good way to pass this data between components without re-requesting every time. Probably with a service
-  classes: { id: number, code: string, name: string, status: boolean }[] = [
-    { "id": 100, "code": "CS101", "name": "Computer Science 1", "status": false },
-    { "id": 101, "code": "EECE3093C", "name": "Software Engineering", "status": false },
-    { "id": 102, "code": "COMM1017", "name": "Intro to Public Speaking", "status": false },
-    { "id": 103, "code": "SPN1001", "name": "Spanish 1", "status": true }
-  ];
+  sharedData: SharedData;
   
-  constructor() { }
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.dataService.currentData.subscribe(data => this.sharedData = data)
   }
-
+  
+  public routeToClass(destClass: ClassData) {
+    this.sharedData.currentClass = destClass;
+    this.dataService.changeData(this.sharedData);
+    this.router.navigate(['../class'], { relativeTo: this.route });
+  }
+  
+  openCreateClassDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    //dialogConfig.width = "40%";
+    let dialogRef = this.dialog.open(CreateClassDialogComponent, dialogConfig);
+    
+    dialogRef.afterClosed().subscribe(result => {
+      
+    })
+  }
+  
+  openEnrollClassDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "20%";
+    let dialogRef = this.dialog.open(EnrollClassDialogComponent, dialogConfig);
+    
+    dialogRef.afterClosed().subscribe(result => {
+      
+    })
+  }
 }

@@ -1,0 +1,16 @@
+
+<h1 mat-dialog-title>Create Class</h1>
+<div mat-dialog-content>
+    <mat-form-field class="inputField">
+        <mat-label>Class Code</mat-label>
+        <input matInput placeholder="Ex. CS101">
+    </mat-form-field>
+    <mat-form-field class="inputField">
+        <mat-label>Class Name</mat-label>
+        <input matInput placeholder="Ex. Computer Science I">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCreateClick()">Create</button>
+    <button mat-button (click)="onCancelClick()">Cancel</button>
+</div>
