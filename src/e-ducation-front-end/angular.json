@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "e-ducation-front-end"
+  "defaultProject": "e-ducation-front-end",
+  "cli": {
+    "analytics": false
+  }
 }

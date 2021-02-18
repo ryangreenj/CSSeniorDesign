@@ -15,6 +15,7 @@ import com.education.education.web.models.mappers.PromptletToPromptletRetrievalR
 import com.education.education.web.models.mappers.SessionToSessionResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,9 +28,10 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@RestController
 @RequestMapping("/course")
-@EnableWebMvc // TODO: What does this do
+@RestController
+@CrossOrigin(origins = "*")
+@EnableWebMvc
 public class CourseController {
 
     private final CourseService courseService;

@@ -26,6 +26,7 @@ import { CreateClassDialogComponent } from './dialog/create-class-dialog/create-
 import { EnrollClassDialogComponent } from './dialog/enroll-class-dialog/enroll-class-dialog.component';
 import { CreateSessionDialogComponent } from './dialog/create-session-dialog/create-session-dialog.component';
 import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog/create-promptlet-dialog.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog
     MatSidenavModule,
     MatDialogModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
