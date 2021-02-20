@@ -11,7 +11,6 @@ export class DataService {
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
 
-
   constructor(private http: HttpClient) { }
 
   changeData(data: SharedData) {
@@ -38,6 +37,30 @@ export class DataService {
     // Load promptlet data from ID
     return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_CHOICE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
   }
+  
+  enrollClass(courseId: string) {
+    // POST - /profile/join
+    console.log("Tried to enroll in " + courseId);
+    
+    // Need to re-get and update data after this request
+  }
+  
+  createClass(courseName: string) {
+    // POST - /course
+    console.log("Tried to create class " + courseName);
+  }
+  
+  createSession(sessionName: string) {
+    // POST - /course/session
+    let courseId = this.dataSource.getValue().currentClass.id;
+    
+    console.log("Tried to create session " + sessionName + " for " + courseId);
+  }
+  
+  createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
+    // POST - /course/session/promptlet
+    let sessionId = this.dataSource.getValue().currentSessionId;
+  }
 
   loadClassData2(){
 
@@ -57,6 +80,7 @@ export type courseRequest = {
 
 export class SharedData {
   user: UserData;
+  ownedClasses: ClassData[];
   classes: ClassData[];
   currentClass: ClassData;
   currentSessionId: string;

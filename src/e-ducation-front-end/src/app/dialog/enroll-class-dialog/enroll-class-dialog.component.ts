@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-enroll-class-dialog',
@@ -7,14 +8,17 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./enroll-class-dialog.component.css']
 })
 export class EnrollClassDialogComponent implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<EnrollClassDialogComponent>) { }
+  
+  classCode: string
+  
+  constructor(public dialogRef: MatDialogRef<EnrollClassDialogComponent>, private dataService: DataService) { }
 
   ngOnInit(): void {
   }
   
   onCreateClick(): void {
     this.dialogRef.close();
+    this.dataService.enrollClass(this.classCode);
   }
   
   onCancelClick(): void {

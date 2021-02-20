@@ -3,11 +3,11 @@
 <div mat-dialog-content>
     <mat-form-field class="inputField">
         <mat-label>Class Code</mat-label>
-        <input matInput placeholder="Ex. CS101">
+        <input matInput placeholder="Ex. CS101" [(ngModel)]="classCode">
     </mat-form-field>
     <mat-form-field class="inputField">
         <mat-label>Class Name</mat-label>
-        <input matInput placeholder="Ex. Computer Science I">
+        <input matInput placeholder="Ex. Computer Science I" [(ngModel)]="className">
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
