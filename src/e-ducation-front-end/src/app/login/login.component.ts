@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ExecOptionsWithStringEncoding } from 'child_process';
 import { DataService } from '../data.service';
 
 @Component({
