@@ -6,17 +6,16 @@
                 <h1>Login</h1>
                 <mat-form-field class="inputField">
                     <mat-label>Username</mat-label>
-                    <input matInput placeholder="Enter Username">
+                    <input matInput placeholder="Enter Username" (value)="username">
                 </mat-form-field>
                 
                 <mat-form-field class="inputField">
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" placeholder="Enter Password">
+                    <input matInput type="password" placeholder="Enter Password" (value)="password">
                 </mat-form-field>
                 
                 <div class="submitOptions">
-                    <!-- TEMPORARILY ROUTE TO DASHBOARD -->
-                    <button mat-raised-button class="submitButton" color="primary" type="submit" [routerLink]="'/dashboard'">Login</button>
+                    <button mat-raised-button class="submitButton" color="primary" (click)="onSubmit()">Login</button>
                     <mat-checkbox>Remember me!</mat-checkbox>
                 </div>
             </form>

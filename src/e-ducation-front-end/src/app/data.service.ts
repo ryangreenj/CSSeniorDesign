@@ -16,6 +16,22 @@ export class DataService {
   changeData(data: SharedData) {
     this.dataSource.next(data);
   }
+  
+  loginUser(username: string, password: string) {
+    // POST - /authorize
+    
+    let userResponse: { "id": "123456789", "username": "RyanGreen105", "enabled": true, "accountNonExpired": true, "accountNonLocked": true, "credentialsNonExpired": true };
+    
+    let localData = this.dataSource.getValue();
+    localData.user = userResponse;
+    this.changeData(localData);
+    
+    return true;
+  }
+  
+  createUser(username: string, password: string) {
+     // POST - /user
+  }
 
   loadClassData() {
     // Load class data for this user user.id
@@ -87,6 +103,7 @@ export class SharedData {
   currentSession: Session;
   currentPromptletId: string;
   currentPromptlet: Promptlet;
+  localData: { id: "123456789"; username: "RyanGreen105"; enabled: true; accountNonLocked: true; credentialsNonExpired: true; };
 }
 
 export type UserData = {
