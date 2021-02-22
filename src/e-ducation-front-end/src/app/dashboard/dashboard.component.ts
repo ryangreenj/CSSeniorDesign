@@ -20,8 +20,8 @@ export class DashboardComponent implements OnInit {
 
     this.testGetAllClasses();
     // Load class data for user
-    this.sharedData.classes = this.dataService.loadClassData();
-    this.dataService.changeData(this.sharedData);
+    // this.sharedData.classes = this.dataService.loadClassData();
+    // this.dataService.changeData(this.sharedData);
   }
 
   public routeToClass(destClass: ClassData) {
@@ -44,6 +44,9 @@ export class DashboardComponent implements OnInit {
           } else {
             break
           }
-        }});
+        }
+        this.sharedData.classes = this.classData;
+        this.dataService.changeData(this.sharedData);
+      });
   }
 }

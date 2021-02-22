@@ -11,13 +11,18 @@ export class DataService {
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
 
-  jwt: string;
+  private jwt: string;
 
   constructor(private http: HttpClient) {
     this.jwt = "";
   }
 
+  getHeaders(){
+    return new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.jwt);
+  }
+
   changeData(data: SharedData) {
+    this.jwt = data.jwt;
     this.dataSource.next(data);
   }
 
@@ -25,11 +30,6 @@ export class DataService {
     // POST - /authorize
     let hh =  new HttpHeaders({ 'Content-Type': 'application/json'});
     let l : loginRequest = {username:username, password:password};
-    // l.username = username;
-    // l.password = password;
-
-
-
 
     // let userResponse: { "id": "123456789", "username": "RyanGreen105", "enabled": true, "accountNonExpired": true, "accountNonLocked": true, "credentialsNonExpired": true };
 
@@ -40,23 +40,9 @@ export class DataService {
     return this.http.post<loginResponse>("http://localhost:8080/authenticate",l);
   }
 
-  setJwt(jwt: string){
-    this.jwt = jwt;
-  }
 
   createUser(username: string, password: string) {
      // POST - /user
-  }
-
-  loadClassData() {
-    // Load class data for this user user.id
-    return [
-      { "id": "100","className": "Computer Science 1","sessionIds": [] },
-      { "id": "101", "className": "Software Engineering", "sessionIds": [] },
-      { "id": "102", "className": "Intro to Public Speaking", "sessionIds": [] },
-      { "id": "103", "className": "Spanish 1",  "sessionIds": [] },
-      { "id": "104", "className": "Calculus 2",  "sessionIds": ["123", "234", "456"] }
-    ];
   }
 
   loadSessionData(sessionId: string) {
@@ -94,9 +80,8 @@ export class DataService {
   }
 
   getClassData(){
-    let headers = new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.jwt);
     let c : courseRequest = {ids:["60187006aef5fb30cac9ad61","6019a975b3e5ba58746caeca","60341d4d8dbb8a3cb14b181c"]};
-    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: headers});
+    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
   }
 }
 
@@ -125,6 +110,7 @@ export class SharedData {
   currentSession: Session;
   currentPromptletId: string;
   currentPromptlet: Promptlet;
+  jwt: string;
   localData: { id: "123456789"; username: "RyanGreen105"; enabled: true; accountNonLocked: true; credentialsNonExpired: true; };
 }
 
