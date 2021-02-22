@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
   }
 
   testGetAllClasses(){
-    this.dataService.getAllClassData()
+    this.dataService.getClassData()
       .subscribe((data: ClassData[]) =>
       {
         let dd = { ... data};
@@ -39,15 +39,11 @@ export class DashboardComponent implements OnInit {
         while (true) {
           let d = dd[i];
           if (d != undefined){
-            console.log(d as ClassData);
             this.classData.push(d as ClassData);
             i += 1;
           } else {
             break
           }
-        }
-
-        console.log(this.classData)
-      });
+        }});
   }
 }

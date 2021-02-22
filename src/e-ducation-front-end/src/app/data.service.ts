@@ -1,7 +1,7 @@
 import { stringify } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -11,24 +11,39 @@ export class DataService {
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  jwt: string;
+
+  constructor(private http: HttpClient) {
+    this.jwt = "";
+  }
 
   changeData(data: SharedData) {
     this.dataSource.next(data);
   }
-  
+
   loginUser(username: string, password: string) {
     // POST - /authorize
-    
-    let userResponse: { "id": "123456789", "username": "RyanGreen105", "enabled": true, "accountNonExpired": true, "accountNonLocked": true, "credentialsNonExpired": true };
-    
-    let localData = this.dataSource.getValue();
-    localData.user = userResponse;
-    this.changeData(localData);
-    
-    return true;
+    let hh =  new HttpHeaders({ 'Content-Type': 'application/json'});
+    let l : loginRequest = {username:username, password:password};
+    // l.username = username;
+    // l.password = password;
+
+
+
+
+    // let userResponse: { "id": "123456789", "username": "RyanGreen105", "enabled": true, "accountNonExpired": true, "accountNonLocked": true, "credentialsNonExpired": true };
+
+    // let localData = this.dataSource.getValue();
+    // localData.user = userResponse;
+    // this.changeData(localData);
+
+    return this.http.post<loginResponse>("http://localhost:8080/authenticate",l);
   }
-  
+
+  setJwt(jwt: string){
+    this.jwt = jwt;
+  }
+
   createUser(username: string, password: string) {
      // POST - /user
   }
@@ -53,46 +68,53 @@ export class DataService {
     // Load promptlet data from ID
     return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_CHOICE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
   }
-  
+
   enrollClass(courseId: string) {
     // POST - /profile/join
     console.log("Tried to enroll in " + courseId);
-    
+
     // Need to re-get and update data after this request
   }
-  
+
   createClass(courseName: string) {
     // POST - /course
     console.log("Tried to create class " + courseName);
   }
-  
+
   createSession(sessionName: string) {
     // POST - /course/session
     let courseId = this.dataSource.getValue().currentClass.id;
-    
+
     console.log("Tried to create session " + sessionName + " for " + courseId);
   }
-  
+
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
     // POST - /course/session/promptlet
     let sessionId = this.dataSource.getValue().currentSessionId;
   }
 
-  loadClassData2(){
-
-
-  }
-
-  getAllClassData() {
-    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKYWtlIiwiZXhwIjoxNjEzNjg0NDcwLCJpYXQiOjE2MTM1OTgwNzB9.-0dL36EO_D2wotl--i9kOMPvOAHL_TOAb63rroTuMYaHqVIBkB9opeK_-lq0qOrjtxihCOVjCyyHvyBS99OTQQ";
-    let c : courseRequest = {ids:["60187006aef5fb30cac9ad61"]};
-    return this.http.get<ClassData[]>("http://localhost:8080/course/all/");
+  getClassData(){
+    let headers = new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.jwt);
+    let c : courseRequest = {ids:["60187006aef5fb30cac9ad61","6019a975b3e5ba58746caeca","60341d4d8dbb8a3cb14b181c"]};
+    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: headers});
   }
 }
 
 export type courseRequest = {
   ids: string[];
 }
+
+export type loginRequest = {
+  username: string;
+  password: string;
+}
+
+export type loginResponse = {
+  jwt: string;
+  userResponse: UserData;
+}
+
+
 
 export class SharedData {
   user: UserData;
