@@ -2,6 +2,7 @@ package com.education.education.web;
 
 import com.education.education.course.CourseService;
 import com.education.education.web.models.CourseCreationRequest;
+import com.education.education.web.models.CourseCreationResponse;
 import com.education.education.web.models.CourseRequest;
 import com.education.education.web.models.CourseResponse;
 import com.education.education.web.models.PromptletCreationRequest;
@@ -44,8 +45,8 @@ public class CourseController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createCourse(@RequestBody final CourseCreationRequest courseCreationRequest){
-        return courseService.createCourse(courseCreationRequest.getCourseName());
+    public CourseCreationResponse createCourse(@RequestBody final CourseCreationRequest courseCreationRequest){
+        return new CourseCreationResponse(courseService.createCourse(courseCreationRequest.getCourseName()));
     }
 
     @PutMapping("")

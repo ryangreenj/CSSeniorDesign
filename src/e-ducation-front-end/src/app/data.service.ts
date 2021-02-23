@@ -85,14 +85,22 @@ export class DataService {
 
   enrollClass(courseId: string) {
     // POST - /profile/join
-    console.log("Tried to enroll in " + courseId);
-
-    // Need to re-get and update data after this request
+    let enrollClassRequest = {profileId: this.current.profile.id, courseId: courseId};
+    return this.http.post<string>("http://localhost:8080/profile/join",enrollClassRequest, {headers:this.getHeaders()})
+      .subscribe((_: string) => {});
   }
-
   createClass(courseName: string) {
-    // POST - /course
-    console.log("Tried to create class " + courseName);
+    // POST - /course/create
+    const newCourseRequest = {courseName:courseName};
+    this.http.post<idReturnType>("http://localhost:8080/course", newCourseRequest, {headers:this.getHeaders()})
+      .subscribe((courseId:idReturnType) => {
+        console.log(this.current.profile.id, courseId.id)
+        const hostCourseRequest = {profileId:this.current.profile.id, courseId:courseId.id};
+        this.http.post<string>("http://localhost:8080/profile/create",hostCourseRequest, {headers:this.getHeaders()})
+          .subscribe((_: string) => {});
+    });
+    // let enrollClassRequest = {profileId: this.current.profile.id, courseId: courseId};
+    return
   }
 
   createSession(sessionName: string) {
@@ -107,9 +115,66 @@ export class DataService {
     let sessionId = this.dataSource.getValue().currentSessionId;
   }
 
-  getClassData(){
+  getEnrolledClassData(){
     let c : courseRequest = {ids: this.current.profile.coursesEnrolled};
     return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
+  }
+
+  getOwnedClassData(){
+    let c : courseRequest = {ids: this.current.profile.coursesOwned};
+    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
+  }
+
+  getAllEnrolledClasses(){
+    let classDataTemp: ClassData[] = [];
+    this.getEnrolledClassData()
+      .subscribe((data: ClassData[]) =>
+      {
+        let dd = { ... data};
+        let i = 0;
+        while (true) {
+          let d = dd[i];
+          if (d != undefined){
+            classDataTemp.push(d as ClassData);
+            i += 1;
+          } else {
+            break
+          }
+        }
+        this.current.classes = classDataTemp;
+        this.changeData(this.current);
+      });
+  }
+  getAllOwnedClasses(){
+    let classDataTemp: ClassData[] = [];
+    this.getOwnedClassData()
+      .subscribe((data: ClassData[]) =>
+      {
+        let dd = { ... data};
+        let i = 0;
+        while (true) {
+          let d = dd[i];
+          if (d != undefined){
+            classDataTemp.push(d as ClassData);
+            i += 1;
+          } else {
+            break
+          }
+        }
+        this.current.ownedClasses = classDataTemp;
+        this.changeData(this.current);
+      });
+  }
+  updateProfileAndClasses(){
+    this.getProfile(this.current.profile.id)
+      .subscribe((data: Profile) =>
+      {
+        let localData = this.current;
+        localData.profile = data;
+        this.changeData(localData);
+        this.getAllOwnedClasses();
+        this.getAllEnrolledClasses();
+      });
   }
 }
 
