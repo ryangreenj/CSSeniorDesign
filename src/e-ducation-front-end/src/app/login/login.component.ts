@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {ClassData, DataService, loginResponse, SharedData} from '../data.service';
+import {ClassData, DataService, loginResponse, Profile, SharedData} from '../data.service';
 import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
@@ -31,16 +31,21 @@ export class LoginComponent implements OnInit {
   getLogin(username: string, password: string){
 
     this.dataService.loginUser(username,password)
-      .subscribe((data: loginResponse) =>
+      .subscribe((authResponse: loginResponse) =>
       {
         let localData = this.sharedData;
-        localData.jwt = data.jwt;
-        localData.user = data.userResponse;
+        localData.jwt = authResponse.jwt;
+        localData.user = authResponse.userResponse;
 
-        this.dataService.changeData(localData);
-        this.router.navigate(["dashboard/classlist"]);
+        this.dataService.getProfile(authResponse.userResponse.profileId)
+          .subscribe((data: Profile) =>
+          {
+            let localData = this.sharedData;
+            localData.profile = data;
+            this.dataService.changeData(localData);
+            this.router.navigate(["dashboard/classlist"]);
+          });
       });
-    return true;
   }
 
 }

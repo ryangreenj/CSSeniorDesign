@@ -3,6 +3,7 @@ package com.education.education.web;
 import com.education.education.course.Course;
 import com.education.education.course.CourseService;
 import com.education.education.session.Session;
+import com.education.education.testerhelper.Chance;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseRequest;
 import com.education.education.web.models.CourseResponse;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static com.education.education.testerhelper.GenerateMany.generateListOf;
 import static com.education.education.testerhelper.JsonString.asJsonString;
@@ -34,7 +36,7 @@ import static com.education.education.web.helpers.RandomSession.randomSessionRet
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +52,7 @@ class CourseControllerTest {
     private CourseService courseService;
 
     @Test
-    void createCourse_shouldReturnCreatedCode_andCallCreateCourse() throws Exception {
+    void createCourse_shouldReturnIdOfCreatedCourse_andCallCreateCourse() throws Exception {
         final CourseCreationRequest courseCreationRequest = randomCourseCreationRequest();
 
         this.mockMvc.perform(post("/course")
@@ -75,7 +77,7 @@ class CourseControllerTest {
 
         when(courseService.getCourses(any())).thenReturn(courses);
 
-        this.mockMvc.perform(get("/course")
+        this.mockMvc.perform(put("/course")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(courseCreationRequest)))
                 .andExpect(status().isOk())
@@ -96,7 +98,7 @@ class CourseControllerTest {
 
         when(courseService.getAllCourses()).thenReturn(courses);
 
-        this.mockMvc.perform(get("/course/all")
+        this.mockMvc.perform(put("/course/all")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString("{}")))
                 .andExpect(status().isOk())
@@ -130,7 +132,7 @@ class CourseControllerTest {
                 .collect(Collectors.toList());
 
         when(courseService.getSessions(sessionRetrievalRequest.getSessionIds())).thenReturn(sessions);
-        this.mockMvc.perform(get("/course/session")
+        this.mockMvc.perform(put("/course/session")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(sessionRetrievalRequest)))
                 .andExpect(status().isOk())

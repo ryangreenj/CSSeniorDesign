@@ -13,7 +13,7 @@
                     <input matInput>
                 </mat-form-field></td>
             </tr></table>
-            
+
             <p>
                 <mat-form-field class="full-width">
                     <mat-label>Email Address</mat-label>
@@ -26,9 +26,9 @@
                     </mat-error>
                 </mat-form-field>
             </p>
-            
+
             <mat-form-field class="full-width">
-                <input matInput type="password" placeholder="Password" formControlName="password1" (input)="onPasswordInput()" [(ngModel)]="password">
+                <input matInput type="text" placeholder="Password" formControlName="password1" (input)="onPasswordInput()" [(ngModel)]="password">
                 <mat-error *ngIf="password1.hasError('required')">
                     Password is <strong>required</strong>.
                 </mat-error>
@@ -37,7 +37,7 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
-                <input matInput type="password" placeholder="Confirm Password" formControlName="password2" (input)="onPasswordInput()">
+                <input matInput type="text" placeholder="Confirm Password" formControlName="password2" (input)="onPasswordInput()">
                 <mat-error *ngIf="password2.hasError('required')">
                     Please confirm your password.
                 </mat-error>

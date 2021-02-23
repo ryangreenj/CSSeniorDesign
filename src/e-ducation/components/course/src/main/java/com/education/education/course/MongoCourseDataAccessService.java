@@ -24,13 +24,13 @@ public class MongoCourseDataAccessService implements CourseDataAccessService{
     }
 
     @Override
-    public void insertCourse(final String className) {
+    public String insertCourse(final String className) {
         try{
-            courseRepository.save(
+            return courseRepository.save(
                     aCourseEntityBuilder()
                             .className(className)
                             .sessionIds(new ArrayList<>())
-                            .build());
+                            .build()).getId();
         } catch (MongoException mongoException){
             throw failureToSaveCourse(className);
         }

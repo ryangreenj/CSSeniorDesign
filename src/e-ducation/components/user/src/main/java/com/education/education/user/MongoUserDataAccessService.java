@@ -27,7 +27,7 @@ public class MongoUserDataAccessService implements UserDataAccessService {
     public String insertUser(final String username, final String password, final String profileId){
         try{
             return userRepository.save(
-                    aUserEntityBuilder().username(username).password(password).build()).getId();
+                    aUserEntityBuilder().username(username).password(password).profileId(profileId).build()).getId();
         } catch (MongoException mongoException) {
             throw UserDataFailure.failureToSaveUser(mongoException.getMessage());
         }

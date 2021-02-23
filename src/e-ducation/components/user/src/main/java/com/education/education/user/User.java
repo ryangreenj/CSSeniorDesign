@@ -36,6 +36,10 @@ public class User implements UserDetails {
         return password;
     }
 
+    public String getProfileId() {
+        return profileId;
+    }
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CourseDataAccessService {
 
-    void insertCourse(final String className);
+    String insertCourse(final String className);
 
     void addSessionToCourse(final String courseId, final String SessionId);
 

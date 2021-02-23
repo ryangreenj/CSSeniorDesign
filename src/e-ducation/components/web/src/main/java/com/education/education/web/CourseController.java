@@ -44,8 +44,8 @@ public class CourseController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createCourse(@RequestBody final CourseCreationRequest courseCreationRequest){
-        courseService.createCourse(courseCreationRequest.getCourseName());
+    public String createCourse(@RequestBody final CourseCreationRequest courseCreationRequest){
+        return courseService.createCourse(courseCreationRequest.getCourseName());
     }
 
     @PutMapping("")
@@ -56,7 +56,7 @@ public class CourseController {
                 .collect(toList());
     }
 
-    @GetMapping("/all")
+    @PutMapping("/all")
     public List<CourseResponse> getAllCourses(){
         return courseService.getAllCourses()
                 .stream()
@@ -70,7 +70,7 @@ public class CourseController {
         courseService.addSession(sessionCreationRequest.getCourseId(), sessionCreationRequest.getSessionName());
     }
 
-    @GetMapping("/session")
+    @PutMapping("/session")
     public List<SessionResponse> getSessions(@RequestBody final SessionRetrievalRequest sessionRetrievalRequest){
         return courseService.getSessions(sessionRetrievalRequest.getSessionIds())
                 .stream()
@@ -89,7 +89,7 @@ public class CourseController {
                 promptletCreationRequest.getCorrectAnswer());
     }
 
-    @GetMapping("/session/promptlet")
+    @PutMapping("/session/promptlet")
     public List<PromptletRetrievalResponse> getPromptlets(@RequestBody final PromptletRetrievalRequest promptletRetrievalRequest){
         return courseService.getPromptlets(promptletRetrievalRequest.getPromptletIds())
                 .stream()

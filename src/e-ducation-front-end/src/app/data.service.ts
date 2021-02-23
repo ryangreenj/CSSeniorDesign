@@ -11,18 +11,36 @@ export class DataService {
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
 
-  private jwt: string;
+  private current: SharedData;
 
   constructor(private http: HttpClient) {
-    this.jwt = "";
+    this.current = {
+      classes: [],
+      currentClass: undefined,
+      currentPromptlet: undefined,
+      currentPromptletId: "",
+      currentSession: undefined,
+      currentSessionId: "",
+      jwt: "",
+      localData: {
+        accountNonLocked: true,
+        credentialsNonExpired: true,
+        enabled: true,
+        id: "123456789",
+        username: "RyanGreen105"
+      },
+      ownedClasses: [],
+      profile: undefined,
+      user: undefined
+    };
   }
 
   getHeaders(){
-    return new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.jwt);
+    return new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.current.jwt);
   }
 
   changeData(data: SharedData) {
-    this.jwt = data.jwt;
+    this.current = data;
     this.dataSource.next(data);
   }
 
@@ -40,9 +58,19 @@ export class DataService {
     return this.http.post<loginResponse>("http://localhost:8080/authenticate",l);
   }
 
+  createProfile (username: string) {
+    let newProfileRequest = {username:username};
+    return this.http.post<idReturnType>("http://localhost:8080/profile",newProfileRequest);
+  }
 
-  createUser(username: string, password: string) {
-     // POST - /user
+  getProfile(profileId: String){
+    let getProfileRequest = {id: profileId};
+    return this.http.put<Profile>("http://localhost:8080/profile",getProfileRequest);
+  }
+
+  createUser(username: string, password: string, profileId: string) {
+    let newUserRequest = {username:username, password:password, profileId: profileId};
+    return this.http.post("http://localhost:8080/user",newUserRequest);
   }
 
   loadSessionData(sessionId: string) {
@@ -80,7 +108,7 @@ export class DataService {
   }
 
   getClassData(){
-    let c : courseRequest = {ids:["60187006aef5fb30cac9ad61","6019a975b3e5ba58746caeca","60341d4d8dbb8a3cb14b181c"]};
+    let c : courseRequest = {ids: this.current.profile.coursesEnrolled};
     return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
   }
 }
@@ -99,10 +127,13 @@ export type loginResponse = {
   userResponse: UserData;
 }
 
-
+export type idReturnType = {
+  id: string;
+}
 
 export class SharedData {
   user: UserData;
+  profile: Profile;
   ownedClasses: ClassData[];
   classes: ClassData[];
   currentClass: ClassData;
@@ -117,10 +148,18 @@ export class SharedData {
 export type UserData = {
   id: string;
   username: string;
+  profileId: string;
   enabled: boolean;
   accountNonExpired: boolean;
   accountNonLocked: boolean;
   credentialsNonExpired: boolean;
+}
+
+export type Profile = {
+  id: string;
+  username: string;
+  coursesEnrolled: string[];
+  coursesOwned: string[];
 }
 
 export type ClassData = {
