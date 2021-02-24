@@ -81,8 +81,8 @@ public class CourseController {
 
     @PostMapping("/session/promptlet")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createPromptlet(@RequestBody final PromptletCreationRequest promptletCreationRequest){
-        return courseService.addPromptletToSession(
+    public void createPromptlet(@RequestBody final PromptletCreationRequest promptletCreationRequest){
+        courseService.addPromptletToSession(
                 promptletCreationRequest.getSessionId(),
                 promptletCreationRequest.getPrompt(),
                 promptletCreationRequest.getPromptlet_type(),

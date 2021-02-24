@@ -90,7 +90,14 @@ export class DataService {
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
     // POST - /course/session/promptlet
-    let sessionId = this.dataSource.getValue().currentSessionId;
+    console.log("prompt:", prompt);
+    console.log("promptlet_type:", promptlet_type);
+    console.log("answerPool:", answerPool);
+    console.log("correctAnswer:", correctAnswer);
+    const promptletRequest = {sessionId: this.dataSource.getValue().currentSessionId, prompt: prompt,
+          promptlet_type: promptlet_type, answerPool: answerPool, correctAnswer: correctAnswer};
+    return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
+      .subscribe((_: string) => {});
   }
 
   // Subscribe Blocks
