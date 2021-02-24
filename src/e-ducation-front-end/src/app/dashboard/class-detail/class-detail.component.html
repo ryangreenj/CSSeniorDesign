@@ -5,9 +5,9 @@
 <div *ngIf="sharedData.currentClass">
     <h1>{{ sharedData.currentClass.className }}</h1>
     <h2>Sessions:</h2>
-    <ul *ngIf="sharedData.currentClass.sessionIds">
-        <li *ngFor="let session of sharedData.currentClass.sessionIds">
-            <p><span (click)="routeToSession(session)">{{ session }}</span></p>
+    <ul *ngIf="sharedData.currentClassSessions">
+        <li *ngFor="let session of sharedData.currentClassSessions">
+            <p><span (click)="routeToSession(session.id)">{{ session.sessionName }}</span></p>
         </li>
     </ul>
 </div>

@@ -1,8 +1,8 @@
 
 <div class="container">
     <mat-card>
-        <form class="registerForm" [formGroup]="formGroup1">
-            <h1>Instructor Registration</h1>
+        <form class="registerForm" [formGroup]="formGroup">
+            <h1>Account Registration</h1>
             <table class="full-width" cellspacing="0"><tr>
                 <td><mat-form-field class="full-width">
                     <mat-label>First Name</mat-label>
@@ -13,22 +13,22 @@
                     <input matInput>
                 </mat-form-field></td>
             </tr></table>
-            
+
             <p>
                 <mat-form-field class="full-width">
                     <mat-label>Email Address</mat-label>
-                    <input type="email" matInput [formControl]="emailFormControl1" placeholder="user@example.com">
-                    <mat-error *ngIf="emailFormControl1.hasError('email') && !emailFormControl1.hasError('required')">
+                    <input type="email" matInput [formControl]="emailFormControl" placeholder="user@example.com" [(ngModel)]="username">
+                    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
                         Please enter a valid email address.
                     </mat-error>
-                    <mat-error *ngIf="emailFormControl1.hasError('required')">
+                    <mat-error *ngIf="emailFormControl.hasError('required')">
                         Email is <strong>required</strong>.
                     </mat-error>
                 </mat-form-field>
             </p>
-            
+
             <mat-form-field class="full-width">
-                <input matInput type="password" placeholder="Password" formControlName="password1" (input)="onPasswordInput1()">
+                <input matInput type="text" placeholder="Password" formControlName="password1" (input)="onPasswordInput()" [(ngModel)]="password">
                 <mat-error *ngIf="password1.hasError('required')">
                     Password is <strong>required</strong>.
                 </mat-error>
@@ -37,7 +37,7 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
-                <input matInput type="password" placeholder="Confirm Password" formControlName="password2" (input)="onPasswordInput1()">
+                <input matInput type="text" placeholder="Confirm Password" formControlName="password2" (input)="onPasswordInput()">
                 <mat-error *ngIf="password2.hasError('required')">
                     Please confirm your password.
                 </mat-error>
@@ -45,56 +45,7 @@
                     Password do not match.
                 </mat-error>
             </mat-form-field>
-            <button mat-raised-button class="submitButton" color="primary" type="submit">Create Account</button>
-        </form>
-    </mat-card>
-    
-    <mat-card>
-        <form class="registerForm" [formGroup]="formGroup2">
-            <h1>Student Registration</h1>
-            <table class="full-width" cellspacing="0"><tr>
-                <td><mat-form-field class="full-width">
-                    <mat-label>First Name</mat-label>
-                    <input matInput>
-                </mat-form-field></td>
-                <td><mat-form-field class="full-width">
-                    <mat-label>Last Name</mat-label>
-                    <input matInput>
-                </mat-form-field></td>
-            </tr></table>
-            
-            <p>
-                <mat-form-field class="full-width">
-                    <mat-label>Email Address</mat-label>
-                    <input type="email" matInput [formControl]="emailFormControl2" placeholder="user@example.com">
-                    <mat-error *ngIf="emailFormControl2.hasError('email') && !emailFormControl2.hasError('required')">
-                        Please enter a valid email address.
-                    </mat-error>
-                    <mat-error *ngIf="emailFormControl2.hasError('required')">
-                        Email is <strong>required</strong>.
-                    </mat-error>
-                </mat-form-field>
-            </p>
-            
-            <mat-form-field class="full-width">
-                <input matInput type="password" placeholder="Password" formControlName="password3" (input)="onPasswordInput2()">
-                <mat-error *ngIf="password3.hasError('required')">
-                    Password is <strong>required</strong>.
-                </mat-error>
-                <mat-error *ngIf="password3.hasError('minlength')">
-                    Password must have at least {{minPwChar}} characters.
-                </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <input matInput type="password" placeholder="Confirm Password" formControlName="password4" (input)="onPasswordInput2()">
-                <mat-error *ngIf="password4.hasError('required')">
-                    Please confirm your password.
-                </mat-error>
-                <mat-error *ngIf="password4.invalid && !password4.hasError('required')">
-                    Password do not match.
-                </mat-error>
-            </mat-form-field>
-            <button mat-raised-button class="submitButton" color="primary" type="submit">Create Account</button>
+            <button mat-raised-button class="submitButton" color="primary" [disabled]="formGroup.invalid" (click)="onSubmit()">Create Account</button>
         </form>
     </mat-card>
 </div>

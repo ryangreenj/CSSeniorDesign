@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-create-class-dialog',
@@ -8,17 +9,21 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateClassDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<CreateClassDialogComponent>) { }
+  classCode: string; // Currently unused
+  className: string;
+
+  constructor(public dialogRef: MatDialogRef<CreateClassDialogComponent>, private dataService: DataService) { }
 
   ngOnInit(): void {
   }
-  
+
   onCreateClick(): void {
     this.dialogRef.close();
+    this.dataService.createClass(this.classCode);
   }
-  
+
   onCancelClick(): void {
     this.dialogRef.close();
   }
-  
+
 }

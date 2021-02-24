@@ -51,8 +51,7 @@ class UserControllerTest {
         this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(content().string(userId));
+                .andExpect(status().isCreated());
 
         verify(userService, times(1)).createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getProfileId());
     }

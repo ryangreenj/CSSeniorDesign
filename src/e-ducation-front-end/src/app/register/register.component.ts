@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PasswordMatchValidator1, PasswordMatchValidator2 } from './passwordValidator';
+import {DataService, idReturnType, loginResponse, Profile, SharedData} from '../data.service';
+import { PasswordMatchValidator } from './passwordValidator';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -9,52 +11,65 @@ import { PasswordMatchValidator1, PasswordMatchValidator2 } from './passwordVali
 })
 
 export class RegisterComponent implements OnInit {
-  
+
   minPwChar: number = 8;
-  formGroup1: FormGroup;
-  formGroup2: FormGroup;
-  
-  emailFormControl1 = new FormControl('', [
+  formGroup: FormGroup;
+
+  username: string;
+  password: string;
+
+  sharedData: SharedData;
+
+  emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email
   ]);
-  
-  emailFormControl2 = new FormControl('', [
-    Validators.required,
-    Validators.email
-  ]);
-  
-  constructor(private formBuilder: FormBuilder) {}
+
+  constructor(private router: Router, private formBuilder: FormBuilder, private dataService: DataService) {}
 
   ngOnInit() {
-    this.formGroup1 = this.formBuilder.group({
+    this.dataService.currentData.subscribe(data => this.sharedData = data);
+
+    this.formGroup = this.formBuilder.group({
       password1: ['', [Validators.required, Validators.minLength(this.minPwChar)]],
       password2: ['', [Validators.required]]
-    }, {validator: PasswordMatchValidator1});
-    
-    this.formGroup2 = this.formBuilder.group({
-      password3: ['', [Validators.required, Validators.minLength(this.minPwChar)]],
-      password4: ['', [Validators.required]]
-    }, {validator: PasswordMatchValidator2});
+    }, {validator: PasswordMatchValidator});
   }
-  
-  get password1() { return this.formGroup1.get('password1'); }
-  get password2() { return this.formGroup1.get('password2'); }
-  get password3() { return this.formGroup2.get('password3'); }
-  get password4() { return this.formGroup2.get('password4'); }
-  
-  onPasswordInput1() {
-    if (this.formGroup1.hasError('passwordMismatch'))
+
+  get password1() { return this.formGroup.get('password1'); }
+  get password2() { return this.formGroup.get('password2'); }
+
+  onPasswordInput() {
+    if (this.formGroup.hasError('passwordMismatch'))
       this.password2.setErrors([{'passwordMismatch': true}]);
     else
       this.password2.setErrors(null);
   }
-  
-  onPasswordInput2() {
-    if (this.formGroup2.hasError('passwordMismatch'))
-      this.password4.setErrors([{'passwordMismatch': true}]);
-    else
-      this.password4.setErrors(null);
+
+  onSubmit() {
+    this.dataService.createProfile(this.username)
+      .subscribe((profileData: idReturnType) =>
+      {
+        this.dataService.createUser(this.username,this.password, profileData.id)
+          .subscribe((newUserData: string) =>
+          {
+            this.dataService.loginUser(this.username,this.password)
+              .subscribe((authResponse: loginResponse) =>
+              {
+                let localData = this.sharedData;
+                localData.jwt = authResponse.jwt;
+                localData.user = authResponse.userResponse;
+
+                this.dataService.getProfile(authResponse.userResponse.profileId)
+                  .subscribe((data: Profile) =>
+                  {
+                    let localData = this.sharedData;
+                    localData.profile = data;
+                    this.dataService.changeData(localData);
+                    this.router.navigate(["dashboard/classlist"]);
+                  });
+              });
+          });
+      });
   }
-  
 }
