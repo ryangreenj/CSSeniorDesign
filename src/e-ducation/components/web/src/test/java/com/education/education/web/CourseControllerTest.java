@@ -3,7 +3,6 @@ package com.education.education.web;
 import com.education.education.course.Course;
 import com.education.education.course.CourseService;
 import com.education.education.session.Session;
-import com.education.education.testerhelper.Chance;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseRequest;
 import com.education.education.web.models.CourseResponse;
@@ -23,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.education.education.testerhelper.Chance.getRandomAlphaNumericString;
 import static com.education.education.testerhelper.Chance.getRandomNumberBetween;
 import static com.education.education.testerhelper.GenerateMany.generateListOf;
 import static com.education.education.testerhelper.JsonString.asJsonString;
@@ -36,8 +34,8 @@ import static com.education.education.web.helpers.RandomSession.randomSessionRet
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

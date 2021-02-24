@@ -26,8 +26,8 @@ import static com.education.education.web.models.ProfileCreationResponse.aProfil
 import static com.education.education.web.models.mappers.ProfileToProfileRetrievalResponseMapper.mapProfileToProfileRetrievalResponse;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

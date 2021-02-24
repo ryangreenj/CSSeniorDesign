@@ -16,8 +16,6 @@ import com.education.education.web.models.mappers.PromptletToPromptletRetrievalR
 import com.education.education.web.models.mappers.SessionToSessionResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +30,6 @@ import static java.util.stream.Collectors.toList;
 
 @RequestMapping("/course")
 @RestController
-@CrossOrigin(origins = "*")
 @EnableWebMvc
 public class CourseController {
 
