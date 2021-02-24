@@ -11,58 +11,21 @@ export class DataService {
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
 
-  private current: SharedData;
-
-  constructor(private http: HttpClient) {
-    this.current = {
-      classes: [],
-      currentClass: undefined,
-      currentPromptlet: undefined,
-      currentPromptletId: "",
-      currentSession: undefined,
-      currentSessionId: "",
-      jwt: "",
-      localData: {
-        accountNonLocked: true,
-        credentialsNonExpired: true,
-        enabled: true,
-        id: "123456789",
-        username: "RyanGreen105"
-      },
-      ownedClasses: [],
-      profile: undefined,
-      user: undefined
-    };
-  }
+  constructor(private http: HttpClient) {}
 
   getHeaders(){
-    return new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.current.jwt);
+    return new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.dataSource.getValue().jwt);
   }
 
   changeData(data: SharedData) {
-    this.current = data;
     this.dataSource.next(data);
   }
 
-  loginUser(username: string, password: string) {
-    // POST - /authorize
-    let hh =  new HttpHeaders({ 'Content-Type': 'application/json'});
-    let l : loginRequest = {username:username, password:password};
-
-    // let userResponse: { "id": "123456789", "username": "RyanGreen105", "enabled": true, "accountNonExpired": true, "accountNonLocked": true, "credentialsNonExpired": true };
-
-    // let localData = this.dataSource.getValue();
-    // localData.user = userResponse;
-    // this.changeData(localData);
-
-    return this.http.post<loginResponse>("http://localhost:8080/authenticate",l);
-  }
-
+  /** HTTP CALLS -- return observable **/
   createProfile (username: string) {
     let newProfileRequest = {username:username};
     return this.http.post<idReturnType>("http://localhost:8080/profile",newProfileRequest);
   }
-
   getProfile(profileId: String){
     let getProfileRequest = {id: profileId};
     return this.http.put<Profile>("http://localhost:8080/profile",getProfileRequest);
@@ -73,41 +36,56 @@ export class DataService {
     return this.http.post("http://localhost:8080/user",newUserRequest);
   }
 
-  loadSessionData(sessionId: string) {
-    // Load session data from ID
-    return { "id": sessionId, "sessionName": sessionId + " Session", "promptletIds": ["eeee", "4345", "asdf"] };
-  }
+  loginUser(username: string, password: string) {
+    // POST - /authorize
+    let l : loginRequest = {username:username, password:password};
 
-  loadPromptletData(promptletId: string) {
-    // Load promptlet data from ID
-    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_CHOICE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
+    return this.http.post<loginResponse>("http://localhost:8080/authenticate",l);
   }
 
   enrollClass(courseId: string) {
     // POST - /profile/join
-    let enrollClassRequest = {profileId: this.current.profile.id, courseId: courseId};
+    let enrollClassRequest = {profileId: this.dataSource.getValue().profile.id, courseId: courseId};
     return this.http.post<string>("http://localhost:8080/profile/join",enrollClassRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
+  getEnrolledClassData(){
+    let c : courseRequest = {ids: this.dataSource.getValue().profile.coursesEnrolled};
+    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
+  }
+
   createClass(courseName: string) {
     // POST - /course/create
     const newCourseRequest = {courseName:courseName};
-    this.http.post<idReturnType>("http://localhost:8080/course", newCourseRequest, {headers:this.getHeaders()})
+    return this.http.post<idReturnType>("http://localhost:8080/course", newCourseRequest, {headers:this.getHeaders()})
       .subscribe((courseId:idReturnType) => {
-        console.log(this.current.profile.id, courseId.id)
-        const hostCourseRequest = {profileId:this.current.profile.id, courseId:courseId.id};
+        const hostCourseRequest = {profileId:this.dataSource.getValue().profile.id, courseId:courseId.id};
         this.http.post<string>("http://localhost:8080/profile/create",hostCourseRequest, {headers:this.getHeaders()})
           .subscribe((_: string) => {});
-    });
-    // let enrollClassRequest = {profileId: this.current.profile.id, courseId: courseId};
-    return
+      });
+  }
+  getOwnedClassData(){
+    const c : courseRequest = {ids: this.dataSource.getValue().profile.coursesOwned};
+    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
   }
 
+  getSessionsData(sessions: string[]) {
+    // Load session data from ID
+    let getSessionsRequest = {sessionIds: sessions};
+    return this.http.put<Session[]>("http://localhost:8080/course/session",getSessionsRequest, {headers:this.getHeaders()});
+  }
   createSession(sessionName: string) {
     // POST - /course/session
-    let courseId = this.dataSource.getValue().currentClass.id;
+    const courseId = this.dataSource.getValue().currentClass.id;
+    const newSessionRequest = {courseId:courseId, sessionName:sessionName};
+    return this.http.post<string>("http://localhost:8080/course/session",newSessionRequest, {headers:this.getHeaders()})
+      .subscribe((_: string) => {});
+  }
 
-    console.log("Tried to create session " + sessionName + " for " + courseId);
+
+  loadPromptletData(promptletId: string) {
+    // Load promptlet data from ID
+    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_CHOICE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
   }
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
@@ -115,66 +93,61 @@ export class DataService {
     let sessionId = this.dataSource.getValue().currentSessionId;
   }
 
-  getEnrolledClassData(){
-    let c : courseRequest = {ids: this.current.profile.coursesEnrolled};
-    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
-  }
+  // Subscribe Blocks
+  loadSessionsByCurrentClassId(){
+    this.getSessionsData(this.dataSource.getValue().currentClass.sessionIds)
+      .subscribe((data: Session[]) => {
+        let localData = this.dataSource.getValue();
 
-  getOwnedClassData(){
-    let c : courseRequest = {ids: this.current.profile.coursesOwned};
-    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
+        localData.currentClassSessions = data;
+        this.changeData(localData);
+        });
   }
-
-  getAllEnrolledClasses(){
-    let classDataTemp: ClassData[] = [];
+  loadAllEnrolledClasses(){
     this.getEnrolledClassData()
-      .subscribe((data: ClassData[]) =>
-      {
-        let dd = { ... data};
-        let i = 0;
-        while (true) {
-          let d = dd[i];
-          if (d != undefined){
-            classDataTemp.push(d as ClassData);
-            i += 1;
-          } else {
-            break
-          }
-        }
-        this.current.classes = classDataTemp;
-        this.changeData(this.current);
-      });
+      .subscribe((data: ClassData[]) => this.updateClasses(false, data));
   }
-  getAllOwnedClasses(){
-    let classDataTemp: ClassData[] = [];
+  loadAllOwnedClasses(){
     this.getOwnedClassData()
-      .subscribe((data: ClassData[]) =>
-      {
-        let dd = { ... data};
-        let i = 0;
-        while (true) {
-          let d = dd[i];
-          if (d != undefined){
-            classDataTemp.push(d as ClassData);
-            i += 1;
-          } else {
-            break
-          }
-        }
-        this.current.ownedClasses = classDataTemp;
-        this.changeData(this.current);
-      });
+      .subscribe((data: ClassData[]) => this.updateClasses(true, data));
   }
   updateProfileAndClasses(){
-    this.getProfile(this.current.profile.id)
+    this.getProfile(this.dataSource.getValue().profile.id)
       .subscribe((data: Profile) =>
       {
-        let localData = this.current;
+        let localData = this.dataSource.getValue();
         localData.profile = data;
         this.changeData(localData);
-        this.getAllOwnedClasses();
-        this.getAllEnrolledClasses();
+        this.loadAllOwnedClasses();
+        this.loadAllEnrolledClasses();
       });
+  }
+
+  updateClasses = (isOwnedClass: boolean, data: ClassData[]) => {
+    let localData = this.dataSource.getValue();
+
+    if (isOwnedClass){localData.ownedClasses = data;}
+    else {localData.classes = data;}
+
+    this.changeData(localData);
+    if (localData.currentClass != undefined && data.findIndex(x => x.id == localData.currentClass.id) >= 0){
+      localData.currentClass = data[data.findIndex(x => x.id == localData.currentClass.id)];
+      this.changeData(localData);
+      this.loadSessionsByCurrentClassId();
+    }
+  }
+
+  // Data setters
+  setCurrentSession(sessionId: string) {
+    let localData = this.dataSource.getValue();
+    localData.currentSession = this.dataSource.getValue().currentClassSessions.filter( item => item.id == sessionId)[0];
+    this.changeData(localData);
+  }
+  setCurrentClass(clazz: ClassData) {
+    let localData = this.dataSource.getValue();
+    localData.currentClass = clazz;
+    this.changeData(localData);
+    this.updateProfileAndClasses();
   }
 }
 
@@ -202,6 +175,7 @@ export class SharedData {
   ownedClasses: ClassData[];
   classes: ClassData[];
   currentClass: ClassData;
+  currentClassSessions: Session[];
   currentSessionId: string;
   currentSession: Session;
   currentPromptletId: string;

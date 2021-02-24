@@ -18,14 +18,10 @@ export class DashboardComponent implements OnInit {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
 
     this.dataService.updateProfileAndClasses();
-    // Load class data for user
-    // this.sharedData.classes = this.dataService.loadClassData();
-    // this.dataService.changeData(this.sharedData);
   }
 
   public routeToClass(destClass: ClassData) {
-    this.sharedData.currentClass = destClass;
-    this.dataService.changeData(this.sharedData);
+    this.dataService.setCurrentClass(destClass);
     this.router.navigate(['class'], { relativeTo: this.route });
   }
 
