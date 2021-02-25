@@ -18,9 +18,6 @@ export class PromptletDisplayComponent implements OnInit {
   
   canSubmit: boolean = false;
   
-  questionType: string;
-  questionInstruction: string;
-  
   multiChoiceAnswer: string;
   checkBoxes: CheckBox[] = [];
   openResponseAnswer: string;
@@ -31,29 +28,12 @@ export class PromptletDisplayComponent implements OnInit {
   ngOnInit(): void {
     if (this.promptlet) {
       switch (this.promptlet.promptlet_type) {
-        case "MULTI_CHOICE":
-          this.questionType = "Multiple Choice";
-          this.questionInstruction = "Choose one of the following"
-          break;
         case "MULTI_RESPONSE":
-          this.questionType = "Multiple Response";
-          this.questionInstruction = "Choose one or more of the following"
           this.canSubmit = true;
-          
           this.promptlet.answerPool.forEach(choice => this.checkBoxes.push({"choice": choice, "selected": false}));
-          
-          break;
-        case "OPEN_RESPONSE":
-          this.questionType = "Open Response";
-          this.questionInstruction = "Type your answer and submit"
-          break;
-        case "SLIDER":
-          this.questionType = "Slider Response";
-          this.questionInstruction = "Use the Slider to respond"
           break;
         default:
-          this.questionType = "Unknown";
-          this.questionInstruction = "Unknown type";
+          console.log("Unknown promptlet type " + this.promptlet.promptlet_type);
           break;
       }
     }

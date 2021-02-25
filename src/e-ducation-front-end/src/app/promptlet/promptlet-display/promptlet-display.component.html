@@ -1,7 +1,15 @@
 <mat-card class="promptletCard" *ngIf="promptlet">
-    <mat-card-header>
-        <mat-card-title>{{ questionType }}</mat-card-title>
-        <mat-card-subtitle>{{ questionInstruction }}</mat-card-subtitle>
+    <mat-card-header [ngSwitch]="promptlet.promptlet_type">
+        <mat-card-title *ngSwitchCase="'MULTI_CHOICE'">Multiple Choice</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'MULTI_CHOICE'">Choose one of the following</mat-card-subtitle>
+        <mat-card-title *ngSwitchCase="'MULTI_RESPONSE'">Multiple Response</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'MULTI_RESPONSE'">Choose one or more of the following</mat-card-subtitle>
+        <mat-card-title *ngSwitchCase="'OPEN_RESPONSE'">Open Response</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'OPEN_RESPONSE'">Type your answer and submit</mat-card-subtitle>
+        <mat-card-title *ngSwitchCase="'SLIDER'">Slider Response</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'SLIDER'">Use the Slider to respond</mat-card-subtitle>
+        <mat-card-title *ngSwitchDefault>Unknown</mat-card-title>
+        <mat-card-subtitle *ngSwitchDefault>Unknown type</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
         <p> {{ promptlet.prompt }}</p>
