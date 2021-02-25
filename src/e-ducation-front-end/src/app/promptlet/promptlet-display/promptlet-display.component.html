@@ -1,0 +1,38 @@
+<mat-card class="promptletCard" *ngIf="promptlet">
+    <mat-card-header>
+        <mat-card-title>{{ questionType }}</mat-card-title>
+        <mat-card-subtitle>{{ questionInstruction }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p> {{ promptlet.prompt }}</p>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'MULTI_CHOICE'">
+            <mat-radio-group class="flexColumn" [(ngModel)]="multiChoiceAnswer">
+                <mat-radio-button class="needMargin" *ngFor="let choice of promptlet.answerPool">
+                    {{ choice }}
+                </mat-radio-button>
+            </mat-radio-group>
+        </ng-template>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'MULTI_RESPONSE'">
+            <div class="flex-column">
+                <mat-checkbox class="needMargin" *ngFor="let choice of promptlet.answerPool">
+                    {{ choice }}
+                </mat-checkbox>
+            </div>
+        </ng-template>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'OPEN_RESPONSE'">
+            <mat-form-field class="inputField">
+                <textarea matInput placeholder="Enter your response" rows="5"></textarea>
+            </mat-form-field>
+        </ng-template>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'SLIDER'">
+            <mat-slider thumbLabel tickInterval="1" min="0" max="100"></mat-slider>
+        </ng-template>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="instructorContext">Submit</button>
+    </mat-card-actions>
+</mat-card>
