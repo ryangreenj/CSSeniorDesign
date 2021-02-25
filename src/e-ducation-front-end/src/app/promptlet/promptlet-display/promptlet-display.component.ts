@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Promptlet } from 'src/app/data.service';
+import { DataService, Promptlet } from 'src/app/data.service';
 
 interface CheckBox {
   choice: string;
@@ -23,14 +23,20 @@ export class PromptletDisplayComponent implements OnInit {
   openResponseAnswer: string;
   sliderValue: string;
   
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     if (this.promptlet) {
       switch (this.promptlet.promptlet_type) {
+        case "MULTI_CHOICE":
+          break;
         case "MULTI_RESPONSE":
           this.canSubmit = true;
           this.promptlet.answerPool.forEach(choice => this.checkBoxes.push({"choice": choice, "selected": false}));
+          break;
+        case "OPEN_RESPONSE":
+          break;
+        case "SLIDER":
           break;
         default:
           console.log("Unknown promptlet type " + this.promptlet.promptlet_type);
@@ -46,8 +52,10 @@ export class PromptletDisplayComponent implements OnInit {
         break;
       case "OPEN_RESPONSE":
         this.canSubmit = this.openResponseAnswer != "";
+        break;
       default:
         this.canSubmit = true;
+        break;
     }
   }
   
@@ -67,11 +75,13 @@ export class PromptletDisplayComponent implements OnInit {
         break;
       case "OPEN_RESPONSE":
         response = this.openResponseAnswer;
+        break;
       case "SLIDER":
         response = this.sliderValue;
+        break;
     }
     
-    console.log(response);
+    this.dataService.submitPromptletResponse(this.promptlet.id, response);
   }
 
 }

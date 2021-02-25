@@ -40,12 +40,12 @@
         
         <ng-template [ngIf]="promptlet.promptlet_type == 'OPEN_RESPONSE'">
             <mat-form-field class="inputField">
-                <textarea matInput placeholder="Enter your response" rows="5" (value)="openResponseAnswer" (input)="checkCanSubmit()"></textarea>
+                <textarea matInput placeholder="Enter your response" rows="5" [(ngModel)]="openResponseAnswer" (input)="checkCanSubmit()"></textarea>
             </mat-form-field>
         </ng-template>
         
         <ng-template [ngIf]="promptlet.promptlet_type == 'SLIDER'">
-            <mat-slider thumbLabel tickInterval="1" min="0" max="100" (value)="sliderValue" (change)="checkCanSubmit()"></mat-slider>
+            <mat-slider thumbLabel tickInterval="1" min="0" max="100" [(ngModel)]="sliderValue" (change)="checkCanSubmit()"></mat-slider>
         </ng-template>
     </mat-card-content>
     <mat-card-actions>

@@ -23,7 +23,7 @@ export class CreatePromptletDialogComponent implements OnInit {
   onUpdate(): void {
     this.previewPromptlet.prompt = this.prompt;
     this.previewPromptlet.promptlet_type = this.promptletType;
-    this.previewPromptlet.answerPool = this.answerPool.split("\n");
+    this.previewPromptlet.answerPool = (this.answerPool != undefined ? this.answerPool.split("\n") : []);
   }
   
   onCreateClick(): void {
