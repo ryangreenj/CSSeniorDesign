@@ -26,8 +26,8 @@ import static com.education.education.web.models.ProfileCreationResponse.aProfil
 import static com.education.education.web.models.mappers.ProfileToProfileRetrievalResponseMapper.mapProfileToProfileRetrievalResponse;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +66,7 @@ class ProfileControllerTest {
 
         when(profileService.getProfile(profileRetrievalRequest.getProfileId())).thenReturn(profile);
 
-        this.mockMvc.perform(get("/profile")
+        this.mockMvc.perform(put("/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(profileRetrievalRequest)))
                 .andExpect(status().isOk())

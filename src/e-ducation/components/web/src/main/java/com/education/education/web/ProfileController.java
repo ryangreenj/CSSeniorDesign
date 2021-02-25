@@ -8,9 +8,8 @@ import com.education.education.web.models.ProfileRetrievalRequest;
 import com.education.education.web.models.ProfileRetrievalResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,7 +22,6 @@ import static com.education.education.web.models.mappers.ProfileToProfileRetriev
 @RestController
 @RequestMapping("/profile")
 @EnableWebMvc // TODO: What does this do
-@CrossOrigin(origins = "*")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -41,7 +39,7 @@ public class ProfileController {
                 .build();
     }
 
-    @GetMapping("")
+    @PutMapping("")
     public ProfileRetrievalResponse getProfile(@RequestBody final ProfileRetrievalRequest profileRetrievalRequest){
         return mapProfileToProfileRetrievalResponse(profileService.getProfile(profileRetrievalRequest.getProfileId()));
     }

@@ -6,7 +6,6 @@ import com.education.education.web.models.UserResponse;
 import com.education.education.web.models.mappers.UserToUserResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,6 @@ import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "*")
 @EnableWebMvc // TODO: What does this do
 public class UserController {
 
@@ -34,8 +32,8 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createUser(@RequestBody final UserRequest userRequest){
-        return userService.createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getProfileId());
+    public void createUser(@RequestBody final UserRequest userRequest){
+        userService.createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getProfileId());
     }
 
     /**   PATH: /user/all   **/

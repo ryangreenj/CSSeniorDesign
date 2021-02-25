@@ -25,8 +25,8 @@ public class CourseService {
         this.sessionService = sessionService;
     }
 
-    public void createCourse(final String courseName){
-        courseDataAccessService.insertCourse(courseName);
+    public String createCourse(final String courseName){
+        return courseDataAccessService.insertCourse(courseName);
     }
 
     public List<Course> getCourses(final List<String> courseIds) {

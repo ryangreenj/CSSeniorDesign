@@ -8,23 +8,23 @@ import { DataService } from 'src/app/data.service';
   styleUrls: ['./create-promptlet-dialog.component.css']
 })
 export class CreatePromptletDialogComponent implements OnInit {
-  
+
   prompt: string;
   promptletType: string = "MULTI_CHOICE";
   answerPool: string;
   correctAnswer: string;
-  
+
   constructor(public dialogRef: MatDialogRef<CreatePromptletDialogComponent>, private dataService: DataService) { }
 
   ngOnInit(): void {
   }
-  
+
   onCreateClick(): void {
     this.dialogRef.close();
-    
-    this.dataService.createPromptlet(this.prompt, this.promptletType, this.answerPool.split("\n"), this.correctAnswer.split("\n"))
+
+    this.dataService.createPromptlet(this.prompt, this.promptletType, (this.answerPool != undefined ? this.answerPool.split("\n") : []), (this.correctAnswer != undefined ? this.correctAnswer.split("\n") : []))
   }
-  
+
   onCancelClick(): void {
     this.dialogRef.close();
   }

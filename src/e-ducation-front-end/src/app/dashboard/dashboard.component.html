@@ -2,12 +2,18 @@
 <mat-drawer-container class="container">
     <mat-drawer mode="side" opened class="sidebar">
         <p>Side bar</p>
-        <a routerLink="classlist">Class List</a>
-        <ul *ngIf="classData">
-            <li *ngFor="let clazz of classData">
+        <a routerLink="classlist">Owned Class List</a>
+        <ul *ngIf="sharedData.ownedClasses">
+            <li *ngFor="let clazz of sharedData.ownedClasses">
                 <p><span (click)="routeToClass(clazz)">{{ clazz.className }}</span></p>
             </li>
         </ul>
+      <a routerLink="classlist">Enrolled Class List</a>
+      <ul *ngIf="sharedData.classes">
+        <li *ngFor="let clazz of sharedData.classes">
+          <p><span (click)="routeToClass(clazz)">{{ clazz.className }}</span></p>
+        </li>
+      </ul>
     </mat-drawer>
     <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
 </mat-drawer-container>

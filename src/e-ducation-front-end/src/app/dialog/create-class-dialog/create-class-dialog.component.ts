@@ -8,22 +8,22 @@ import { DataService } from 'src/app/data.service';
   styleUrls: ['./create-class-dialog.component.css']
 })
 export class CreateClassDialogComponent implements OnInit {
-  
+
   classCode: string; // Currently unused
   className: string;
-  
+
   constructor(public dialogRef: MatDialogRef<CreateClassDialogComponent>, private dataService: DataService) { }
 
   ngOnInit(): void {
   }
-  
+
   onCreateClick(): void {
     this.dialogRef.close();
-    this.dataService.createClass(this.className);
+    this.dataService.createClass(this.classCode);
   }
-  
+
   onCancelClick(): void {
     this.dialogRef.close();
   }
-  
+
 }

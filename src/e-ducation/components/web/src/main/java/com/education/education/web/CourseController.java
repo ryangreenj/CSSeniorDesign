@@ -2,6 +2,7 @@ package com.education.education.web;
 
 import com.education.education.course.CourseService;
 import com.education.education.web.models.CourseCreationRequest;
+import com.education.education.web.models.CourseCreationResponse;
 import com.education.education.web.models.CourseRequest;
 import com.education.education.web.models.CourseResponse;
 import com.education.education.web.models.PromptletCreationRequest;
@@ -15,9 +16,8 @@ import com.education.education.web.models.mappers.PromptletToPromptletRetrievalR
 import com.education.education.web.models.mappers.SessionToSessionResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,7 +30,6 @@ import static java.util.stream.Collectors.toList;
 
 @RequestMapping("/course")
 @RestController
-@CrossOrigin(origins = "*")
 @EnableWebMvc
 public class CourseController {
 
@@ -43,11 +42,11 @@ public class CourseController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createCourse(@RequestBody final CourseCreationRequest courseCreationRequest){
-        courseService.createCourse(courseCreationRequest.getCourseName());
+    public CourseCreationResponse createCourse(@RequestBody final CourseCreationRequest courseCreationRequest){
+        return new CourseCreationResponse(courseService.createCourse(courseCreationRequest.getCourseName()));
     }
 
-    @GetMapping("")
+    @PutMapping("")
     public List<CourseResponse> getCourses(@RequestBody final CourseRequest courseRequest){
         return courseService.getCourses(courseRequest.getCourseIds())
                 .stream()
@@ -55,7 +54,7 @@ public class CourseController {
                 .collect(toList());
     }
 
-    @GetMapping("/all")
+    @PutMapping("/all")
     public List<CourseResponse> getAllCourses(){
         return courseService.getAllCourses()
                 .stream()
@@ -69,7 +68,7 @@ public class CourseController {
         courseService.addSession(sessionCreationRequest.getCourseId(), sessionCreationRequest.getSessionName());
     }
 
-    @GetMapping("/session")
+    @PutMapping("/session")
     public List<SessionResponse> getSessions(@RequestBody final SessionRetrievalRequest sessionRetrievalRequest){
         return courseService.getSessions(sessionRetrievalRequest.getSessionIds())
                 .stream()
@@ -79,8 +78,8 @@ public class CourseController {
 
     @PostMapping("/session/promptlet")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createPromptlet(@RequestBody final PromptletCreationRequest promptletCreationRequest){
-        return courseService.addPromptletToSession(
+    public void createPromptlet(@RequestBody final PromptletCreationRequest promptletCreationRequest){
+        courseService.addPromptletToSession(
                 promptletCreationRequest.getSessionId(),
                 promptletCreationRequest.getPrompt(),
                 promptletCreationRequest.getPromptlet_type(),
@@ -88,7 +87,7 @@ public class CourseController {
                 promptletCreationRequest.getCorrectAnswer());
     }
 
-    @GetMapping("/session/promptlet")
+    @PutMapping("/session/promptlet")
     public List<PromptletRetrievalResponse> getPromptlets(@RequestBody final PromptletRetrievalRequest promptletRetrievalRequest){
         return courseService.getPromptlets(promptletRetrievalRequest.getPromptletIds())
                 .stream()
