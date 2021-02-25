@@ -8,31 +8,39 @@
         
         <ng-template [ngIf]="promptlet.promptlet_type == 'MULTI_CHOICE'">
             <mat-radio-group class="flexColumn" [(ngModel)]="multiChoiceAnswer">
-                <mat-radio-button class="needMargin" *ngFor="let choice of promptlet.answerPool">
+                <mat-radio-button class="needMargin" *ngFor="let choice of promptlet.answerPool" [value]="choice" (change)="checkCanSubmit()">
                     {{ choice }}
                 </mat-radio-button>
             </mat-radio-group>
         </ng-template>
         
         <ng-template [ngIf]="promptlet.promptlet_type == 'MULTI_RESPONSE'">
-            <div class="flex-column">
-                <mat-checkbox class="needMargin" *ngFor="let choice of promptlet.answerPool">
-                    {{ choice }}
-                </mat-checkbox>
+            <div class="flexColumn">
+                <ng-template [ngIf]="context == 'preview'" [ngIfElse]="normal">
+                    <mat-checkbox class="needMargin" *ngFor="let choice of promptlet.answerPool">
+                        {{ choice }}
+                    </mat-checkbox>
+                </ng-template>
+                
+                <ng-template #normal>
+                    <mat-checkbox class="needMargin" *ngFor="let box of checkBoxes" [(ngModel)]="box.selected">
+                        {{ box.choice }}
+                    </mat-checkbox>
+                </ng-template>
             </div>
         </ng-template>
         
         <ng-template [ngIf]="promptlet.promptlet_type == 'OPEN_RESPONSE'">
             <mat-form-field class="inputField">
-                <textarea matInput placeholder="Enter your response" rows="5"></textarea>
+                <textarea matInput placeholder="Enter your response" rows="5" (value)="openResponseAnswer" (input)="checkCanSubmit()"></textarea>
             </mat-form-field>
         </ng-template>
         
         <ng-template [ngIf]="promptlet.promptlet_type == 'SLIDER'">
-            <mat-slider thumbLabel tickInterval="1" min="0" max="100"></mat-slider>
+            <mat-slider thumbLabel tickInterval="1" min="0" max="100" (value)="sliderValue" (change)="checkCanSubmit()"></mat-slider>
         </ng-template>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="primary" [disabled]="instructorContext">Submit</button>
+        <button mat-raised-button color="primary" [disabled]="!canSubmit" (click)="onSubmit()">Submit</button>
     </mat-card-actions>
 </mat-card>

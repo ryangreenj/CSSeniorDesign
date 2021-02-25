@@ -85,7 +85,7 @@ export class DataService {
 
   loadPromptletData(promptletId: string) {
     // Load promptlet data from ID
-    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_CHOICE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
+    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_RESPONSE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
   }
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {

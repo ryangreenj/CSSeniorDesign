@@ -1,3 +1,12 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.previewContainer {
+    margin-left: 40px;
+}
+
 .inputField {
     width: 100%;
     margin-bottom: 1em;
