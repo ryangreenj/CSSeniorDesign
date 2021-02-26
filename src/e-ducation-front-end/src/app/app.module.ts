@@ -28,8 +28,9 @@ import { CreateClassDialogComponent } from './dialog/create-class-dialog/create-
 import { EnrollClassDialogComponent } from './dialog/enroll-class-dialog/enroll-class-dialog.component';
 import { CreateSessionDialogComponent } from './dialog/create-session-dialog/create-session-dialog.component';
 import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog/create-promptlet-dialog.component';
-import {HttpClientModule} from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
 import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptlet-display.component';
+import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/enrolled-class-detail.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptl
     EnrollClassDialogComponent,
     CreateSessionDialogComponent,
     CreatePromptletDialogComponent,
-    PromptletDisplayComponent
+    PromptletDisplayComponent,
+    EnrolledClassDetailComponent
   ],
   entryComponents: [
     CreateClassDialogComponent,

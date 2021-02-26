@@ -164,6 +164,11 @@ export class DataService {
     this.changeData(localData);
     this.updateProfileAndClasses();
   }
+  setCurrentEnrolledClass(clazz: ClassData) {
+    let localData = this.dataSource.getValue();
+    localData.currentEnrolledClass = clazz;
+    this.changeData(localData);
+  }
 }
 
 export type courseRequest = {
@@ -190,6 +195,7 @@ export class SharedData {
   ownedClasses: ClassData[];
   classes: ClassData[];
   currentClass: ClassData;
+  currentEnrolledClass: ClassData;
   currentClassSessions: Session[];
   currentSessionId: string;
   currentSession: Session;

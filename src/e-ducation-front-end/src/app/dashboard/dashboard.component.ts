@@ -24,6 +24,10 @@ export class DashboardComponent implements OnInit {
     this.dataService.setCurrentClass(destClass);
     this.router.navigate(['class'], { relativeTo: this.route });
   }
-
+  
+  public routeToEnrolledClass(destEnrolledClass: ClassData) {
+    this.dataService.setCurrentEnrolledClass(destEnrolledClass);
+    this.router.navigate(['enrolledClass'], { relativeTo: this.route });
+  }
 
 }

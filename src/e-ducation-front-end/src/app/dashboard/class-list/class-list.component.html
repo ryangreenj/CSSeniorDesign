@@ -10,7 +10,7 @@
       <mat-card (click)="routeToClass(class)">
         <p>{{ class.className }}</p>
         <p>{{ class.className }}</p>
-        <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}
+        <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}</p>
       </mat-card>
     </li>
   </ul>
@@ -20,10 +20,10 @@
   <h2> Enrolled Classes</h2>
   <ul>
     <li *ngFor="let class of sharedData.classes">
-      <mat-card (click)="routeToClass(class)">
+      <mat-card (click)="routeToEnrolledClass(class)">
         <p>{{ class.className }}</p>
         <p>{{ class.className }}</p>
-        <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}
+        <p>Status: {{ class.status == true ? 'ONLINE' : 'OFFLINE' }}</p>
       </mat-card>
     </li>
   </ul>
