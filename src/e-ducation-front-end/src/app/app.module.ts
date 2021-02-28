@@ -14,6 +14,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSliderModule } from '@angular/material/slider';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -26,7 +28,9 @@ import { CreateClassDialogComponent } from './dialog/create-class-dialog/create-
 import { EnrollClassDialogComponent } from './dialog/enroll-class-dialog/enroll-class-dialog.component';
 import { CreateSessionDialogComponent } from './dialog/create-session-dialog/create-session-dialog.component';
 import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog/create-promptlet-dialog.component';
-import {HttpClientModule} from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
+import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptlet-display.component';
+import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/enrolled-class-detail.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,9 @@ import {HttpClientModule} from "@angular/common/http";
     CreateClassDialogComponent,
     EnrollClassDialogComponent,
     CreateSessionDialogComponent,
-    CreatePromptletDialogComponent
+    CreatePromptletDialogComponent,
+    PromptletDisplayComponent,
+    EnrolledClassDetailComponent
   ],
   entryComponents: [
     CreateClassDialogComponent,
@@ -65,7 +71,9 @@ import {HttpClientModule} from "@angular/common/http";
     MatDialogModule,
     MatIconModule,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    MatRadioModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

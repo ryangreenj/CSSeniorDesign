@@ -21,9 +21,13 @@ export class ClassListComponent implements OnInit {
   }
 
   public routeToClass(destClass: ClassData) {
-    this.sharedData.currentClass = destClass;
-    this.dataService.changeData(this.sharedData);
+    this.dataService.setCurrentClass(destClass);
     this.router.navigate(['../class'], { relativeTo: this.route });
+  }
+  
+  public routeToEnrolledClass(destEnrolledClass: ClassData) {
+    this.dataService.setCurrentEnrolledClass(destEnrolledClass);
+    this.router.navigate(['../enrolledClass'], { relativeTo: this.route });
   }
 
   openCreateClassDialog() {

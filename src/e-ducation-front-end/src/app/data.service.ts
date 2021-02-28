@@ -1,7 +1,7 @@
 import { stringify } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +85,7 @@ export class DataService {
 
   loadPromptletData(promptletId: string) {
     // Load promptlet data from ID
-    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "MULTI_CHOICE", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
+    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "SLIDER", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
   }
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
@@ -98,6 +98,14 @@ export class DataService {
           promptlet_type: promptlet_type, answerPool: answerPool, correctAnswer: correctAnswer};
     return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
+  }
+  
+  submitPromptletResponse(promptletId: string, response: string) {
+    let userId = this.dataSource.getValue().user.id // Unsure if this should be UserData or Profile
+    // Perhaps we can concatenate user ID as the first line of 'response' so we only send one string per response
+    let fullResponse = userId + "\n" + response;
+    
+    console.log("User " + userId + " tried to respond to " + promptletId + " with:\n" + response);
   }
 
   // Subscribe Blocks
@@ -156,6 +164,11 @@ export class DataService {
     this.changeData(localData);
     this.updateProfileAndClasses();
   }
+  setCurrentEnrolledClass(clazz: ClassData) {
+    let localData = this.dataSource.getValue();
+    localData.currentEnrolledClass = clazz;
+    this.changeData(localData);
+  }
 }
 
 export type courseRequest = {
@@ -182,6 +195,7 @@ export class SharedData {
   ownedClasses: ClassData[];
   classes: ClassData[];
   currentClass: ClassData;
+  currentEnrolledClass: ClassData;
   currentClassSessions: Session[];
   currentSessionId: string;
   currentSession: Session;

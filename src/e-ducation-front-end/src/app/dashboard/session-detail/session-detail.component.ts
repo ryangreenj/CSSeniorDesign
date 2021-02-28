@@ -30,7 +30,7 @@ export class SessionDetailComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "40%";
+    dialogConfig.width = "60%";
     let dialogRef = this.dialog.open(CreatePromptletDialogComponent, dialogConfig);
     
     dialogRef.afterClosed().subscribe(result => {

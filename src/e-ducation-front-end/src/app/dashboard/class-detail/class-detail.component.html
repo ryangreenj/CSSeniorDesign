@@ -4,6 +4,8 @@
 
 <div *ngIf="sharedData.currentClass">
     <h1>{{ sharedData.currentClass.className }}</h1>
+    <h2>Enroll Code:</h2>
+    <p>{{ sharedData.currentClass.id }}</p>
     <h2>Sessions:</h2>
     <ul *ngIf="sharedData.currentClassSessions">
         <li *ngFor="let session of sharedData.currentClassSessions">

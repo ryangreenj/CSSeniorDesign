@@ -1,0 +1,54 @@
+<mat-card class="promptletCard" *ngIf="promptlet">
+    <mat-card-header [ngSwitch]="promptlet.promptlet_type">
+        <mat-card-title *ngSwitchCase="'MULTI_CHOICE'">Multiple Choice</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'MULTI_CHOICE'">Choose one of the following</mat-card-subtitle>
+        <mat-card-title *ngSwitchCase="'MULTI_RESPONSE'">Multiple Response</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'MULTI_RESPONSE'">Choose one or more of the following</mat-card-subtitle>
+        <mat-card-title *ngSwitchCase="'OPEN_RESPONSE'">Open Response</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'OPEN_RESPONSE'">Type your answer and submit</mat-card-subtitle>
+        <mat-card-title *ngSwitchCase="'SLIDER'">Slider Response</mat-card-title>
+        <mat-card-subtitle *ngSwitchCase="'SLIDER'">Use the Slider to respond</mat-card-subtitle>
+        <mat-card-title *ngSwitchDefault>Unknown</mat-card-title>
+        <mat-card-subtitle *ngSwitchDefault>Unknown type</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p> {{ promptlet.prompt }}</p>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'MULTI_CHOICE'">
+            <mat-radio-group class="flexColumn" [(ngModel)]="multiChoiceAnswer">
+                <mat-radio-button class="needMargin" *ngFor="let choice of promptlet.answerPool" [value]="choice" (change)="checkCanSubmit()">
+                    {{ choice }}
+                </mat-radio-button>
+            </mat-radio-group>
+        </ng-template>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'MULTI_RESPONSE'">
+            <div class="flexColumn">
+                <ng-template [ngIf]="context == 'preview'" [ngIfElse]="normal">
+                    <mat-checkbox class="needMargin" *ngFor="let choice of promptlet.answerPool">
+                        {{ choice }}
+                    </mat-checkbox>
+                </ng-template>
+                
+                <ng-template #normal>
+                    <mat-checkbox class="needMargin" *ngFor="let box of checkBoxes" [(ngModel)]="box.selected">
+                        {{ box.choice }}
+                    </mat-checkbox>
+                </ng-template>
+            </div>
+        </ng-template>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'OPEN_RESPONSE'">
+            <mat-form-field class="inputField">
+                <textarea matInput placeholder="Enter your response" rows="5" [(ngModel)]="openResponseAnswer" (input)="checkCanSubmit()"></textarea>
+            </mat-form-field>
+        </ng-template>
+        
+        <ng-template [ngIf]="promptlet.promptlet_type == 'SLIDER'">
+            <mat-slider thumbLabel tickInterval="1" min="0" max="100" [(ngModel)]="sliderValue" (change)="checkCanSubmit()"></mat-slider>
+        </ng-template>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="!canSubmit" (click)="onSubmit()">Submit</button>
+    </mat-card-actions>
+</mat-card>

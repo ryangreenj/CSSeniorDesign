@@ -1,27 +1,33 @@
 
 <h1 mat-dialog-title>Create Promptlet</h1>
-<div mat-dialog-content>
-    <mat-form-field class="inputField">
-        <mat-label>Prompt</mat-label>
-        <input matInput placeholder="Enter your Prompt/Question" [(ngModel)]="prompt">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>Promptlet Type</mat-label>
-        <mat-select [(value)]="promptletType">
-            <mat-option value="MULTI_CHOICE">Multiple Choice</mat-option>
-            <mat-option value="MULTI_RESPONSE">Multiple Response</mat-option>
-            <mat-option value="OPEN_RESPONSE">Open Response</mat-option>
-            <mat-option value="SLIDER">Slider</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field class="inputField" *ngIf="promptletType == 'MULTI_CHOICE' || promptletType == 'MULTI_RESPONSE'">
-        <mat-label>Answer Choices</mat-label>
-        <textarea matInput placeholder="Enter possible answers, one on each line" rows="5" [(ngModel)]="answerPool"></textarea>
-    </mat-form-field>
-    <mat-form-field class="inputField" *ngIf="promptletType == 'MULTI_CHOICE' || promptletType == 'MULTI_RESPONSE'">
-        <mat-label>Correct Answer(s)</mat-label>
-        <textarea matInput placeholder="Enter correct answer(s), one on each line" rows="5" [(ngModel)]="correctAnswer"></textarea>
-    </mat-form-field>
+<div mat-dialog-content class="container">
+    <div class="createForm">
+        <mat-form-field class="inputField">
+            <mat-label>Prompt</mat-label>
+            <input matInput placeholder="Enter your Prompt/Question" [(ngModel)]="prompt" (input)="onUpdate()">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Promptlet Type</mat-label>
+            <mat-select [(value)]="promptletType" (selectionChange)="onUpdate()">
+                <mat-option value="MULTI_CHOICE">Multiple Choice</mat-option>
+                <mat-option value="MULTI_RESPONSE">Multiple Response</mat-option>
+                <mat-option value="OPEN_RESPONSE">Open Response</mat-option>
+                <mat-option value="SLIDER">Slider</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputField" *ngIf="promptletType == 'MULTI_CHOICE' || promptletType == 'MULTI_RESPONSE'">
+            <mat-label>Answer Choices</mat-label>
+            <textarea matInput placeholder="Enter possible answers, one on each line" rows="5" [(ngModel)]="answerPool" (input)="onUpdate()"></textarea>
+        </mat-form-field>
+        <mat-form-field class="inputField" *ngIf="promptletType == 'MULTI_CHOICE' || promptletType == 'MULTI_RESPONSE'">
+            <mat-label>Correct Answer(s)</mat-label>
+            <textarea matInput placeholder="Enter correct answer(s), one on each line" rows="5" [(ngModel)]="correctAnswer"></textarea>
+        </mat-form-field>
+    </div>
+    <div class="previewContainer">
+        <h2>Preview</h2>
+        <app-promptlet-display class="preview" [promptlet]="previewPromptlet" [context]="'preview'"></app-promptlet-display>
+    </div>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onCreateClick()">Create</button>

@@ -19,7 +19,7 @@ export class CreateClassDialogComponent implements OnInit {
 
   onCreateClick(): void {
     this.dialogRef.close();
-    this.dataService.createClass(this.classCode);
+    this.dataService.createClass(this.className);
   }
 
   onCancelClick(): void {
