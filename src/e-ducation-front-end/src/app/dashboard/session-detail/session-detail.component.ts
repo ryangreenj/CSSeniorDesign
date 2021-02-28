@@ -10,32 +10,34 @@ import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-
   styleUrls: ['./session-detail.component.css']
 })
 export class SessionDetailComponent implements OnInit {
-  
+
   sharedData: SharedData;
-  
+
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
+    this.dataService.loadPromptletsByCurrentSessionId();
+    this.dataService.fetchPromptletData();
   }
-  
+
   public routeToPromptlet(destPromptlet: string) {
     this.sharedData.currentPromptletId = destPromptlet;
     this.sharedData.currentPromptlet = this.dataService.loadPromptletData(destPromptlet);
     this.dataService.changeData(this.sharedData);
     this.router.navigate(['promptlet'], { relativeTo: this.route });
   }
-  
+
   openCreatePromptletDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
     let dialogRef = this.dialog.open(CreatePromptletDialogComponent, dialogConfig);
-    
+
     dialogRef.afterClosed().subscribe(result => {
-      
+
     })
   }
-  
+
 }

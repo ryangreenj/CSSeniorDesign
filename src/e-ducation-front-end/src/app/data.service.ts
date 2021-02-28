@@ -1,7 +1,10 @@
 import { stringify } from '@angular/compiler/src/util';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import {not} from "rxjs/internal-compatibility";
 
 @Injectable({
   providedIn: 'root'
@@ -88,35 +91,66 @@ export class DataService {
     return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "SLIDER", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
   }
 
+  getPromptletData(sessionIds : string[]) {
+    // Load promptlet data from ID
+    let getPromptletRequest = {ids: sessionIds};
+    return this.http.put<Promptlet[]>("http://localhost:8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
+  }
+
+  fetchPromptletData(){
+
+      let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+
+      stompClient.connect({}, frame => {
+        stompClient.subscribe('/topic/notification/' + this.dataSource.getValue().currentSessionId, (notification) => {
+          // observer.next(notifications);
+          let jsonBody = JSON.parse(notification.body)
+          let studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptlet_TYPE,
+                  answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[]};
+
+          let localData = this.dataSource.getValue();
+
+          localData.currentSession.promptlets.push(studentPromptlet);
+          this.changeData(localData);
+        })
+      })
+
+  }
+
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
     // POST - /course/session/promptlet
-    console.log("prompt:", prompt);
-    console.log("promptlet_type:", promptlet_type);
-    console.log("answerPool:", answerPool);
-    console.log("correctAnswer:", correctAnswer);
     const promptletRequest = {sessionId: this.dataSource.getValue().currentSessionId, prompt: prompt,
           promptlet_type: promptlet_type, answerPool: answerPool, correctAnswer: correctAnswer};
     return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
-  
+
   submitPromptletResponse(promptletId: string, response: string) {
     let userId = this.dataSource.getValue().user.id // Unsure if this should be UserData or Profile
     // Perhaps we can concatenate user ID as the first line of 'response' so we only send one string per response
     let fullResponse = userId + "\n" + response;
-    
+
     console.log("User " + userId + " tried to respond to " + promptletId + " with:\n" + response);
   }
 
   // Subscribe Blocks
-  loadSessionsByCurrentClassId(){
-    this.getSessionsData(this.dataSource.getValue().currentClass.sessionIds)
+  loadSessionsByCurrentClassId(currentClass : ClassData){
+    this.getSessionsData(currentClass.sessionIds)
       .subscribe((data: Session[]) => {
         let localData = this.dataSource.getValue();
 
         localData.currentClassSessions = data;
         this.changeData(localData);
         });
+  }
+  loadPromptletsByCurrentSessionId(){
+    this.getPromptletData(this.dataSource.getValue().currentSession.promptletIds)
+      .subscribe((data: Promptlet[]) => {
+        let localData = this.dataSource.getValue();
+
+        localData.currentSession.promptlets = data;
+        this.changeData(localData);
+      });
   }
   loadAllEnrolledClasses(){
     this.getEnrolledClassData()
@@ -148,7 +182,12 @@ export class DataService {
     if (localData.currentClass != undefined && data.findIndex(x => x.id == localData.currentClass.id) >= 0){
       localData.currentClass = data[data.findIndex(x => x.id == localData.currentClass.id)];
       this.changeData(localData);
-      this.loadSessionsByCurrentClassId();
+      if (isOwnedClass){
+        this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass);
+      } else {
+        this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentEnrolledClass);
+      }
+
     }
   }
 
@@ -233,6 +272,7 @@ export type Session = {
   id: string;
   sessionName: string;
   promptletIds: string[];
+  promptlets: Promptlet[];
 }
 
 export type Promptlet = {
@@ -242,4 +282,11 @@ export type Promptlet = {
   answerPool: string[];
   correctAnswer: string[];
   userResponses: string[];
+}
+
+export type StudentPromptlet = {
+  id: string;
+  prompt: string;
+  promptlet_type: string;
+  answerPool: string[];
 }
