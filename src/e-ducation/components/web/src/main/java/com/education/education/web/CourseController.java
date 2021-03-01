@@ -6,6 +6,7 @@ import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseCreationResponse;
 import com.education.education.web.models.CourseRequest;
 import com.education.education.web.models.CourseResponse;
+import com.education.education.web.models.PromptletAnswer;
 import com.education.education.web.models.PromptletCreationRequest;
 import com.education.education.web.models.PromptletRetrievalRequest;
 import com.education.education.web.models.PromptletRetrievalResponse;
@@ -99,5 +100,11 @@ public class CourseController {
                 .stream()
                 .map(PromptletToPromptletRetrievalResponseMapper::mapPromptletToPromptletRetrievalResponse)
                 .collect(toList());
+    }
+
+    @PostMapping("/session/promptlet/answer")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void answerPromptlet(@RequestBody final PromptletAnswer promptletAnswer){
+        courseService.answerPromptlet(promptletAnswer.getPromptletId(), promptletAnswer.getProfileId(), promptletAnswer.getResponse());
     }
 }

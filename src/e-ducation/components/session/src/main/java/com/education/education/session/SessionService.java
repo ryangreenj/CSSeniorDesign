@@ -61,4 +61,8 @@ public class SessionService {
                 .id(id).prompt(prompt).promptletType(promptletType).responsePool(responsePool).correctAnswer(new ArrayList<>())
                 .userResponses(new ArrayList<>()).build());
     }
+
+    public void answerPromptlet(final String promptletId, final String profileId, final List<String> response){
+        promptletService.answerPromptlet(promptletId, profileId, response);
+    }
 }

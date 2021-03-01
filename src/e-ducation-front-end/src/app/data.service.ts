@@ -85,7 +85,6 @@ export class DataService {
       .subscribe((_: string) => {});
   }
 
-
   loadPromptletData(promptletId: string) {
     // Load promptlet data from ID
 
@@ -108,12 +107,14 @@ export class DataService {
       .subscribe((_: string) => {});
   }
 
-  submitPromptletResponse(promptletId: string, response: string) {
-    let userId = this.dataSource.getValue().user.id // Unsure if this should be UserData or Profile
+  submitPromptletResponse(promptletId: string, response: string[]) {
+    const profileId = this.dataSource.getValue().user.profileId;
+    // Unsure if this should be UserData or Profile
     // Perhaps we can concatenate user ID as the first line of 'response' so we only send one string per response
-    let fullResponse = userId + "\n" + response;
+    let promptletResponse = {promptletId: promptletId, profileId: profileId, response: response};
 
-    console.log("User " + userId + " tried to respond to " + promptletId + " with:\n" + response);
+    return this.http.post<string>("http://localhost:8080/course/session/promptlet/answer", promptletResponse, {headers:this.getHeaders()})
+      .subscribe((_: string) => {});
   }
 
   // Subscribe Blocks

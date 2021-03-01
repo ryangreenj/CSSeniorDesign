@@ -66,4 +66,8 @@ public class CourseService {
     public List<Promptlet> getPromptlets(final List<String> promptletIds){
         return sessionService.getPromptlets(promptletIds);
     }
+
+    public void answerPromptlet(final String promptletId, final String profileId, final List<String> response){
+        sessionService.answerPromptlet(promptletId, profileId, response);
+    }
 }

@@ -11,4 +11,6 @@ public interface PromptletDataAccessService {
             final List<String> correctAnswer);
 
     List<Promptlet> getPromptlets(final List<String> promptletId);
+
+    void answerPromptlet(final String promptletId, final String profileId, final List<String> response);
 }

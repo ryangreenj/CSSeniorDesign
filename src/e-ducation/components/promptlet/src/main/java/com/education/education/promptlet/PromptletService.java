@@ -24,4 +24,11 @@ public class PromptletService {
     public List<Promptlet> getPromptlets(final List<String> promptletIds){
         return promptletDataAccessService.getPromptlets(promptletIds);
     }
+
+    public void answerPromptlet(final String promptletId, final String profileId, final List<String> response){
+//        private final String id;
+//        private final String profileId;
+//        private final List<String> response;
+        promptletDataAccessService.answerPromptlet(promptletId,profileId,response);
+    }
 }
