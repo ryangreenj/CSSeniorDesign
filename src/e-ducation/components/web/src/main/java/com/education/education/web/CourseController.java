@@ -1,6 +1,9 @@
 package com.education.education.web;
 
 import com.education.education.course.CourseService;
+import com.education.education.profile.Profile;
+import com.education.education.profile.ProfileService;
+import com.education.education.promptlet.UserResponse;
 import com.education.education.web.models.ActiveSessionRequest;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseCreationResponse;
@@ -13,6 +16,8 @@ import com.education.education.web.models.PromptletRetrievalResponse;
 import com.education.education.web.models.SessionCreationRequest;
 import com.education.education.web.models.SessionResponse;
 import com.education.education.web.models.SessionRetrievalRequest;
+import com.education.education.web.models.UserResponseRequest;
+import com.education.education.web.models.UserResponseResponse;
 import com.education.education.web.models.mappers.CourseToCourseResponseMapper;
 import com.education.education.web.models.mappers.PromptletToPromptletRetrievalResponseMapper;
 import com.education.education.web.models.mappers.SessionToSessionResponseMapper;
@@ -27,7 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.education.education.web.models.UserResponseResponse.aUserResponseResponseBuilder;
 import static java.util.stream.Collectors.toList;
 
 @RequestMapping("/course")
@@ -37,9 +44,12 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    private final ProfileService profileService;
+
     @Autowired
-    public CourseController(final CourseService courseService) {
+    public CourseController(final CourseService courseService, final ProfileService profileService) {
         this.courseService = courseService;
+        this.profileService = profileService;
     }
 
     @PostMapping("")
@@ -105,6 +115,20 @@ public class CourseController {
     @PostMapping("/session/promptlet/answer")
     @ResponseStatus(HttpStatus.CREATED)
     public void answerPromptlet(@RequestBody final PromptletAnswer promptletAnswer){
-        courseService.answerPromptlet(promptletAnswer.getPromptletId(), promptletAnswer.getProfileId(), promptletAnswer.getResponse());
+        final Profile p = profileService.getProfile(promptletAnswer.getProfileId());
+        courseService.answerPromptlet(promptletAnswer.getPromptletId(), promptletAnswer.getProfileId(),p.getUsername(), promptletAnswer.getResponse());
+    }
+
+    @PutMapping("/session/promptlet/answers")
+    public List<UserResponseResponse> getResponses(@RequestBody final UserResponseRequest userResponseRequest){
+        System.out.println(userResponseRequest.getUserResponseIds());
+        return courseService.getPromptletResponses(userResponseRequest.getUserResponseIds())
+                    .stream()
+                    .map(x -> aUserResponseResponseBuilder()
+                    .id(x.getId())
+                    .profileName(profileService.getProfile(x.getProfileId()).getUsername())
+                    .profileId(x.getProfileId())
+                    .response(x.getResponse()).build())
+                .collect(toList());
     }
 }

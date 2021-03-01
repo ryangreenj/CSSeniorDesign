@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class UserResponse {
+public class UserDataResponse {
 
     private final String id;
     private final String username;
 
-    public static UserResponseBuilder aUserResponseBuilder() {
-        return UserResponse.builder();
+    public static UserDataResponseBuilder aUserResponseBuilder() {
+        return UserDataResponse.builder();
     }
 }

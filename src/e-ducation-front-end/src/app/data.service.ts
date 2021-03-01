@@ -38,7 +38,6 @@ export class DataService {
     let newUserRequest = {username:username, password:password, profileId: profileId};
     return this.http.post("http://localhost:8080/user",newUserRequest);
   }
-
   loginUser(username: string, password: string) {
     // POST - /authorize
     let l : loginRequest = {username:username, password:password};
@@ -56,7 +55,6 @@ export class DataService {
     let c : courseRequest = {ids: this.dataSource.getValue().profile.coursesEnrolled};
     return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
   }
-
   createClass(courseName: string) {
     // POST - /course/create
     const newCourseRequest = {courseName:courseName};
@@ -93,12 +91,6 @@ export class DataService {
     this.changeData(localData);
   }
 
-  getPromptletData(sessionIds : string[]) {
-    // Load promptlet data from ID
-    let getPromptletRequest = {ids: sessionIds};
-    return this.http.put<Promptlet[]>("http://localhost:8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
-  }
-
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
     // POST - /course/session/promptlet
     const promptletRequest = {sessionId: this.dataSource.getValue().currentSession.id, prompt: prompt,
@@ -106,7 +98,11 @@ export class DataService {
     return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
-
+  getPromptletData(sessionIds : string[]) {
+    // Load promptlet data from ID
+    let getPromptletRequest = {ids: sessionIds};
+    return this.http.put<Promptlet[]>("http://localhost:8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
+  }
   submitPromptletResponse(promptletId: string, response: string[]) {
     const profileId = this.dataSource.getValue().user.profileId;
     // Unsure if this should be UserData or Profile
@@ -117,6 +113,37 @@ export class DataService {
       .subscribe((_: string) => {});
   }
 
+  getUserResponse(userResponseIds: string[]){
+    const userResponseRequest = {userResponseIds: userResponseIds};
+
+    return this.http.put<UserResponse[]>("http://localhost:8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
+      .subscribe((data: UserResponse[]) => {
+        let localData = this.dataSource.getValue();
+        localData.currentPromptlet.userResponses = data;
+        this.changeData(localData);
+      });
+  }
+  fetchUserResponse(){
+
+    let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+
+    stompClient.connect({}, frame => {
+      stompClient.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
+        // observer.next(notifications);
+        const jsonBody = JSON.parse(notification.body)
+        const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName, response:jsonBody.responses};
+
+        let localData = this.dataSource.getValue();
+        console.log(jsonBody, userResponse);
+        localData.currentPromptlet.userResponses.push(userResponse);
+        // localData.currentPromptlet.actualUserResponses.push(userResponse);
+        this.changeData(localData);
+
+        console.log(userResponse);
+      })
+    })
+
+  }
   // Subscribe Blocks
   loadSessionsByCurrentClassId(currentClass : ClassData){
     this.getSessionsData(currentClass.sessionIds)
@@ -130,10 +157,17 @@ export class DataService {
 
   loadPromptletsByCurrentSessionId(){
     this.getPromptletData(this.dataSource.getValue().currentSession.promptletIds)
-      .subscribe((data: Promptlet[]) => {
+      .subscribe((data: any[]) => {
         let localData = this.dataSource.getValue();
+        let promptlets : Promptlet[] = [];
 
-        localData.currentSession.promptlets = data;
+        data.forEach(x => {
+          const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
+          const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
+            correctAnswer:x.correctAnswer, userResponses: userResponses};
+          promptlets.push(promptlet);
+        });
+        localData.currentSession.promptlets = promptlets;
         this.changeData(localData);
       });
   }
@@ -307,7 +341,14 @@ export type Promptlet = {
   promptlet_type: string;
   answerPool: string[];
   correctAnswer: string[];
-  userResponses: string[];
+  userResponses: UserResponse[];
+}
+
+export type UserResponse = {
+  id: string;
+  profileId: string;
+  profileName: string;
+  response: string[];
 }
 
 export type StudentPromptlet = {

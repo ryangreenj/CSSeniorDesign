@@ -3,7 +3,6 @@ package com.education.education.promptlet;
 import com.education.education.promptlet.repositories.PromptletRepository;
 import com.education.education.promptlet.repositories.UserResponseRepository;
 import com.education.education.promptlet.repositories.entities.PromptletEntity;
-import com.education.education.promptlet.repositories.entities.UserResponseEntity;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +13,7 @@ import java.util.List;
 import static com.education.education.promptlet.repositories.entities.PromptletEntity.aPromptletEntityBuilder;
 import static com.education.education.promptlet.repositories.entities.UserResponseEntity.aUserResponseEntityBuilder;
 import static com.education.education.promptlet.repositories.entities.mappers.PromptletEntityToPromptletMapper.mapPromptletEntityToPromptlet;
+import static com.education.education.promptlet.repositories.entities.mappers.UserResponseEntityToUserResponseMapper.mapUserResponseEntityToUserResponse;
 import static java.util.stream.Collectors.toList;
 
 @Repository("MongoPromptletDataAccessService")
@@ -59,7 +59,7 @@ public class MongoPromptletDataAccessService implements PromptletDataAccessServi
     }
 
     @Override
-    public void answerPromptlet(final String promptletId, final String profileId, final List<String> response) {
+    public String answerPromptlet(final String promptletId, final String profileId, final List<String> response) {
         final String id = userResponseRepository.save(aUserResponseEntityBuilder()
                 .profileId(profileId)
                 .response(response)
@@ -68,5 +68,18 @@ public class MongoPromptletDataAccessService implements PromptletDataAccessServi
         PromptletEntity promptletEntity = promptletRepository.findPromptletEntityById(promptletId);
         promptletEntity.getUserResponses().add(id);
         promptletRepository.save(promptletEntity);
+
+        return id;
+    }
+
+    @Override
+    public List<UserResponse> getPromptletResponse(List<String> responseIds) {
+        try{
+            return responseIds.stream()
+                    .map(x -> mapUserResponseEntityToUserResponse((userResponseRepository.findUserResponseEntityById(x))))
+                    .collect(toList());
+        } catch (MongoException mongoException){
+            throw new RuntimeException("Failed to save promptlet to mongo. | " + mongoException.getMessage());
+        }
     }
 }

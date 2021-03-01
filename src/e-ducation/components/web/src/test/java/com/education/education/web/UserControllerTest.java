@@ -3,8 +3,8 @@ package com.education.education.web;
 import com.education.education.user.User;
 import com.education.education.user.UserService;
 import com.education.education.web.helpers.RandomUser;
+import com.education.education.web.models.UserDataResponse;
 import com.education.education.web.models.UserRequest;
-import com.education.education.web.models.UserResponse;
 import com.education.education.web.models.mappers.UserToUserResponseMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ class UserControllerTest {
         final List<User> userList = generateListOf(RandomUser::randomUser, getRandomNumberBetween(2, 4));
 
 
-        final List<UserResponse> userResponseList = userList
+        final List<UserDataResponse> userResponseList = userList
                 .stream()
                 .map(UserToUserResponseMapper::mapUserToUserResponse)
                 .collect(toList());

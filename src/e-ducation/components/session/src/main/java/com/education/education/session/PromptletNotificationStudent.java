@@ -1,7 +1,5 @@
 package com.education.education.session;
 
-import com.education.education.promptlet.PROMPTLET_TYPE;
-import com.education.education.promptlet.Promptlet;
 import lombok.Builder;
 import lombok.Getter;
 

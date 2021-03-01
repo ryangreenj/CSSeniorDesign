@@ -3,6 +3,7 @@ package com.education.education.course;
 import com.education.education.course.repositories.entities.mappers.CourseEntityToCourseMapper;
 import com.education.education.promptlet.PROMPTLET_TYPE;
 import com.education.education.promptlet.Promptlet;
+import com.education.education.promptlet.UserResponse;
 import com.education.education.session.Session;
 import com.education.education.session.SessionService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -67,7 +68,11 @@ public class CourseService {
         return sessionService.getPromptlets(promptletIds);
     }
 
-    public void answerPromptlet(final String promptletId, final String profileId, final List<String> response){
-        sessionService.answerPromptlet(promptletId, profileId, response);
+    public void answerPromptlet(final String promptletId, final String profileId,final String profileName, final List<String> response){
+        sessionService.answerPromptlet(promptletId, profileId, profileName, response);
+    }
+
+    public List<UserResponse> getPromptletResponses(final List<String> responseIds){
+        return sessionService.getPromptletResponses(responseIds);
     }
 }

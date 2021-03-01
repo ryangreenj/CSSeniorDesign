@@ -13,6 +13,16 @@
             <p>{{ correctAnswer }}</p>
         </li>
     </ul>
-    
+
+    <p>Template:</p>
+    <!-- TODO - Prevent actual turn in  -->
     <app-promptlet-display [promptlet]="sharedData.currentPromptlet" [context]="'instructor'"></app-promptlet-display>
+
+    <p>User Responses:</p>
+    <!-- TODO - Display data for real -->
+    <ul *ngIf="sharedData.currentPromptlet.userResponses">
+      <li *ngFor="let userResponse of sharedData.currentPromptlet.userResponses">
+        <p>{{ userResponse.id }}, {{ userResponse.profileName }}, {{ userResponse.profileId }}, [{{ userResponse.response }}]</p>
+      </li>
+    </ul>
 </div>
