@@ -1,6 +1,7 @@
 package com.education.education.web;
 
 import com.education.education.course.CourseService;
+import com.education.education.web.models.ActiveSessionRequest;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseCreationResponse;
 import com.education.education.web.models.CourseRequest;
@@ -60,6 +61,11 @@ public class CourseController {
                 .stream()
                 .map(CourseToCourseResponseMapper::mapCourseToCourseResponse)
                 .collect(toList());
+    }
+
+    @PostMapping("/activeSession")
+    public void setActiveSession(@RequestBody final ActiveSessionRequest activeSessionRequest){
+        courseService.setActiveSession(activeSessionRequest.getCourseId(), activeSessionRequest.getSessionId());
     }
 
     @PostMapping("/session")

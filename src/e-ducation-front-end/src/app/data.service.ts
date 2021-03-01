@@ -88,7 +88,10 @@ export class DataService {
 
   loadPromptletData(promptletId: string) {
     // Load promptlet data from ID
-    return { "id": promptletId, "prompt": "What is the correct answer?", "promptlet_type": "SLIDER", "answerPool": ["a", "b", "c", "d"], "correctAnswer": ["b"], "userResponses": [] };
+
+    let localData = this.dataSource.getValue();
+    localData.currentPromptlet = this.dataSource.getValue().currentSession.promptlets.filter( item => item.id == promptletId)[0];
+    this.changeData(localData);
   }
 
   getPromptletData(sessionIds : string[]) {
@@ -97,29 +100,9 @@ export class DataService {
     return this.http.put<Promptlet[]>("http://localhost:8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
   }
 
-  fetchPromptletData(){
-
-      let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
-
-      stompClient.connect({}, frame => {
-        stompClient.subscribe('/topic/notification/' + this.dataSource.getValue().currentSessionId, (notification) => {
-          // observer.next(notifications);
-          let jsonBody = JSON.parse(notification.body)
-          let studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptlet_TYPE,
-                  answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[]};
-
-          let localData = this.dataSource.getValue();
-
-          localData.currentSession.promptlets.push(studentPromptlet);
-          this.changeData(localData);
-        })
-      })
-
-  }
-
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
     // POST - /course/session/promptlet
-    const promptletRequest = {sessionId: this.dataSource.getValue().currentSessionId, prompt: prompt,
+    const promptletRequest = {sessionId: this.dataSource.getValue().currentSession.id, prompt: prompt,
           promptlet_type: promptlet_type, answerPool: answerPool, correctAnswer: correctAnswer};
     return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
@@ -143,6 +126,7 @@ export class DataService {
         this.changeData(localData);
         });
   }
+
   loadPromptletsByCurrentSessionId(){
     this.getPromptletData(this.dataSource.getValue().currentSession.promptletIds)
       .subscribe((data: Promptlet[]) => {
@@ -152,6 +136,46 @@ export class DataService {
         this.changeData(localData);
       });
   }
+  fetchPromptletData(){
+
+    let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+
+    stompClient.connect({}, frame => {
+      stompClient.subscribe('/topic/notification/' + this.dataSource.getValue().currentSession.id, (notification) => {
+        // observer.next(notifications);
+        const jsonBody = JSON.parse(notification.body)
+        const studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
+          answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[]};
+
+        let localData = this.dataSource.getValue();
+
+        localData.currentSession.promptlets.push(studentPromptlet);
+        this.changeData(localData);
+      })
+    })
+
+  }
+
+  loadPromptletsByActiveSession(){
+
+    this.getSessionsData([this.dataSource.getValue().currentClass.activeSessionId])
+      .subscribe((data: Session[]) => {
+        let localData = this.dataSource.getValue();
+        localData.currentSession = data[0];
+        this.changeData(localData);
+
+        this.getPromptletData(data[0].promptletIds)
+          .subscribe((data: Promptlet[]) => {
+            let localData = this.dataSource.getValue();
+
+            localData.currentSession.promptlets = data;
+            this.changeData(localData);
+          });
+
+      });
+
+  }
+
   loadAllEnrolledClasses(){
     this.getEnrolledClassData()
       .subscribe((data: ClassData[]) => this.updateClasses(false, data));
@@ -175,8 +199,9 @@ export class DataService {
   updateClasses = (isOwnedClass: boolean, data: ClassData[]) => {
     let localData = this.dataSource.getValue();
 
-    if (isOwnedClass){localData.ownedClasses = data;}
-    else {localData.classes = data;}
+    if (isOwnedClass){localData.ownedClasses = data.map(x => ({...x, owned:true}));}
+    else {localData.enrolledClasses = data.map(x => ({...x, owned:false}));}
+
 
     this.changeData(localData);
     if (localData.currentClass != undefined && data.findIndex(x => x.id == localData.currentClass.id) >= 0){
@@ -185,7 +210,7 @@ export class DataService {
       if (isOwnedClass){
         this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass);
       } else {
-        this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentEnrolledClass);
+        this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass);
       }
 
     }
@@ -205,7 +230,8 @@ export class DataService {
   }
   setCurrentEnrolledClass(clazz: ClassData) {
     let localData = this.dataSource.getValue();
-    localData.currentEnrolledClass = clazz;
+    localData.currentClass = clazz;
+
     this.changeData(localData);
   }
 }
@@ -232,13 +258,10 @@ export class SharedData {
   user: UserData;
   profile: Profile;
   ownedClasses: ClassData[];
-  classes: ClassData[];
+  enrolledClasses: ClassData[];
   currentClass: ClassData;
-  currentEnrolledClass: ClassData;
   currentClassSessions: Session[];
-  currentSessionId: string;
   currentSession: Session;
-  currentPromptletId: string;
   currentPromptlet: Promptlet;
   jwt: string;
   localData: { id: "123456789"; username: "RyanGreen105"; enabled: true; accountNonLocked: true; credentialsNonExpired: true; };
@@ -266,6 +289,8 @@ export type ClassData = {
   // code: string;
   className: string;
   sessionIds: string[];
+  activeSessionId: string;
+  owned: boolean;
 }
 
 export type Session = {

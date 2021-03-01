@@ -29,6 +29,7 @@ public class MongoSessionDataAccessService implements SessionDataAccessService{
                     aSessionEntityBuilder()
                             .sessionName(sessionName)
                             .promptlets(new ArrayList<>())
+                            .isArchived(false)
                             .build()).getId();
         } catch (MongoException mongoException){
             throw new RuntimeException("Mongo save failed");

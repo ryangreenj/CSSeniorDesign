@@ -30,6 +30,7 @@ public class MongoCourseDataAccessService implements CourseDataAccessService{
                     aCourseEntityBuilder()
                             .className(className)
                             .sessionIds(new ArrayList<>())
+                            .activeSessionId("")
                             .build()).getId();
         } catch (MongoException mongoException){
             throw failureToSaveCourse(className);
@@ -55,5 +56,13 @@ public class MongoCourseDataAccessService implements CourseDataAccessService{
     @Override
     public List<CourseEntity> getAllCourses() {
         return courseRepository.findAll();
+    }
+
+    @Override
+    public void setActiveSession(String courseId, String sessionId) {
+        final CourseEntity courseEntity = courseRepository.findCourseEntityById(courseId);
+
+        courseEntity.setActiveSessionId(sessionId);
+        courseRepository.save(courseEntity);
     }
 }

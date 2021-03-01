@@ -12,6 +12,7 @@ public class CourseEntityToCourseMapper {
                 .className(courseEntity.getClassName())
                 .id(courseEntity.getId())
                 .sessionIds(courseEntity.getSessionIds())
+                .activeSessionId(courseEntity.getActiveSessionId())
                 .build();
     }
 }

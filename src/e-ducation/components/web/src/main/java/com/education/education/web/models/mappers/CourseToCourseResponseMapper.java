@@ -12,6 +12,7 @@ public class CourseToCourseResponseMapper {
                 .className(course.getClassName())
                 .id(course.getId())
                 .sessionIds(course.getSessionIds())
+                .activeSessionId(course.getActiveSessionId())
                 .build();
     }
 }

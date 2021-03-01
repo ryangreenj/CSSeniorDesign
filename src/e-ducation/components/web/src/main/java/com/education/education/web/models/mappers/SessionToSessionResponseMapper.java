@@ -12,6 +12,7 @@ public class SessionToSessionResponseMapper {
                 .sessionName(session.getSessionName())
                 .id(session.getId())
                 .promptletIds(session.getPromptletIds())
+                .isArchived(session.isArchived())
                 .build();
     }
 }

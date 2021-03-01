@@ -9,8 +9,8 @@
             </li>
         </ul>
       <a routerLink="classlist">Enrolled Class List</a>
-      <ul *ngIf="sharedData.classes">
-        <li *ngFor="let clazz of sharedData.classes">
+      <ul *ngIf="sharedData.enrolledClasses">
+        <li *ngFor="let clazz of sharedData.enrolledClasses">
           <p><span (click)="routeToEnrolledClass(clazz)">{{ clazz.className }}</span></p>
         </li>
       </ul>

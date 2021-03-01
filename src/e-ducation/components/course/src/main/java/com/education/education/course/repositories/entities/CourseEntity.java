@@ -16,6 +16,11 @@ public class CourseEntity {
     private String id;
     private String className;
     private List<String> sessionIds;
+    private String activeSessionId;
+
+    public void setActiveSessionId(String activeSessionId) {
+        this.activeSessionId = activeSessionId;
+    }
 
     public static CourseEntityBuilder aCourseEntityBuilder()
     {

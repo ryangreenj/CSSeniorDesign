@@ -12,6 +12,7 @@ public class SessionEntityToSessionMapper {
                 .id(sessionEntity.getId())
                 .sessionName(sessionEntity.getSessionName())
                 .promptletIds(sessionEntity.getPromptlets())
+                .isArchived(sessionEntity.isArchived())
                 .build();
     }
 }

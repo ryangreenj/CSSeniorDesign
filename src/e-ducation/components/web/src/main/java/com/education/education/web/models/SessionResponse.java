@@ -12,6 +12,7 @@ public class SessionResponse {
     private final String id;
     private final String sessionName;
     private final List<String> promptletIds;
+    private final boolean isArchived;
 
     public static SessionResponseBuilder aSessionResponseBuilder(){
         return SessionResponse.builder();

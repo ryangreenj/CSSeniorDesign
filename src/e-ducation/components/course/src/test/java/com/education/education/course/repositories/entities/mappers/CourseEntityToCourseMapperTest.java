@@ -18,6 +18,7 @@ class CourseEntityToCourseMapperTest {
                 .id(courseEntity.getId())
                 .className(courseEntity.getClassName())
                 .sessionIds(courseEntity.getSessionIds())
+                .activeSessionId(courseEntity.getActiveSessionId())
                 .build();
 
         assertThat(mapCourseEntityToCourse(courseEntity)).isEqualToComparingFieldByField(course);

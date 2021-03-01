@@ -17,13 +17,15 @@ public class RandomCourseEntity {
                 .className(getRandomAlphaNumericString(getRandomNumberBetween(5,20)))
                 .sessionIds(GenerateMany.generateListOf(
                         () -> getRandomAlphaNumericString(getRandomNumberBetween(5,20)),
-                        getRandomNumberBetween(0,20)));
+                        getRandomNumberBetween(0,20)))
+                .activeSessionId(getRandomAlphaNumericString(getRandomNumberBetween(5,20)));
     }
 
     public static CourseEntity randomCourseEntity_new(){
         return aCourseEntityBuilder()
                 .className(getRandomAlphaNumericString(getRandomNumberBetween(5,20)))
                 .sessionIds(new ArrayList<>())
+                .activeSessionId("")
                 .build();
     }
 }

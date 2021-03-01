@@ -16,7 +16,13 @@ export class EnrolledClassDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
-    this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentEnrolledClass);
+    // this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentClass);
+    // this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentClass);
+    //
+    // this.dataService.setCurrentSession(this.sharedData.currentClass.activeSessionId);
+    // this.dataService.loadPromptletsByCurrentSessionId();
+    this.dataService.loadPromptletsByActiveSession();
+    this.dataService.fetchPromptletData();
   }
 
 }

@@ -42,6 +42,11 @@ public class CourseService {
                 .map(CourseEntityToCourseMapper::mapCourseEntityToCourse)
                 .collect(Collectors.toList());
     }
+
+    public void setActiveSession(final String courseId, final String sessionId){
+        courseDataAccessService.setActiveSession(courseId,sessionId);
+    }
+
     public String addSession(final String courseId, final String sessionName){
         final String sessionId = sessionService.createSession(sessionName);
         courseDataAccessService.addSessionToCourse(courseId,sessionId);
