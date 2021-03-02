@@ -12,7 +12,10 @@ export class DataService {
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private stompClientUserResponse;
+  private stompClientPromptlets;
+  constructor(private http: HttpClient) {
+  }
 
   getHeaders(){
     return new HttpHeaders().set('Content-Type', 'application/json' ).set('Authorization','Bearer ' + this.dataSource.getValue().jwt);
@@ -132,24 +135,22 @@ export class DataService {
   }
   fetchUserResponse(){
 
-    let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+    this.stompClientUserResponse = Stomp.over(new SockJS(`http://localhost:8080/socket`));
 
-    stompClient.connect({}, frame => {
-      stompClient.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
+    this.stompClientUserResponse.connect({}, frame => {
+      this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
         // observer.next(notifications);
         const jsonBody = JSON.parse(notification.body)
         const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName, response:jsonBody.responses};
 
         let localData = this.dataSource.getValue();
-        console.log(jsonBody, userResponse);
         localData.currentPromptlet.userResponses.push(userResponse);
-        // localData.currentPromptlet.actualUserResponses.push(userResponse);
         this.changeData(localData);
-
-        console.log(userResponse);
       })
     })
-
+  }
+  disconnectUserResponse(){
+    this.stompClientUserResponse.disconnect({});
   }
 
   // Subscribe Blocks
@@ -181,10 +182,10 @@ export class DataService {
   }
   fetchPromptletData(){
 
-    let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+    this.stompClientPromptlets = Stomp.over(new SockJS(`http://localhost:8080/socket`));
 
-    stompClient.connect({}, frame => {
-      stompClient.subscribe('/topic/notification/' +
+    this.stompClientPromptlets.connect({}, frame => {
+      this.stompClientPromptlets.subscribe('/topic/notification/' +
             (this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id), (notification) => {
         // observer.next(notifications);
         const jsonBody = JSON.parse(notification.body)
@@ -199,13 +200,16 @@ export class DataService {
         } else if (jsonBody.notificationType == "SESSION") {
           console.log(jsonBody.newSessionId);
           this.setActiveSession(jsonBody.newSessionId);
-          stompClient.disconnect({});
+          this.stompClientPromptlets.disconnect({});
         } else {
           console.log(jsonBody)
         }
       })
     })
 
+  }
+  disconnectPromptlets(){
+    this.stompClientPromptlets.disconnect({});
   }
 
   loadPromptletsByActiveSession(){

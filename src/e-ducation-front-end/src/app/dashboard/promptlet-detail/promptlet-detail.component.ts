@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService, SharedData } from 'src/app/data.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { DataService, SharedData } from 'src/app/data.service';
   templateUrl: './promptlet-detail.component.html',
   styleUrls: ['./promptlet-detail.component.css']
 })
-export class PromptletDetailComponent implements OnInit {
+export class PromptletDetailComponent implements OnInit, OnDestroy {
 
   sharedData: SharedData;
 
@@ -19,4 +19,7 @@ export class PromptletDetailComponent implements OnInit {
     // this.dataService.getUserResponse(this.sharedData.currentPromptlet.userResponses);
   }
 
+  ngOnDestroy(): void {
+    this.dataService.disconnectUserResponse();
+  }
 }

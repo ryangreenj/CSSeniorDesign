@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { DataService, Promptlet, SharedData } from 'src/app/data.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { DataService, Promptlet, SharedData } from 'src/app/data.service';
   templateUrl: './enrolled-class-detail.component.html',
   styleUrls: ['./enrolled-class-detail.component.css']
 })
-export class EnrolledClassDetailComponent implements OnInit {
+export class EnrolledClassDetailComponent implements OnInit, OnDestroy {
 
   sharedData: SharedData;
 
@@ -20,6 +20,10 @@ export class EnrolledClassDetailComponent implements OnInit {
     console.log(this.sharedData.enrolledClasses)
     // this.dataService.loadPromptletsByActiveSession();
     this.dataService.fetchPromptletData();
+  }
+
+  ngOnDestroy(): void {
+    this.dataService.disconnectPromptlets();
   }
 
 }
