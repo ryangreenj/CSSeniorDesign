@@ -1,4 +1,6 @@
 <div class="header">
+    <button mat-raised-button (click)="setActiveSession('')" *ngIf="sharedData.currentClass.activeSessionId == sharedData.currentSession.id">Go Offline</button>
+    <button mat-raised-button (click)="setActiveSession(sharedData.currentSession.id)" *ngIf="sharedData.currentClass.activeSessionId != sharedData.currentSession.id">Go Live</button>
     <button mat-raised-button (click)="openCreatePromptletDialog()">+ Create New Promptlet</button>
 </div>
 

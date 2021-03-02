@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
 
@@ -35,14 +34,11 @@ class SessionServiceTest {
     @MockBean
     private PromptletService promptletService;
 
-    @MockBean
-    private SimpMessagingTemplate template;
-
     private SessionService sessionService;
 
     @BeforeEach
     public void setup(){
-        this.sessionService = new SessionService(sessionDataAccessService, promptletService,template);
+        this.sessionService = new SessionService(sessionDataAccessService, promptletService);
     }
 
     @Test

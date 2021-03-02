@@ -14,5 +14,5 @@ public interface CourseDataAccessService {
 
     List<CourseEntity> getAllCourses();
 
-    void setActiveSession(final String courseId, final String sessionId);
+    String setActiveSession(final String courseId, final String sessionId);
 }

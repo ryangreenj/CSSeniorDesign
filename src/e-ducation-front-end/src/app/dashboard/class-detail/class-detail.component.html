@@ -9,7 +9,9 @@
     <h2>Sessions:</h2>
     <ul *ngIf="sharedData.currentClassSessions">
         <li *ngFor="let session of sharedData.currentClassSessions">
-            <p><span (click)="routeToSession(session.id)">{{ session.sessionName }}</span></p>
+            <!-- I know this is bad, but wanted to keep the idea and would probably forget it if I didn't implement it. -->
+            <p *ngIf="sharedData.currentClass.activeSessionId == session.id"><span (click)="routeToSession(session.id)">{{ session.sessionName }} -- Live</span></p>
+            <p *ngIf="sharedData.currentClass.activeSessionId != session.id"><span (click)="routeToSession(session.id)">{{ session.sessionName }}</span></p>
         </li>
     </ul>
 </div>

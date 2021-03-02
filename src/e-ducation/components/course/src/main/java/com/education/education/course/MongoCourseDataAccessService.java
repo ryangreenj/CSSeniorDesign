@@ -59,10 +59,13 @@ public class MongoCourseDataAccessService implements CourseDataAccessService{
     }
 
     @Override
-    public void setActiveSession(String courseId, String sessionId) {
+    public String setActiveSession(String courseId, String sessionId) {
         final CourseEntity courseEntity = courseRepository.findCourseEntityById(courseId);
+        final String oldSessionId = courseEntity.getActiveSessionId();
 
         courseEntity.setActiveSessionId(sessionId);
         courseRepository.save(courseEntity);
+
+        return oldSessionId;
     }
 }

@@ -3,7 +3,6 @@ package com.education.education.web;
 import com.education.education.course.CourseService;
 import com.education.education.profile.Profile;
 import com.education.education.profile.ProfileService;
-import com.education.education.promptlet.UserResponse;
 import com.education.education.web.models.ActiveSessionRequest;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseCreationResponse;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.education.education.web.models.UserResponseResponse.aUserResponseResponseBuilder;
 import static java.util.stream.Collectors.toList;

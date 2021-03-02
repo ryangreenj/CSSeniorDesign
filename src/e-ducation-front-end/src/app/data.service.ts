@@ -1,10 +1,8 @@
-import { stringify } from '@angular/compiler/src/util';
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import {not} from "rxjs/internal-compatibility";
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +80,15 @@ export class DataService {
     return this.http.post<string>("http://localhost:8080/course/session",newSessionRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
+  setActiveSession(sessionId: string){
+    const courseId = this.dataSource.getValue().currentClass.id;
+    const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
+    return this.http.post<string>("http://localhost:8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
+      .subscribe((_: string) => {
+        this.updateProfileAndClasses();
+        this.fetchPromptletData();
+      });
+  }
 
   loadPromptletData(promptletId: string) {
     // Load promptlet data from ID
@@ -144,6 +151,7 @@ export class DataService {
     })
 
   }
+
   // Subscribe Blocks
   loadSessionsByCurrentClassId(currentClass : ClassData){
     this.getSessionsData(currentClass.sessionIds)
@@ -176,39 +184,53 @@ export class DataService {
     let stompClient = Stomp.over(new SockJS(`http://localhost:8080/socket`));
 
     stompClient.connect({}, frame => {
-      stompClient.subscribe('/topic/notification/' + this.dataSource.getValue().currentSession.id, (notification) => {
+      stompClient.subscribe('/topic/notification/' +
+            (this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id), (notification) => {
         // observer.next(notifications);
         const jsonBody = JSON.parse(notification.body)
-        const studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
-          answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[]};
+        if (jsonBody.notificationType == "PROMPTLET"){
+          const studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
+            answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[]};
 
-        let localData = this.dataSource.getValue();
+          let localData = this.dataSource.getValue();
 
-        localData.currentSession.promptlets.push(studentPromptlet);
-        this.changeData(localData);
+          localData.currentSession.promptlets.push(studentPromptlet);
+          this.changeData(localData);
+        } else if (jsonBody.notificationType == "SESSION") {
+          console.log(jsonBody.newSessionId);
+          this.setActiveSession(jsonBody.newSessionId);
+          stompClient.disconnect({});
+        } else {
+          console.log(jsonBody)
+        }
       })
     })
 
   }
 
   loadPromptletsByActiveSession(){
+    if (this.dataSource.getValue().currentClass.activeSessionId != ""){
+      this.getSessionsData([this.dataSource.getValue().currentClass.activeSessionId])
+        .subscribe((data: Session[]) => {
+          let localData = this.dataSource.getValue();
+          localData.currentSession = data[0];
+          this.changeData(localData);
 
-    this.getSessionsData([this.dataSource.getValue().currentClass.activeSessionId])
-      .subscribe((data: Session[]) => {
-        let localData = this.dataSource.getValue();
-        localData.currentSession = data[0];
-        this.changeData(localData);
+          this.getPromptletData(data[0].promptletIds)
+            .subscribe((data: Promptlet[]) => {
+              let localData = this.dataSource.getValue();
 
-        this.getPromptletData(data[0].promptletIds)
-          .subscribe((data: Promptlet[]) => {
-            let localData = this.dataSource.getValue();
+              localData.currentSession.promptlets = data;
+              this.changeData(localData);
+            });
 
-            localData.currentSession.promptlets = data;
-            this.changeData(localData);
-          });
+        });
+    } else {
+      let localData = this.dataSource.getValue();
 
-      });
-
+      localData.currentSession.promptlets = [];
+      this.changeData(localData);
+    }
   }
 
   loadAllEnrolledClasses(){
@@ -245,7 +267,7 @@ export class DataService {
       if (isOwnedClass){
         this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass);
       } else {
-        this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass);
+        this.loadPromptletsByActiveSession();
       }
 
     }

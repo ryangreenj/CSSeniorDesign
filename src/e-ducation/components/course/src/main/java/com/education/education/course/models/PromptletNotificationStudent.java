@@ -1,4 +1,4 @@
-package com.education.education.session;
+package com.education.education.course.models;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,8 +15,9 @@ public class PromptletNotificationStudent {
     private final List<String> responsePool;
     private final List<String> correctAnswer;
     private final List<String> userResponses;
+    private final String notificationType;
 
     public static PromptletNotificationStudentBuilder aPromptletNotificationStudentBuilder(){
-        return PromptletNotificationStudent.builder();
+        return PromptletNotificationStudent.builder().notificationType("PROMPTLET");
     }
 }

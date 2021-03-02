@@ -1,7 +1,7 @@
 
 <div class="container">
     <!--<ng-template [ngIf]="sharedData.currentEnrolledClass.class.status == true" [ngIfElse]="offline">!-->
-    <ng-template [ngIf]="sharedData.currentClass" [nfIfElse]="offline">
+    <ng-template [ngIf]="sharedData.currentClass.activeSessionId != ''" [ngIfElse]="offline">
         <h2>Promptlets:</h2>
         <app-promptlet-display *ngFor="let promptlet of sharedData.currentSession.promptlets" [promptlet]="promptlet" [context]="'student'"></app-promptlet-display>
     </ng-template>
