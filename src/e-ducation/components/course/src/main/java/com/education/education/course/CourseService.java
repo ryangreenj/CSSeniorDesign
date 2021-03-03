@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +72,7 @@ public class CourseService {
                                         final String promptlet_type, final List<String> answerPool,
                                         final List<String> correctAnswer){
         final String promptletId = sessionService.addPromptletToSession(sessionId, prompt, PROMPTLET_TYPE.fromString(promptlet_type), answerPool, correctAnswer);
-        notifyWebClientStudentOfPromptlet(sessionId, promptletId, prompt, promptlet_type, answerPool);
+//        notifyWebClientStudentOfPromptlet(sessionId, promptletId, prompt, promptlet_type, answerPool);
         return promptletId;
     }
 
@@ -87,10 +88,11 @@ public class CourseService {
         return sessionService.getPromptletResponses(responseIds);
     }
 
-    private void notifyWebClientStudentOfPromptlet(final String sessionId, final String id, final String prompt, final String promptletType, final List<String> responsePool){
+    private void notifyWebClientStudentOfPromptlet(final String sessionId, final String id, final String prompt,
+                                                   final String promptletType, final List<String> responsePool, final boolean visible){
         template.convertAndSend("/topic/notification/" + sessionId, aPromptletNotificationStudentBuilder()
                 .id(id).prompt(prompt).promptletType(promptletType).responsePool(responsePool).correctAnswer(new ArrayList<>())
-                .userResponses(new ArrayList<>()).build());
+                .userResponses(new ArrayList<>()).visible(visible).build());
     }
 
     private void notifyWebClientStudentOfNewActiveSession(final String courseId, final String oldSessionId, final String newSessionId){
@@ -98,11 +100,15 @@ public class CourseService {
         if (oldSessionId.equals("")){
             currentSocket = courseId;
         }
+
+        System.out.println(currentSocket);
         template.convertAndSend("/topic/notification/" + currentSocket, SessionNotificationStudent.aSessionNotificationStudentBuilder()
                 .newSessionId(newSessionId).build());
     }
 
-    public void activatePromptlet(final String promptletId, final boolean status) {
+    public void activatePromptlet(final String sessionId, final String promptletId, final boolean status) {
         sessionService.activatePromptlet(promptletId, status);
+        final Promptlet p = sessionService.getPromptlets(Collections.singletonList(promptletId)).get(0);
+        notifyWebClientStudentOfPromptlet(sessionId, promptletId, p.getPrompt(), p.getPROMPTLET_TYPE().toString(), p.getResponsePool(), p.isVisible());
     }
 }

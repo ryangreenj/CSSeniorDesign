@@ -113,7 +113,7 @@ public class CourseController {
 
     @PostMapping("/session/promptlet/active")
     public void activatePromptlet(@RequestBody final ActivePromptletRequest activePromptletRequest){
-        courseService.activatePromptlet(activePromptletRequest.getPromptletId(), activePromptletRequest.isStatus());
+        courseService.activatePromptlet(activePromptletRequest.getSessionId(),activePromptletRequest.getPromptletId(), activePromptletRequest.isStatus());
     }
 
     @PostMapping("/session/promptlet/answer")
@@ -125,7 +125,6 @@ public class CourseController {
 
     @PutMapping("/session/promptlet/answers")
     public List<UserResponseResponse> getResponses(@RequestBody final UserResponseRequest userResponseRequest){
-        System.out.println(userResponseRequest.getUserResponseIds());
         return courseService.getPromptletResponses(userResponseRequest.getUserResponseIds())
                     .stream()
                     .map(x -> aUserResponseResponseBuilder()

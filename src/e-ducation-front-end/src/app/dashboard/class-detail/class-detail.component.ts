@@ -17,7 +17,7 @@ export class ClassDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
-    this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentClass);
+    this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentClass, false);
   }
 
   public routeToSession(destSession: string) {

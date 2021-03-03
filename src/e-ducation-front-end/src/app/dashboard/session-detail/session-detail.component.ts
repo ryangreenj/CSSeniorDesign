@@ -23,8 +23,8 @@ export class SessionDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
-    this.dataService.loadPromptletsByCurrentSessionId();
-    this.dataService.fetchPromptletData();
+    this.dataService.loadPromptletsByCurrentSessionId(false);
+    // this.dataService.fetchPromptletData();
   }
 
   public routeToPromptlet(destPromptlet: string) {
@@ -49,6 +49,6 @@ export class SessionDetailComponent implements OnInit {
   }
 
   setActiveSession(sessionId : string){
-    this.dataService.setActiveSession(sessionId);
+    this.dataService.setActiveSession(sessionId, false);
   }
 }

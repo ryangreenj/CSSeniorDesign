@@ -16,6 +16,7 @@ public class PromptletNotificationStudent {
     private final List<String> correctAnswer;
     private final List<String> userResponses;
     private final String notificationType;
+    private final boolean visible;
 
     public static PromptletNotificationStudentBuilder aPromptletNotificationStudentBuilder(){
         return PromptletNotificationStudent.builder().notificationType("PROMPTLET");
