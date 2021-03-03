@@ -41,6 +41,7 @@ public class MongoPromptletDataAccessService implements PromptletDataAccessServi
                             .responsePool(responsePool)
                             .correctAnswer(correctAnswer)
                             .userResponses(new ArrayList<>())
+                            .isVisible(false)
                             .build()).getId();
         } catch (MongoException mongoException){
             throw new RuntimeException("Failed to save promptlet to mongo. | " + mongoException.getMessage());
@@ -81,5 +82,13 @@ public class MongoPromptletDataAccessService implements PromptletDataAccessServi
         } catch (MongoException mongoException){
             throw new RuntimeException("Failed to save promptlet to mongo. | " + mongoException.getMessage());
         }
+    }
+
+    @Override
+    public void activatePromptlet(final String promptletId, final boolean status) {
+        final PromptletEntity promptletEntity = promptletRepository.findPromptletEntityById(promptletId);
+
+        promptletEntity.setVisible(status);
+        promptletRepository.save(promptletEntity);
     }
 }

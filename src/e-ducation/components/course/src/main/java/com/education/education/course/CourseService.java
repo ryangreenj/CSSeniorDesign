@@ -101,4 +101,8 @@ public class CourseService {
         template.convertAndSend("/topic/notification/" + currentSocket, SessionNotificationStudent.aSessionNotificationStudentBuilder()
                 .newSessionId(newSessionId).build());
     }
+
+    public void activatePromptlet(final String promptletId, final boolean status) {
+        sessionService.activatePromptlet(promptletId, status);
+    }
 }

@@ -15,4 +15,6 @@ public interface PromptletDataAccessService {
     String answerPromptlet(final String promptletId, final String profileId, final List<String> response);
 
     List<UserResponse> getPromptletResponse(final List<String> responseIds);
+
+    void activatePromptlet(final String promptletId, final boolean status);
 }

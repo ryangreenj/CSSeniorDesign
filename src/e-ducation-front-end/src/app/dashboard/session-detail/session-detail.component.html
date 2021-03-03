@@ -13,15 +13,21 @@
       <mat-header-cell  *matHeaderCellDef> Prompt </mat-header-cell>
       <mat-cell  *matCellDef="let promptlet"> {{promptlet.prompt}} </mat-cell>
     </ng-container>
-
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
       <mat-cell *matCellDef="let promptlet"> {{promptlet.id}} </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="visible">
+      <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
 
-    <mat-header-row *matHeaderRowDef="['id','prompt']"></mat-header-row>
+      <mat-cell *matCellDef="let promptlet">
+        <mat-checkbox [checked]='promptlet.visible' (click)="changeValue(promptlet.id,promptlet.visible)" ></mat-checkbox>
+      </mat-cell>
+    </ng-container>
 
-    <mat-row *matRowDef="let row; columns: ['id','prompt']"></mat-row>
+    <mat-header-row *matHeaderRowDef="['id','prompt','visible']"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: ['id','prompt','visible']"></mat-row>
   </mat-table>
 
     <h2>Promptlets:</h2>

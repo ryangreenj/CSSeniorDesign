@@ -15,5 +15,6 @@ public class PromptletRetrievalResponse {
     private final List<String> answerPool;
     private final List<String> correctAnswer;
     private final List<String> userResponses;
+    private final boolean isVisible;
 
 }

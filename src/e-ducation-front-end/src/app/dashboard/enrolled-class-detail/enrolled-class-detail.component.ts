@@ -23,6 +23,7 @@ export class EnrolledClassDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // this.dataService.setCurrentClass(undefined);
     this.dataService.disconnectPromptlets();
   }
 

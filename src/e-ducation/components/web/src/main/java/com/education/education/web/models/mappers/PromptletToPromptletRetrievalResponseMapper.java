@@ -13,6 +13,7 @@ public class PromptletToPromptletRetrievalResponseMapper {
                 .answerPool(promptlet.getResponsePool())
                 .correctAnswer(promptlet.getCorrectAnswer())
                 .userResponses(promptlet.getUserResponses())
+                .isVisible(promptlet.isVisible())
                 .build();
     }
 }

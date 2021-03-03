@@ -58,4 +58,8 @@ public class SessionService {
     public List<UserResponse> getPromptletResponses(final List<String> responseIds){
         return promptletService.getPromptletResponses(responseIds);
     }
+
+    public void activatePromptlet(final String promptletId, final boolean status) {
+        promptletService.activatePromptlet(promptletId, status);
+    }
 }

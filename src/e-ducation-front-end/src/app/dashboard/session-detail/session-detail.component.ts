@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,12 @@ export class SessionDetailComponent implements OnInit {
 
   sharedData: SharedData;
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) { }
+
+  checked: boolean = true;
+
+  changeValue(id: string,value: boolean) {
+    this.dataService.updatePromptletStatus(id, !value);
+  }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);

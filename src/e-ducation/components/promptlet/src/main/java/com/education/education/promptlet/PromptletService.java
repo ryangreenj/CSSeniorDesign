@@ -1,5 +1,6 @@
 package com.education.education.promptlet;
 
+import com.education.education.promptlet.repositories.entities.PromptletEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -45,5 +46,9 @@ public class PromptletService {
 
         template.convertAndSend("/topic/notification/" + promptletId, aPromptletNotificationOwnerBuilder()
                 .id(id).profileId(profileId).profileName(profileName).responses(response).build());
+    }
+
+    public void activatePromptlet(final String promptletId, final boolean status) {
+        promptletDataAccessService.activatePromptlet(promptletId, status);
     }
 }

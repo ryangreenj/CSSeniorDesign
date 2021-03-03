@@ -3,6 +3,7 @@ package com.education.education.web;
 import com.education.education.course.CourseService;
 import com.education.education.profile.Profile;
 import com.education.education.profile.ProfileService;
+import com.education.education.web.models.ActivePromptletRequest;
 import com.education.education.web.models.ActiveSessionRequest;
 import com.education.education.web.models.CourseCreationRequest;
 import com.education.education.web.models.CourseCreationResponse;
@@ -108,6 +109,11 @@ public class CourseController {
                 .stream()
                 .map(PromptletToPromptletRetrievalResponseMapper::mapPromptletToPromptletRetrievalResponse)
                 .collect(toList());
+    }
+
+    @PostMapping("/session/promptlet/active")
+    public void activatePromptlet(@RequestBody final ActivePromptletRequest activePromptletRequest){
+        courseService.activatePromptlet(activePromptletRequest.getPromptletId(), activePromptletRequest.isStatus());
     }
 
     @PostMapping("/session/promptlet/answer")

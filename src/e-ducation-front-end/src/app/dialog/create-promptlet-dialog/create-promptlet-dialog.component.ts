@@ -13,7 +13,7 @@ export class CreatePromptletDialogComponent implements OnInit {
   answerPool: string;
   correctAnswer: string;
 
-  previewPromptlet: Promptlet = {"id": "NULL", "prompt": "", "promptlet_type": "MULTI_CHOICE", "answerPool": [], "correctAnswer": [], "userResponses": [] };
+  previewPromptlet: Promptlet = {id: "NULL", prompt: "", promptlet_type: "MULTI_CHOICE", answerPool: [], correctAnswer: [], userResponses: [], visible:false };
 
   constructor(public dialogRef: MatDialogRef<CreatePromptletDialogComponent>, private dataService: DataService) { }
 

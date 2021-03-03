@@ -148,9 +148,9 @@ export class DataService {
     return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
-  getPromptletData(sessionIds : string[]) {
+  getPromptletData(promptletIds : string[]) {
     // Load promptlet data from ID
-    let getPromptletRequest = {ids: sessionIds};
+    let getPromptletRequest = {ids: promptletIds};
     return this.http.put<Promptlet[]>("http://localhost:8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
   }
   submitPromptletResponse(promptletId: string, response: string[]) {
@@ -193,6 +193,13 @@ export class DataService {
     this.stompClientUserResponse.disconnect({});
   }
 
+  updatePromptletStatus(promptletId : string, status : boolean){
+    const getPromptletActiveRequest = {promptletId: promptletId, status:status};
+    this.http.post<string>("http://localhost:8080/course/session/promptlet/active", getPromptletActiveRequest, {headers:this.getHeaders()})
+      .subscribe((_: string) => {
+          this.loadPromptletsByCurrentSessionId();
+      });
+  }
   // Subscribe Blocks
   loadSessionsByCurrentClassId(currentClass : ClassData){
     this.getSessionsData(currentClass.sessionIds)
@@ -222,12 +229,11 @@ export class DataService {
         data.forEach(x => {
           const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
           const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
-            correctAnswer:x.correctAnswer, userResponses: userResponses};
+            correctAnswer:x.correctAnswer, userResponses: userResponses, visible:x.visible};
           promptlets.push(promptlet);
 
           if (localData.currentPromptlet != undefined && localData.currentPromptlet.id == promptlet.id){
-            localData.currentPromptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
-              correctAnswer:x.correctAnswer, userResponses: userResponses};
+            localData.currentPromptlet = promptlet;
             this.changeData(localData);
             this.getUserResponse(x.userResponses);
           }
@@ -247,7 +253,7 @@ export class DataService {
         const jsonBody = JSON.parse(notification.body)
         if (jsonBody.notificationType == "PROMPTLET"){
           const studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
-            answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[]};
+            answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[], visible:jsonBody.visible};
 
           let localData = this.dataSource.getValue();
 
@@ -458,6 +464,7 @@ export type Promptlet = {
   answerPool: string[];
   correctAnswer: string[];
   userResponses: UserResponse[];
+  visible: boolean;
 }
 
 export type UserResponse = {
