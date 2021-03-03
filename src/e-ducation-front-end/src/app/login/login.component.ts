@@ -30,22 +30,7 @@ export class LoginComponent implements OnInit {
 
   getLogin(username: string, password: string){
 
-    this.dataService.loginUser(username,password)
-      .subscribe((authResponse: loginResponse) =>
-      {
-        let localData = this.sharedData;
-        localData.jwt = authResponse.jwt;
-        localData.user = authResponse.userResponse;
-
-        this.dataService.getProfile(authResponse.userResponse.profileId)
-          .subscribe((data: Profile) =>
-          {
-            let localData = this.sharedData;
-            localData.profile = data;
-            this.dataService.changeData(localData);
-            this.router.navigate(["dashboard/classlist"]);
-          });
-      });
+    this.dataService.login(username,password, this.router);
   }
 
 }

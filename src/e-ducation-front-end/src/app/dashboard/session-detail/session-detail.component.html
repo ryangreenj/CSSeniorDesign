@@ -6,6 +6,24 @@
 
 <div *ngIf="sharedData.currentSession">
     <h1>{{ sharedData.currentSession.sessionName }}</h1>
+
+
+  <mat-table   class="lessons-table mat-elevation-z8" [dataSource]="sharedData.currentSession.promptlets">
+    <ng-container matColumnDef="prompt">
+      <mat-header-cell  *matHeaderCellDef> Prompt </mat-header-cell>
+      <mat-cell  *matCellDef="let promptlet"> {{promptlet.prompt}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
+      <mat-cell *matCellDef="let promptlet"> {{promptlet.id}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['id','prompt']"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: ['id','prompt']"></mat-row>
+  </mat-table>
+
     <h2>Promptlets:</h2>
     <ul *ngIf="sharedData.currentSession.promptlets">
         <li *ngFor="let promptlet of sharedData.currentSession.promptlets">

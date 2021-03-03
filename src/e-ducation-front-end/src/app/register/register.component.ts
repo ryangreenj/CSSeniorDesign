@@ -53,22 +53,7 @@ export class RegisterComponent implements OnInit {
         this.dataService.createUser(this.username,this.password, profileData.id)
           .subscribe((newUserData: string) =>
           {
-            this.dataService.loginUser(this.username,this.password)
-              .subscribe((authResponse: loginResponse) =>
-              {
-                let localData = this.sharedData;
-                localData.jwt = authResponse.jwt;
-                localData.user = authResponse.userResponse;
-
-                this.dataService.getProfile(authResponse.userResponse.profileId)
-                  .subscribe((data: Profile) =>
-                  {
-                    let localData = this.sharedData;
-                    localData.profile = data;
-                    this.dataService.changeData(localData);
-                    this.router.navigate(["dashboard/classlist"]);
-                  });
-              });
+            this.dataService.login(this.username,this.password, this.router);
           });
       });
   }

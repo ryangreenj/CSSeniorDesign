@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, SharedData } from 'src/app/data.service';
 import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-dialog/create-promptlet-dialog.component';
@@ -12,7 +13,6 @@ import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-
 export class SessionDetailComponent implements OnInit {
 
   sharedData: SharedData;
-
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -23,9 +23,9 @@ export class SessionDetailComponent implements OnInit {
 
   public routeToPromptlet(destPromptlet: string) {
 
-    this.sharedData.currentPromptlet = {id:destPromptlet, prompt: "", promptlet_type: "MULTI_CHOICE", answerPool: [],
-            correctAnswer: [], userResponses: []}
-    this.dataService.loadPromptletData(destPromptlet);
+    // this.sharedData.currentPromptlet = {id:destPromptlet, prompt: "", promptlet_type: "MULTI_CHOICE", answerPool: [],
+    //         correctAnswer: [], userResponses: []}
+    this.dataService.setCurrentPromptlet(destPromptlet);
     // this.dataService.changeData(this.sharedData);
     this.router.navigate(['promptlet'], { relativeTo: this.route });
   }

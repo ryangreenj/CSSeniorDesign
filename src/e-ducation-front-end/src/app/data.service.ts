@@ -3,11 +3,14 @@ import {BehaviorSubject} from 'rxjs';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+
+  private storageName: string = "Settings";
 
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
@@ -15,6 +18,37 @@ export class DataService {
   private stompClientUserResponse;
   private stompClientPromptlets;
   constructor(private http: HttpClient) {
+    if (this.getUserSettings("jwtToken") != null && this.getUserSettings("userResponse") != null){
+      let localData = this.dataSource.getValue();
+      localData.jwt = this.getUserSettings("jwtToken");
+      localData.user = this.getUserSettings("userResponse");
+      this.changeData(localData);
+
+      this.getProfile(localData.user.profileId)
+        .subscribe((data: Profile) =>
+        {
+          let localData = this.dataSource.getValue();
+          localData.profile = data;
+          this.changeData(localData);
+
+          if (this.getUserSettings("currentSession") != null){
+            let localData = this.dataSource.getValue();
+            localData.currentSession = this.getUserSettings("currentSession");
+            this.changeData(localData);
+          }
+          if (this.getUserSettings("currentPromptlet") != null){
+            let localData = this.dataSource.getValue();
+            localData.currentPromptlet = this.getUserSettings("currentPromptlet");
+            this.changeData(localData);
+          }
+
+          if (this.getUserSettings("currentClass") != null){
+            this.setCurrentClass(this.getUserSettings("currentClass"));
+          } else {
+            this.updateProfileAndClasses();
+          }
+        });
+    }
   }
 
   getHeaders(){
@@ -23,6 +57,20 @@ export class DataService {
 
   changeData(data: SharedData) {
     this.dataSource.next(data);
+  }
+
+  setSettings(storageName: string, data: any) {
+    localStorage.setItem(storageName, JSON.stringify(data));
+  }
+  getUserSettings(storageName: string) {
+    let data = localStorage.getItem(storageName);
+    return JSON.parse(data);
+  }
+  clearUserSettings() {
+    localStorage.removeItem(this.storageName);
+  }
+  cleanAll() {
+    localStorage.clear()
   }
 
   /** HTTP CALLS -- return observable **/
@@ -39,7 +87,7 @@ export class DataService {
     let newUserRequest = {username:username, password:password, profileId: profileId};
     return this.http.post("http://localhost:8080/user",newUserRequest);
   }
-  loginUser(username: string, password: string) {
+  authorizeUser(username: string, password: string) {
     // POST - /authorize
     let l : loginRequest = {username:username, password:password};
 
@@ -91,14 +139,6 @@ export class DataService {
         this.updateProfileAndClasses();
         this.fetchPromptletData();
       });
-  }
-
-  loadPromptletData(promptletId: string) {
-    // Load promptlet data from ID
-
-    let localData = this.dataSource.getValue();
-    localData.currentPromptlet = this.dataSource.getValue().currentSession.promptlets.filter( item => item.id == promptletId)[0];
-    this.changeData(localData);
   }
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
@@ -157,10 +197,19 @@ export class DataService {
   loadSessionsByCurrentClassId(currentClass : ClassData){
     this.getSessionsData(currentClass.sessionIds)
       .subscribe((data: Session[]) => {
-        let localData = this.dataSource.getValue();
+          let localData = this.dataSource.getValue();
 
-        localData.currentClassSessions = data;
-        this.changeData(localData);
+          localData.currentClassSessions = data;
+          this.changeData(localData);
+
+          if (localData.currentSession != undefined && data.findIndex(x => x.id == localData.currentSession.id) >= 0) {
+
+            let localData = this.dataSource.getValue();
+            localData.currentSession = data[data.findIndex(x => x.id == localData.currentSession.id)];
+            this.changeData(localData);
+            this.loadPromptletsByCurrentSessionId();
+
+          }
         });
   }
 
@@ -175,6 +224,13 @@ export class DataService {
           const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
             correctAnswer:x.correctAnswer, userResponses: userResponses};
           promptlets.push(promptlet);
+
+          if (localData.currentPromptlet != undefined && localData.currentPromptlet.id == promptlet.id){
+            localData.currentPromptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
+              correctAnswer:x.correctAnswer, userResponses: userResponses};
+            this.changeData(localData);
+            this.getUserResponse(x.userResponses);
+          }
         });
         localData.currentSession.promptlets = promptlets;
         this.changeData(localData);
@@ -278,22 +334,56 @@ export class DataService {
   }
 
   // Data setters
+  setCurrentPromptlet(promptletId: string) {
+    // Load promptlet data from ID
+
+    let localData = this.dataSource.getValue();
+    localData.currentPromptlet = this.dataSource.getValue().currentSession.promptlets.filter( item => item.id == promptletId)[0];
+
+    this.setSettings("currentPromptlet", localData.currentPromptlet);
+    this.changeData(localData);
+  }
   setCurrentSession(sessionId: string) {
     let localData = this.dataSource.getValue();
     localData.currentSession = this.dataSource.getValue().currentClassSessions.filter( item => item.id == sessionId)[0];
+
+    this.setSettings("currentSession", localData.currentSession);
     this.changeData(localData);
   }
   setCurrentClass(clazz: ClassData) {
     let localData = this.dataSource.getValue();
     localData.currentClass = clazz;
+    this.setSettings("currentClass", localData.currentClass);
     this.changeData(localData);
     this.updateProfileAndClasses();
   }
   setCurrentEnrolledClass(clazz: ClassData) {
     let localData = this.dataSource.getValue();
     localData.currentClass = clazz;
-
+    this.setSettings("currentClass", localData.currentClass);
     this.changeData(localData);
+    this.updateProfileAndClasses();
+  }
+
+  login(username : string, password : string, router: Router){
+    this.authorizeUser(username,password)
+      .subscribe((authResponse: loginResponse) =>
+      {
+        let localData = this.dataSource.getValue();
+        localData.jwt = authResponse.jwt;
+        localData.user = authResponse.userResponse;
+
+        this.setSettings("jwtToken", authResponse.jwt);
+        this.setSettings("userResponse", authResponse.userResponse);
+        this.getProfile(authResponse.userResponse.profileId)
+          .subscribe((data: Profile) =>
+          {
+            let localData = this.dataSource.getValue();
+            localData.profile = data;
+            this.changeData(localData);
+            router.navigate(["dashboard/classlist"]);
+          });
+      });
   }
 }
 
