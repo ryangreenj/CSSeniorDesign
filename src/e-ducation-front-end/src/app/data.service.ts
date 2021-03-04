@@ -187,6 +187,7 @@ export class DataService {
         const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName, response:jsonBody.responses};
 
         let localData = this.dataSource.getValue();
+        localData.currentPromptlet.userResponses = localData.currentPromptlet.userResponses.filter(x => x.profileId != userResponse.profileId);
         localData.currentPromptlet.userResponses.push(userResponse);
         this.changeData(localData);
       })

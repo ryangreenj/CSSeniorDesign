@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.education.education.promptlet.repositories.entities.PromptletEntity.aPromptletEntityBuilder;
 import static com.education.education.promptlet.repositories.entities.UserResponseEntity.aUserResponseEntityBuilder;
@@ -67,6 +68,7 @@ public class MongoPromptletDataAccessService implements PromptletDataAccessServi
                 .build()).getId();
 
         PromptletEntity promptletEntity = promptletRepository.findPromptletEntityById(promptletId);
+        promptletEntity.setUserResponses(promptletEntity.getUserResponses().stream().filter(x -> !userResponseRepository.findUserResponseEntityById(x).getProfileId().equals(profileId)).collect(toList()));
         promptletEntity.getUserResponses().add(id);
         promptletRepository.save(promptletEntity);
 
