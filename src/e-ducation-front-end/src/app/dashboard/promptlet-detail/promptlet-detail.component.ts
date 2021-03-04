@@ -16,7 +16,6 @@ export class PromptletDetailComponent implements OnInit, OnDestroy {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
     this.dataService.getUserResponse(this.sharedData.currentPromptlet.userResponses.map(x => x.id))
     this.dataService.fetchUserResponse();
-    // this.dataService.getUserResponse(this.sharedData.currentPromptlet.userResponses);
   }
 
   ngOnDestroy(): void {

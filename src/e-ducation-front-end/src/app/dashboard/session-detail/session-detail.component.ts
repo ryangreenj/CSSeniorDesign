@@ -29,10 +29,7 @@ export class SessionDetailComponent implements OnInit {
 
   public routeToPromptlet(destPromptlet: string) {
 
-    // this.sharedData.currentPromptlet = {id:destPromptlet, prompt: "", promptlet_type: "MULTI_CHOICE", answerPool: [],
-    //         correctAnswer: [], userResponses: []}
     this.dataService.setCurrentPromptlet(destPromptlet);
-    // this.dataService.changeData(this.sharedData);
     this.router.navigate(['promptlet'], { relativeTo: this.route });
   }
 

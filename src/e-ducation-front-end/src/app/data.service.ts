@@ -250,11 +250,9 @@ export class DataService {
   }
   fetchPromptletData(){
 
-    console.log(this.stompClientPromptlets)
     if (this.stompClientPromptlets == undefined || !this.stompClientPromptlets.isConnected){
 
       this.stompClientPromptlets = Stomp.over(new SockJS(`http://localhost:8080/socket`));
-      console.log((this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id));
       this.stompClientPromptlets.connect({}, frame => {
         this.stompClientPromptlets.subscribe('/topic/notification/' +
           (this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id), (notification) => {
@@ -272,11 +270,9 @@ export class DataService {
             }
             this.changeData(localData);
           } else if (jsonBody.notificationType == "SESSION") {
-            console.log(jsonBody.newSessionId);
+
             this.setActiveSession(jsonBody.newSessionId, true);
             this.stompClientPromptlets.disconnect({});
-          } else {
-            console.log(jsonBody)
           }
         })
       })

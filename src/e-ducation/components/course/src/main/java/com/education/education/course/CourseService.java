@@ -101,7 +101,6 @@ public class CourseService {
             currentSocket = courseId;
         }
 
-        System.out.println(currentSocket);
         template.convertAndSend("/topic/notification/" + currentSocket, SessionNotificationStudent.aSessionNotificationStudentBuilder()
                 .newSessionId(newSessionId).build());
     }

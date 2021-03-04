@@ -80,7 +80,6 @@ export class PromptletDisplayComponent implements OnInit {
         response = [this.sliderValue];
         break;
     }
-    console.log(response);
     this.dataService.submitPromptletResponse(this.promptlet.id, response);
   }
 

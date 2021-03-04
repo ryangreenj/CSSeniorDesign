@@ -17,9 +17,6 @@ export class EnrolledClassDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
     this.dataService.updateProfileAndClasses();
-    // console.log(this.sharedData.enrolledClasses)
-    // this.dataService.loadPromptletsByActiveSession();
-    // this.dataService.fetchPromptletData();
   }
 
   ngOnDestroy(): void {
