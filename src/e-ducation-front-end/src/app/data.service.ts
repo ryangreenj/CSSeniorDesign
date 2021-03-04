@@ -19,7 +19,7 @@ export class DataService {
   private stompClientPromptlets;
   constructor(private http: HttpClient) {
 
-    if (false && this.getUserSettings("jwtToken") != null && this.getUserSettings("userResponse") != null){
+    if (this.getUserSettings("jwtToken") != null && this.getUserSettings("userResponse") != null){
       let localData = this.dataSource.getValue();
       localData.jwt = this.getUserSettings("jwtToken");
       localData.user = this.getUserSettings("userResponse");

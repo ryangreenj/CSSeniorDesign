@@ -11,11 +11,11 @@
   <mat-table   class="lessons-table mat-elevation-z8" [dataSource]="sharedData.currentSession.promptlets">
     <ng-container matColumnDef="prompt">
       <mat-header-cell  *matHeaderCellDef> Prompt </mat-header-cell>
-      <mat-cell  *matCellDef="let promptlet"> {{promptlet.prompt}} </mat-cell>
+      <mat-cell  *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.prompt }}</span></p> </mat-cell>
     </ng-container>
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
-      <mat-cell *matCellDef="let promptlet"> {{promptlet.id}} </mat-cell>
+      <mat-cell *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.id }}</span></p></mat-cell>
     </ng-container>
     <ng-container matColumnDef="visible">
       <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
@@ -33,7 +33,7 @@
     <h2>Promptlets:</h2>
     <ul *ngIf="sharedData.currentSession.promptlets">
         <li *ngFor="let promptlet of sharedData.currentSession.promptlets">
-            <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.prompt }}</span></p>
+          <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.prompt }}</span></p>
         </li>
     </ul>
 </div>
