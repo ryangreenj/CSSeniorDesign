@@ -12,6 +12,7 @@ public class Session {
     private final String id;
     private final String sessionName;
     private final List<String> promptletIds;
+    private final boolean isArchived;
 
     public static SessionBuilder aSessionBuilder(){
         return Session.builder();

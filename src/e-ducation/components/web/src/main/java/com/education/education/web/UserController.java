@@ -1,8 +1,8 @@
 package com.education.education.web;
 
 import com.education.education.user.UserService;
+import com.education.education.web.models.UserDataResponse;
 import com.education.education.web.models.UserRequest;
-import com.education.education.web.models.UserResponse;
 import com.education.education.web.models.mappers.UserToUserResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +40,7 @@ public class UserController {
     /**   Get get list of users **/
     // TODO - This should probs be deleted or heavily restricted
     @GetMapping("/all")
-    public List<UserResponse> getUsers() {
+    public List<UserDataResponse> getUsers() {
         return userService.getAllUsers().stream()
                 .map(UserToUserResponseMapper::mapUserToUserResponse)
                 .collect(toList());

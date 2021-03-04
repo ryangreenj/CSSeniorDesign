@@ -31,6 +31,7 @@ import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog
 import { HttpClientModule } from "@angular/common/http";
 import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptlet-display.component';
 import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/enrolled-class-detail.component';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -56,25 +57,26 @@ import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/
     CreateSessionDialogComponent,
     CreatePromptletDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatCheckboxModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatSidenavModule,
-    MatDialogModule,
-    MatIconModule,
-    MatSelectModule,
-    HttpClientModule,
-    MatRadioModule,
-    MatSliderModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCardModule,
+        MatCheckboxModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatDialogModule,
+        MatIconModule,
+        MatSelectModule,
+        HttpClientModule,
+        MatRadioModule,
+        MatSliderModule,
+        MatTableModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

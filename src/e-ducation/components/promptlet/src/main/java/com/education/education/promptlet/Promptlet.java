@@ -15,6 +15,7 @@ public class Promptlet {
     private final List<String> responsePool;
     private final List<String> correctAnswer;
     private final List<String> userResponses;
+    private final boolean isVisible;
 
     public static PromptletBuilder aPromptletBuilder(){
         return Promptlet.builder();

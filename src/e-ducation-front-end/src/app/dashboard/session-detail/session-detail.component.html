@@ -1,13 +1,34 @@
 <div class="header">
+    <button mat-raised-button (click)="setActiveSession('')" *ngIf="sharedData.currentClass.activeSessionId == sharedData.currentSession.id">Go Offline</button>
+    <button mat-raised-button (click)="setActiveSession(sharedData.currentSession.id)" *ngIf="sharedData.currentClass.activeSessionId != sharedData.currentSession.id">Go Live</button>
     <button mat-raised-button (click)="openCreatePromptletDialog()">+ Create New Promptlet</button>
 </div>
 
 <div *ngIf="sharedData.currentSession">
     <h1>{{ sharedData.currentSession.sessionName }}</h1>
-    <h2>Promptlets:</h2>
-    <ul *ngIf="sharedData.currentSession.promptletIds">
-        <li *ngFor="let promptlet of sharedData.currentSession.promptletIds">
-            <p><span (click)="routeToPromptlet(promptlet)">{{ promptlet }}</span></p>
-        </li>
-    </ul>
+
+
+  <mat-table   class="lessons-table mat-elevation-z8" [dataSource]="sharedData.currentSession.promptlets">
+    <ng-container matColumnDef="prompt">
+      <mat-header-cell  *matHeaderCellDef> Prompt </mat-header-cell>
+      <mat-cell  *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.prompt }}</span></p> </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
+      <mat-cell *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.id }}</span></p></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="visible">
+      <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
+
+      <mat-cell *matCellDef="let promptlet">
+        <mat-checkbox [checked]='promptlet.visible' (click)="changeValue(promptlet.id,promptlet.visible)" ></mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['id','prompt','visible']"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: ['id','prompt','visible']"></mat-row>
+  </mat-table>
+
+
 </div>

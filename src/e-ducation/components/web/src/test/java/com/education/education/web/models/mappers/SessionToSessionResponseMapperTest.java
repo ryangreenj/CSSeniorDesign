@@ -18,6 +18,7 @@ class SessionToSessionResponseMapperTest {
                 .id(session.getId())
                 .sessionName(session.getSessionName())
                 .promptletIds(session.getPromptletIds())
+                .isArchived(session.isArchived())
                 .build();
 
         assertThat(mapSessionToSessionResponse(session)).isEqualToComparingFieldByField(expectedSessionResponse);

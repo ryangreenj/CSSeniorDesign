@@ -40,6 +40,7 @@ class MongoSessionDataAccessServiceTest {
         final SessionEntity sessionEntity = getRandomSessionEntity()
                 .sessionName(sessionName)
                 .promptlets(new ArrayList<>())
+                .isArchived(false)
                 .build();
         final ArgumentCaptor<SessionEntity> sessionEntityCaptor = ArgumentCaptor.forClass(SessionEntity.class);
 

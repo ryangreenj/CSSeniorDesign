@@ -12,17 +12,17 @@ interface CheckBox {
   styleUrls: ['./promptlet-display.component.css']
 })
 export class PromptletDisplayComponent implements OnInit {
-  
+
   @Input() promptlet: Promptlet;
   @Input() context: string;
-  
+
   canSubmit: boolean = false;
-  
+
   multiChoiceAnswer: string;
   checkBoxes: CheckBox[] = [];
   openResponseAnswer: string;
   sliderValue: string;
-  
+
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class PromptletDisplayComponent implements OnInit {
       }
     }
   }
-  
+
   checkCanSubmit() {
     switch (this.promptlet.promptlet_type) {
       case "MULTI_CHOICE":
@@ -58,29 +58,28 @@ export class PromptletDisplayComponent implements OnInit {
         break;
     }
   }
-  
+
   onSubmit() {
-    let response = "";
-    
+    let response = [];
+
     switch (this.promptlet.promptlet_type) {
       case "MULTI_CHOICE":
-        response = this.multiChoiceAnswer;
+        response = [this.multiChoiceAnswer];
         break;
       case "MULTI_RESPONSE":
         this.checkBoxes.forEach(function(box) {
           if (box.selected == true) {
-            response += (box.choice + "\n");
+            response.push(box.choice);
           }
         });
         break;
       case "OPEN_RESPONSE":
-        response = this.openResponseAnswer;
+        response = [this.openResponseAnswer];
         break;
       case "SLIDER":
-        response = this.sliderValue;
+        response = [this.sliderValue];
         break;
     }
-    
     this.dataService.submitPromptletResponse(this.promptlet.id, response);
   }
 

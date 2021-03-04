@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
 
@@ -26,11 +27,14 @@ class PromptletServiceTest {
     @Qualifier("MongoPromptletDataAccessService")
     private PromptletDataAccessService promptletDataAccessService;
 
+    @MockBean
+    private SimpMessagingTemplate template;
+
     private PromptletService promptletService;
 
     @BeforeEach
     public void setup(){
-        this.promptletService = new PromptletService(promptletDataAccessService);
+        this.promptletService = new PromptletService(promptletDataAccessService, template);
     }
 
     @Test

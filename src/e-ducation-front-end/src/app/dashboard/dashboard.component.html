@@ -9,11 +9,12 @@
             </li>
         </ul>
       <a routerLink="classlist">Enrolled Class List</a>
-      <ul *ngIf="sharedData.classes">
-        <li *ngFor="let clazz of sharedData.classes">
+      <ul *ngIf="sharedData.enrolledClasses">
+        <li *ngFor="let clazz of sharedData.enrolledClasses">
           <p><span (click)="routeToEnrolledClass(clazz)">{{ clazz.className }}</span></p>
         </li>
       </ul>
+      <p><span (click)="signOut()">Sign Out</span></p>
     </mat-drawer>
     <mat-drawer-content><router-outlet></router-outlet></mat-drawer-content>
 </mat-drawer-container>

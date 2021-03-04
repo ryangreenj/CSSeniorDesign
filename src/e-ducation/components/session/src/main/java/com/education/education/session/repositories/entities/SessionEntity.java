@@ -16,6 +16,7 @@ public class SessionEntity {
     private final String id;
     private final String sessionName;
     private final List<String> promptlets;
+    private final boolean isArchived;
 
     public static SessionEntityBuilder aSessionEntityBuilder(){
         return SessionEntity.builder();

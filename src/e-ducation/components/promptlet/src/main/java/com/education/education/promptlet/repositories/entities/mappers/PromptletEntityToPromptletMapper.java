@@ -16,6 +16,7 @@ public class PromptletEntityToPromptletMapper {
                 .responsePool(promptletEntity.getResponsePool())
                 .correctAnswer(promptletEntity.getCorrectAnswer())
                 .userResponses(promptletEntity.getUserResponses())
+                .isVisible(promptletEntity.isVisible())
                 .build();
     }
 }

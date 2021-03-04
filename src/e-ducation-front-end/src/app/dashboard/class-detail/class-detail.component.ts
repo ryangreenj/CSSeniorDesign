@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService, SharedData } from 'src/app/data.service';
+import {DataService, Promptlet, SharedData} from 'src/app/data.service';
 import { CreateSessionDialogComponent } from 'src/app/dialog/create-session-dialog/create-session-dialog.component';
 
 @Component({
@@ -17,11 +17,11 @@ export class ClassDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
-    this.dataService.loadSessionsByCurrentClassId();
+    this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentClass, false);
   }
 
   public routeToSession(destSession: string) {
-    this.sharedData.currentSessionId = destSession;
+    this.sharedData.currentSession = {id:destSession, sessionName: "", promptletIds: [], promptlets: []};
     this.dataService.setCurrentSession(destSession);
     this.router.navigate(['session'], { relativeTo: this.route });
   }

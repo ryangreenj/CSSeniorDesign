@@ -18,7 +18,16 @@ public class PromptletEntity {
     private final String promptletType;
     private final List<String> responsePool;
     private final List<String> correctAnswer;
-    private final List<String> userResponses;
+    private List<String> userResponses;
+    private boolean isVisible;
+
+    public void setUserResponses(List<String> userResponses) {
+        this.userResponses = userResponses;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 
     public static PromptletEntityBuilder aPromptletEntityBuilder() {
         return PromptletEntity.builder();

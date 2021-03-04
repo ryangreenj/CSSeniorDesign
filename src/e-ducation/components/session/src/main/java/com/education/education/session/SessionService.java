@@ -3,6 +3,7 @@ package com.education.education.session;
 import com.education.education.promptlet.PROMPTLET_TYPE;
 import com.education.education.promptlet.Promptlet;
 import com.education.education.promptlet.PromptletService;
+import com.education.education.promptlet.UserResponse;
 import com.education.education.session.repositories.entities.mappers.SessionEntityToSessionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +19,7 @@ public class SessionService {
     private final SessionDataAccessService sessionDataAccessService;
 
     private final PromptletService promptletService;
+
 
     @Autowired
     public SessionService(@Qualifier("MongoSessionDataAccessService") final SessionDataAccessService sessionDataAccessService,
@@ -47,5 +49,17 @@ public class SessionService {
 
     public List<Promptlet> getPromptlets(final List<String> promptletIds){
         return promptletService.getPromptlets(promptletIds);
+    }
+
+    public void answerPromptlet(final String promptletId, final String profileId,final String profileName, final List<String> response){
+        promptletService.answerPromptlet(promptletId, profileId,profileName, response);
+    }
+
+    public List<UserResponse> getPromptletResponses(final List<String> responseIds){
+        return promptletService.getPromptletResponses(responseIds);
+    }
+
+    public void activatePromptlet(final String promptletId, final boolean status) {
+        promptletService.activatePromptlet(promptletId, status);
     }
 }

@@ -1,6 +1,7 @@
 package com.education.education.promptlet;
 
 import com.education.education.promptlet.repositories.PromptletRepository;
+import com.education.education.promptlet.repositories.UserResponseRepository;
 import com.education.education.promptlet.repositories.entities.PromptletEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,11 +28,14 @@ class MongoPromptletDataAccessServiceTest {
     @MockBean
     private PromptletRepository promptletRepository;
 
+    @MockBean
+    private UserResponseRepository userResponseRepository;
+
     private MongoPromptletDataAccessService mongoPromptletDataAccessService;
 
     @BeforeEach
     public void setup(){
-        this.mongoPromptletDataAccessService = new MongoPromptletDataAccessService(promptletRepository);
+        this.mongoPromptletDataAccessService = new MongoPromptletDataAccessService(promptletRepository, userResponseRepository);
     }
 
 

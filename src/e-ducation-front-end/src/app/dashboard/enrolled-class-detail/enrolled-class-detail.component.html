@@ -1,11 +1,11 @@
 
 <div class="container">
     <!--<ng-template [ngIf]="sharedData.currentEnrolledClass.class.status == true" [ngIfElse]="offline">!-->
-    <ng-template [ngIf]="sharedData.currentEnrolledClass" [nfIfElse]="offline">
+    <ng-template [ngIf]="sharedData.currentClass.activeSessionId != ''" [ngIfElse]="offline">
         <h2>Promptlets:</h2>
-        <app-promptlet-display *ngFor="let promptlet of activePromptlets" [promptlet]="promptlet" [context]="'student'"></app-promptlet-display>
+        <app-promptlet-display *ngFor="let promptlet of sharedData.currentSession.promptlets" [promptlet]="promptlet" [context]="'student'"></app-promptlet-display>
     </ng-template>
-    
+
     <ng-template #offline>
         <h3>Class is currently offline.</h3>
     </ng-template>

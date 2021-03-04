@@ -9,10 +9,11 @@ public class PromptletToPromptletRetrievalResponseMapper {
         return PromptletRetrievalResponse.builder()
                 .id(promptlet.getId())
                 .prompt(promptlet.getPrompt())
-                .PROMPTLET_TYPE(promptlet.getPROMPTLET_TYPE().toString())
-                .responsePool(promptlet.getResponsePool())
+                .promptlet_type(promptlet.getPROMPTLET_TYPE().toString())
+                .answerPool(promptlet.getResponsePool())
                 .correctAnswer(promptlet.getCorrectAnswer())
                 .userResponses(promptlet.getUserResponses())
+                .isVisible(promptlet.isVisible())
                 .build();
     }
 }

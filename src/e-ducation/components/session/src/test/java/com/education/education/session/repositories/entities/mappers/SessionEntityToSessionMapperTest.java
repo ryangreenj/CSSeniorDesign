@@ -20,6 +20,7 @@ class SessionEntityToSessionMapperTest {
                 .id(sessionEntity.getId())
                 .sessionName(sessionEntity.getSessionName())
                 .promptletIds(sessionEntity.getPromptlets())
+                .isArchived(sessionEntity.isArchived())
                 .build();
 
         assertThat(mapSessionEntityToSession(sessionEntity)).isEqualToComparingFieldByField(expectedSession);
