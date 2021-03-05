@@ -1,0 +1,13 @@
+
+<ng-template [ngIf]="visible">
+    <ngx-charts-bar-vertical
+        [view]="[1000,400]"
+        [results]="processedResults"
+        [xAxisLabel]="'Choices'"
+        [yAxisLabel]="'Amount'"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true">
+    </ngx-charts-bar-vertical>
+</ng-template>

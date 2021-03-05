@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~9.1.7",
     "@angular/platform-browser-dynamic": "~9.1.7",
     "@angular/router": "~9.1.7",
+    "@swimlane/ngx-charts": "^17.0.1",
     "rxjs": "~6.5.4",
     "stompjs": "^2.3.3",
     "tslib": "^1.10.0",
