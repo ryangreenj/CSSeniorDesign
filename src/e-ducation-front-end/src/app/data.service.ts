@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 export class DataService {
 
   private storageName: string = "Settings";
+  private ipAddr: string = "localhost";
 
   private dataSource = new BehaviorSubject<SharedData>(new SharedData());
   currentData = this.dataSource.asObservable();
@@ -77,65 +78,65 @@ export class DataService {
   /** HTTP CALLS -- return observable **/
   createProfile (username: string) {
     let newProfileRequest = {username:username};
-    return this.http.post<idReturnType>("http://localhost:8080/profile",newProfileRequest);
+    return this.http.post<idReturnType>("http://" + this.ipAddr + ":8080/profile",newProfileRequest);
   }
   getProfile(profileId: String){
     let getProfileRequest = {id: profileId};
-    return this.http.put<Profile>("http://localhost:8080/profile",getProfileRequest);
+    return this.http.put<Profile>("http://" + this.ipAddr + ":8080/profile",getProfileRequest);
   }
 
   createUser(username: string, password: string, profileId: string) {
     let newUserRequest = {username:username, password:password, profileId: profileId};
-    return this.http.post("http://localhost:8080/user",newUserRequest);
+    return this.http.post("http://" + this.ipAddr + ":8080/user",newUserRequest);
   }
   authorizeUser(username: string, password: string) {
     // POST - /authorize
     let l : loginRequest = {username:username, password:password};
 
-    return this.http.post<loginResponse>("http://localhost:8080/authenticate",l);
+    return this.http.post<loginResponse>("http://" + this.ipAddr + ":8080/authenticate",l);
   }
 
   enrollClass(courseId: string) {
     // POST - /profile/join
     let enrollClassRequest = {profileId: this.dataSource.getValue().profile.id, courseId: courseId};
-    return this.http.post<string>("http://localhost:8080/profile/join",enrollClassRequest, {headers:this.getHeaders()})
+    return this.http.post<string>("http://" + this.ipAddr + ":8080/profile/join",enrollClassRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
   getEnrolledClassData(){
     let c : courseRequest = {ids: this.dataSource.getValue().profile.coursesEnrolled};
-    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
+    return this.http.put<ClassData[]>("http://" + this.ipAddr + ":8080/course/", c,{headers: this.getHeaders()});
   }
   createClass(courseName: string) {
     // POST - /course/create
     const newCourseRequest = {courseName:courseName};
-    return this.http.post<idReturnType>("http://localhost:8080/course", newCourseRequest, {headers:this.getHeaders()})
+    return this.http.post<idReturnType>("http://" + this.ipAddr + ":8080/course", newCourseRequest, {headers:this.getHeaders()})
       .subscribe((courseId:idReturnType) => {
         const hostCourseRequest = {profileId:this.dataSource.getValue().profile.id, courseId:courseId.id};
-        this.http.post<string>("http://localhost:8080/profile/create",hostCourseRequest, {headers:this.getHeaders()})
+        this.http.post<string>("http://" + this.ipAddr + ":8080/profile/create",hostCourseRequest, {headers:this.getHeaders()})
           .subscribe((_: string) => {});
       });
   }
   getOwnedClassData(){
     const c : courseRequest = {ids: this.dataSource.getValue().profile.coursesOwned};
-    return this.http.put<ClassData[]>("http://localhost:8080/course/", c,{headers: this.getHeaders()});
+    return this.http.put<ClassData[]>("http://" + this.ipAddr + ":8080/course/", c,{headers: this.getHeaders()});
   }
 
   getSessionsData(sessions: string[]) {
     // Load session data from ID
     let getSessionsRequest = {sessionIds: sessions};
-    return this.http.put<Session[]>("http://localhost:8080/course/session",getSessionsRequest, {headers:this.getHeaders()});
+    return this.http.put<Session[]>("http://" + this.ipAddr + ":8080/course/session",getSessionsRequest, {headers:this.getHeaders()});
   }
   createSession(sessionName: string) {
     // POST - /course/session
     const courseId = this.dataSource.getValue().currentClass.id;
     const newSessionRequest = {courseId:courseId, sessionName:sessionName};
-    return this.http.post<string>("http://localhost:8080/course/session",newSessionRequest, {headers:this.getHeaders()})
+    return this.http.post<string>("http://" + this.ipAddr + ":8080/course/session",newSessionRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
   setActiveSession(sessionId: string, fetchData: boolean){
     const courseId = this.dataSource.getValue().currentClass.id;
     const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
-    return this.http.post<string>("http://localhost:8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
+    return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {
         this.updateProfileAndClasses();
         if (fetchData){
@@ -148,13 +149,13 @@ export class DataService {
     // POST - /course/session/promptlet
     const promptletRequest = {sessionId: this.dataSource.getValue().currentSession.id, prompt: prompt,
           promptlet_type: promptlet_type, answerPool: answerPool, correctAnswer: correctAnswer};
-    return this.http.post<string>("http://localhost:8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
+    return this.http.post<string>("http://" + this.ipAddr + ":8080/course/session/promptlet", promptletRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
   getPromptletData(promptletIds : string[]) {
     // Load promptlet data from ID
     let getPromptletRequest = {ids: promptletIds};
-    return this.http.put<Promptlet[]>("http://localhost:8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
+    return this.http.put<Promptlet[]>("http://" + this.ipAddr + ":8080/course/session/promptlet",getPromptletRequest, {headers:this.getHeaders()});
   }
   submitPromptletResponse(promptletId: string, response: string[]) {
     const profileId = this.dataSource.getValue().user.profileId;
@@ -162,14 +163,14 @@ export class DataService {
     // Perhaps we can concatenate user ID as the first line of 'response' so we only send one string per response
     let promptletResponse = {promptletId: promptletId, profileId: profileId, response: response};
 
-    return this.http.post<string>("http://localhost:8080/course/session/promptlet/answer", promptletResponse, {headers:this.getHeaders()})
+    return this.http.post<string>("http://" + this.ipAddr + ":8080/course/session/promptlet/answer", promptletResponse, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
   }
 
   getUserResponse(userResponseIds: string[]){
     const userResponseRequest = {userResponseIds: userResponseIds};
 
-    return this.http.put<UserResponse[]>("http://localhost:8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
+    return this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
       .subscribe((data: UserResponse[]) => {
         let localData = this.dataSource.getValue();
         localData.currentPromptlet.userResponses = data;
@@ -178,7 +179,7 @@ export class DataService {
   }
   fetchUserResponse(){
 
-    this.stompClientUserResponse = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+    this.stompClientUserResponse = Stomp.over(new SockJS(`http://" + this.ipAddr + ":8080/socket`));
 
     this.stompClientUserResponse.connect({}, frame => {
       this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
@@ -199,7 +200,7 @@ export class DataService {
 
   updatePromptletStatus(promptletId : string, status : boolean){
     const getPromptletActiveRequest = {sessionId: this.dataSource.getValue().currentSession.id,promptletId: promptletId, status:status};
-    this.http.post<string>("http://localhost:8080/course/session/promptlet/active", getPromptletActiveRequest, {headers:this.getHeaders()})
+    this.http.post<string>("http://" + this.ipAddr + ":8080/course/session/promptlet/active", getPromptletActiveRequest, {headers:this.getHeaders()})
       .subscribe((_: string) => {
           this.loadPromptletsByCurrentSessionId(false);
       });
@@ -252,7 +253,7 @@ export class DataService {
 
     if (this.stompClientPromptlets == undefined || !this.stompClientPromptlets.isConnected){
 
-      this.stompClientPromptlets = Stomp.over(new SockJS(`http://localhost:8080/socket`));
+      this.stompClientPromptlets = Stomp.over(new SockJS(`http://" + this.ipAddr + ":8080/socket`));
       this.stompClientPromptlets.connect({}, frame => {
         this.stompClientPromptlets.subscribe('/topic/notification/' +
           (this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id), (notification) => {
