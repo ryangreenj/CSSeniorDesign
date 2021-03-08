@@ -48,4 +48,8 @@ export class SessionDetailComponent implements OnInit {
   setActiveSession(sessionId : string){
     this.dataService.setActiveSession(sessionId, false);
   }
+  
+  goBack(): void {
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
 }

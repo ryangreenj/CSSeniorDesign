@@ -1,0 +1,14 @@
+.header {
+    margin: 15px 40px 20px 15px;
+}
+
+.backButton {
+    margin-right: 15px;
+    height: 60px;
+    width: 150px;
+    font-size: 18px;
+}
+
+.container {
+    margin-left: 10px;
+}

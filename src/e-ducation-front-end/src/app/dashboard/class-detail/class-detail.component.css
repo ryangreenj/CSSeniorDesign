@@ -1,10 +1,17 @@
 .header {
-    margin: 15px 40px;
+    margin: 15px 40px 20px 15px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
-button {
+.backButton {
+    margin-right: 15px;
+    height: 60px;
+    width: 150px;
+    font-size: 18px;
+}
+
+.routeButton {
     margin-right: 15px;
     height: 60px;
     width: 230px;

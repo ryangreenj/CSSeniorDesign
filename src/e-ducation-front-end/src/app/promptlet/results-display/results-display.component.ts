@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataService, Promptlet, SharedData } from 'src/app/data.service';
-import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-results-display',
@@ -16,22 +15,10 @@ export class ResultsDisplayComponent implements OnInit {
   
   processedResults: Result[] = [];
   
-  subscription: Subscription;
-  
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.dataChanged(data));
-    
-    //this.handleResults(this.sharedData.currentPromptlet);
-    
-    // Refresh every 5 seconds
-    //const source = interval(5000);
-    //this.subscription = source.subscribe(val => this.handleResults(this.sharedData.currentPromptlet));
-  }
-  
-  ngOnDestroy(): void {
-    //this.subscription.unsubscribe();
   }
   
   dataChanged(data: SharedData): void {

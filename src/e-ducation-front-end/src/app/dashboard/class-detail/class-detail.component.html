@@ -1,5 +1,6 @@
 <div class="header">
-    <button mat-raised-button (click)="openCreateSessionDialog()">+ Create New Session</button>
+    <button mat-raised-button class="backButton" (click)="goBack()">Back</button>
+    <button mat-raised-button class="routeButton" (click)="openCreateSessionDialog()">+ Create New Session</button>
 </div>
 
 <div *ngIf="sharedData.currentClass">

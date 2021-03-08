@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService, SharedData } from 'src/app/data.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-promptlet-detail',
@@ -10,7 +11,7 @@ export class PromptletDetailComponent implements OnInit, OnDestroy {
 
   sharedData: SharedData;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
@@ -20,5 +21,9 @@ export class PromptletDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dataService.disconnectUserResponse();
+  }
+  
+  goBack(): void {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 }
