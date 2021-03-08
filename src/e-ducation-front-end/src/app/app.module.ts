@@ -18,6 +18,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from "@angular/material/table";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -79,7 +80,8 @@ import { ResultsDisplayComponent } from './promptlet/results-display/results-dis
         MatRadioModule,
         MatSliderModule,
         MatTableModule,
-        NgxChartsModule
+        NgxChartsModule,
+        MatButtonToggleModule
     ],
   providers: [],
   bootstrap: [AppComponent]

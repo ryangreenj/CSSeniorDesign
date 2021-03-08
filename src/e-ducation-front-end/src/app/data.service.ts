@@ -179,7 +179,7 @@ export class DataService {
   }
   fetchUserResponse(){
 
-    this.stompClientUserResponse = Stomp.over(new SockJS(`http://" + this.ipAddr + ":8080/socket`));
+    this.stompClientUserResponse = Stomp.over(new SockJS("http://" + this.ipAddr + ":8080/socket"));
 
     this.stompClientUserResponse.connect({}, frame => {
       this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
@@ -253,7 +253,7 @@ export class DataService {
 
     if (this.stompClientPromptlets == undefined || !this.stompClientPromptlets.isConnected){
 
-      this.stompClientPromptlets = Stomp.over(new SockJS(`http://" + this.ipAddr + ":8080/socket`));
+      this.stompClientPromptlets = Stomp.over(new SockJS("http://" + this.ipAddr + ":8080/socket"));
       this.stompClientPromptlets.connect({}, frame => {
         this.stompClientPromptlets.subscribe('/topic/notification/' +
           (this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id), (notification) => {
