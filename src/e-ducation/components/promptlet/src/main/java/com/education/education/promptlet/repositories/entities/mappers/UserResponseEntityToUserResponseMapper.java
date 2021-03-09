@@ -10,6 +10,7 @@ public class UserResponseEntityToUserResponseMapper {
                 .id(userResponseEntity.getId())
                 .profileId(userResponseEntity.getProfileId())
                 .response(userResponseEntity.getResponse())
+                .timestamp(userResponseEntity.getTimestamp())
                 .build();
     }
 }

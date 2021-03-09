@@ -161,7 +161,7 @@ export class DataService {
     const profileId = this.dataSource.getValue().user.profileId;
     // Unsure if this should be UserData or Profile
     // Perhaps we can concatenate user ID as the first line of 'response' so we only send one string per response
-    let promptletResponse = {promptletId: promptletId, profileId: profileId, response: response};
+    let promptletResponse = {activeSessionId:this.dataSource.getValue().currentClass.activeSessionId, promptletId: promptletId, profileId: profileId, response: response};
 
     return this.http.post<string>("http://" + this.ipAddr + ":8080/course/session/promptlet/answer", promptletResponse, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
@@ -173,19 +173,32 @@ export class DataService {
     return this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
       .subscribe((data: UserResponse[]) => {
         let localData = this.dataSource.getValue();
-        localData.currentPromptlet.userResponses = data;
+        let userData = localData.currentPromptlet.userResponses;
+        const profileIds = userData.map(x => x.profileId);
+        for (const d of data){
+          if (profileIds.indexOf(d.profileId) > -1){
+            const response : UserResponse = userData.filter(x => x.profileId == d.profileId)[0];
+            if (d.timestamp > response.timestamp){
+              userData = userData.filter(x => x.profileId != d.profileId);
+              userData.push(d);
+            }
+          } else {
+            userData.push(d);
+          }
+        }
         this.changeData(localData);
       });
   }
-  fetchUserResponse(){
+  fetchUserResponses(){
 
     this.stompClientUserResponse = Stomp.over(new SockJS("http://" + this.ipAddr + ":8080/socket"));
 
     this.stompClientUserResponse.connect({}, frame => {
-      this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
+      this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentClass.activeSessionId, (notification) => {
         // observer.next(notifications);
         const jsonBody = JSON.parse(notification.body)
-        const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName, response:jsonBody.responses};
+        const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName,
+              response:jsonBody.responses, timestamp:jsonBody.timestamp};
 
         let localData = this.dataSource.getValue();
         localData.currentPromptlet.userResponses = localData.currentPromptlet.userResponses.filter(x => x.profileId != userResponse.profileId);
@@ -230,7 +243,7 @@ export class DataService {
       .subscribe((data: any[]) => {
         let localData = this.dataSource.getValue();
         let promptlets : Promptlet[] = [];
-
+        console.log(data);
         data.forEach(x => {
           const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
           const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
@@ -489,6 +502,7 @@ export type UserResponse = {
   profileId: string;
   profileName: string;
   response: string[];
+  timestamp: bigint;
 }
 
 export type StudentPromptlet = {

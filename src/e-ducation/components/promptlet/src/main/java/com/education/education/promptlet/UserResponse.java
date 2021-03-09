@@ -12,4 +12,5 @@ public class UserResponse {
     private final String id;
     private final String profileId;
     private final List<String> response;
+    private final long timestamp;
 }

@@ -10,7 +10,7 @@ import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-
   templateUrl: './session-detail.component.html',
   styleUrls: ['./session-detail.component.css']
 })
-export class SessionDetailComponent implements OnInit {
+export class SessionDetailComponent implements OnInit, OnDestroy {
 
   sharedData: SharedData;
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) { }
@@ -24,7 +24,12 @@ export class SessionDetailComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
     this.dataService.loadPromptletsByCurrentSessionId(false);
+    this.dataService.fetchUserResponses();
     // this.dataService.fetchPromptletData();
+  }
+
+  ngOnDestroy(): void {
+    // this.dataService.disconnectUserResponse();
   }
 
   public routeToPromptlet(destPromptlet: string) {
@@ -48,7 +53,7 @@ export class SessionDetailComponent implements OnInit {
   setActiveSession(sessionId : string){
     this.dataService.setActiveSession(sessionId, false);
   }
-  
+
   goBack(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
