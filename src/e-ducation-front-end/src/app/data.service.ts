@@ -201,18 +201,33 @@ export class DataService {
       this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentClass.activeSessionId, (notification) => {
         // observer.next(notifications);
         const jsonBody = JSON.parse(notification.body)
+        console.log(jsonBody.promptletId);
         const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName,
               response:jsonBody.responses, timestamp:jsonBody.timestamp};
 
         let localData = this.dataSource.getValue();
-        localData.currentPromptlet.userResponses = localData.currentPromptlet.userResponses.filter(x => x.profileId != userResponse.profileId);
-        localData.currentPromptlet.userResponses.push(userResponse);
+        const promptletId : number = localData.currentSession.promptlets.indexOf(localData.currentSession.promptlets.find(x => x.id === jsonBody.promptletId));
+        if (promptletId > -1){
+          let currentPromptlet : Promptlet = localData.currentSession.promptlets[promptletId];
+          let currentResponses : UserResponse[] = currentPromptlet.userResponses;
+          if (currentPromptlet.userResponses.filter(x => x.profileId == userResponse.profileId).length > 0){
+            currentResponses = currentPromptlet.userResponses.filter(x => x.profileId != userResponse.profileId);
+          }
+          currentResponses.push(userResponse);
+          localData.currentSession.promptlets[promptletId].userResponses = currentResponses;
+        }
+
+        if (jsonBody.promptletId == localData.currentPromptlet.id){
+          localData.currentPromptlet = localData.currentSession.promptlets[promptletId];
+        }
         this.changeData(localData);
       })
     })
   }
   disconnectUserResponse(){
-    this.stompClientUserResponse.disconnect({});
+    if (this.stompClientUserResponse != undefined){
+      this.stompClientUserResponse.disconnect({});
+    }
   }
 
   updatePromptletStatus(promptletId : string, status : boolean){

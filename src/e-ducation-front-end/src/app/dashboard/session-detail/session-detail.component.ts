@@ -22,6 +22,7 @@ export class SessionDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dataService.disconnectUserResponse();
     this.dataService.currentData.subscribe(data => this.sharedData = data);
     this.dataService.loadPromptletsByCurrentSessionId(false);
     this.dataService.fetchUserResponses();
