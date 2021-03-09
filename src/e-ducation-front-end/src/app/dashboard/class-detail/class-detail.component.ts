@@ -37,5 +37,9 @@ export class ClassDetailComponent implements OnInit {
       this.dataService.updateProfileAndClasses();
     })
   }
-
+  
+  goBack(): void {
+    this.router.navigate(['../classlist'], { relativeTo: this.route });
+  }
+  
 }

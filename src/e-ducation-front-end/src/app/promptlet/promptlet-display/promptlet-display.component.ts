@@ -60,6 +60,10 @@ export class PromptletDisplayComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.context != "student") {
+      return;
+    }
+    
     let response = [];
 
     switch (this.promptlet.promptlet_type) {

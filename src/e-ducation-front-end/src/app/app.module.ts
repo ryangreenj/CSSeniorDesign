@@ -16,6 +16,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTableModule } from "@angular/material/table";
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -31,7 +34,7 @@ import { CreatePromptletDialogComponent } from './dialog/create-promptlet-dialog
 import { HttpClientModule } from "@angular/common/http";
 import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptlet-display.component';
 import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/enrolled-class-detail.component';
-import {MatTableModule} from "@angular/material/table";
+import { ResultsDisplayComponent } from './promptlet/results-display/results-display.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,8 @@ import {MatTableModule} from "@angular/material/table";
     CreateSessionDialogComponent,
     CreatePromptletDialogComponent,
     PromptletDisplayComponent,
-    EnrolledClassDetailComponent
+    EnrolledClassDetailComponent,
+    ResultsDisplayComponent
   ],
   entryComponents: [
     CreateClassDialogComponent,
@@ -75,7 +79,9 @@ import {MatTableModule} from "@angular/material/table";
         HttpClientModule,
         MatRadioModule,
         MatSliderModule,
-        MatTableModule
+        MatTableModule,
+        NgxChartsModule,
+        MatButtonToggleModule
     ],
   providers: [],
   bootstrap: [AppComponent]
