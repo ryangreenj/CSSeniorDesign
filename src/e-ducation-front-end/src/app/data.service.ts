@@ -171,21 +171,26 @@ export class DataService {
     const userResponseRequest = {userResponseIds: userResponseIds};
 
     return this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
-      .subscribe((data: UserResponse[]) => {
+      .subscribe((data: UserResponse[] ) => {
         let localData = this.dataSource.getValue();
-        let userData = localData.currentPromptlet.userResponses;
-        const profileIds = userData.map(x => x.profileId);
+        let oldUserData = localData.currentPromptlet.userResponses;
+        let newUserData : UserResponse[] = [];
+
+        const profileIds = oldUserData.map(x => x.profileId);
         for (const d of data){
+          console.log(d);
           if (profileIds.indexOf(d.profileId) > -1){
-            const response : UserResponse = userData.filter(x => x.profileId == d.profileId)[0];
+            const response : UserResponse = oldUserData.filter(x => x.profileId == d.profileId)[0];
             if (d.timestamp > response.timestamp){
-              userData = userData.filter(x => x.profileId != d.profileId);
-              userData.push(d);
+              newUserData.push(d);
+            } else {
+              newUserData.push(response);
             }
           } else {
-            userData.push(d);
+            newUserData.push(d);
           }
         }
+        localData.currentPromptlet.userResponses= newUserData;
         this.changeData(localData);
       });
   }
