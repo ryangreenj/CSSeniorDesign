@@ -178,7 +178,6 @@ export class DataService {
 
         const profileIds = oldUserData.map(x => x.profileId);
         for (const d of data){
-          console.log(d);
           if (profileIds.indexOf(d.profileId) > -1){
             const response : UserResponse = oldUserData.filter(x => x.profileId == d.profileId)[0];
             if (d.timestamp > response.timestamp){
@@ -248,7 +247,6 @@ export class DataService {
       .subscribe((data: any[]) => {
         let localData = this.dataSource.getValue();
         let promptlets : Promptlet[] = [];
-        console.log(data);
         data.forEach(x => {
           const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
           const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,

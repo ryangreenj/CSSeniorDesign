@@ -46,7 +46,7 @@ export class SessionDetailComponent implements OnInit, OnDestroy {
     let dialogRef = this.dialog.open(CreatePromptletDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-
+      this.dataService.updateProfileAndClasses();
     })
   }
 
