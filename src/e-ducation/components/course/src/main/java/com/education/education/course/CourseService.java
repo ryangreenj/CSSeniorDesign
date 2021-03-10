@@ -80,8 +80,8 @@ public class CourseService {
         return sessionService.getPromptlets(promptletIds);
     }
 
-    public void answerPromptlet(final String promptletId, final String profileId,final String profileName, final List<String> response){
-        sessionService.answerPromptlet(promptletId, profileId, profileName, response);
+    public void answerPromptlet(final String activeSessionId, final String promptletId, final String profileId,final String profileName, final List<String> response){
+        sessionService.answerPromptlet(activeSessionId,promptletId, profileId, profileName, response);
     }
 
     public List<UserResponse> getPromptletResponses(final List<String> responseIds){

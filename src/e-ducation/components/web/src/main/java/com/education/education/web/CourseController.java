@@ -120,7 +120,8 @@ public class CourseController {
     @ResponseStatus(HttpStatus.CREATED)
     public void answerPromptlet(@RequestBody final PromptletAnswer promptletAnswer){
         final Profile p = profileService.getProfile(promptletAnswer.getProfileId());
-        courseService.answerPromptlet(promptletAnswer.getPromptletId(), promptletAnswer.getProfileId(),p.getUsername(), promptletAnswer.getResponse());
+        courseService.answerPromptlet(promptletAnswer.getActiveSessionId(), promptletAnswer.getPromptletId(),
+                promptletAnswer.getProfileId(),p.getUsername(), promptletAnswer.getResponse());
     }
 
     @PutMapping("/session/promptlet/answers")
@@ -128,10 +129,11 @@ public class CourseController {
         return courseService.getPromptletResponses(userResponseRequest.getUserResponseIds())
                     .stream()
                     .map(x -> aUserResponseResponseBuilder()
-                    .id(x.getId())
-                    .profileName(profileService.getProfile(x.getProfileId()).getUsername())
-                    .profileId(x.getProfileId())
-                    .response(x.getResponse()).build())
+                            .id(x.getId())
+                            .profileName(profileService.getProfile(x.getProfileId()).getUsername())
+                            .profileId(x.getProfileId())
+                            .timestamp(x.getTimestamp())
+                            .response(x.getResponse()).build())
                 .collect(toList());
     }
 }

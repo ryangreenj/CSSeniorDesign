@@ -51,8 +51,8 @@ public class SessionService {
         return promptletService.getPromptlets(promptletIds);
     }
 
-    public void answerPromptlet(final String promptletId, final String profileId,final String profileName, final List<String> response){
-        promptletService.answerPromptlet(promptletId, profileId,profileName, response);
+    public void answerPromptlet(final String activeSessionId, final String promptletId, final String profileId,final String profileName, final List<String> response){
+        promptletService.answerPromptlet(activeSessionId,promptletId, profileId,profileName, response);
     }
 
     public List<UserResponse> getPromptletResponses(final List<String> responseIds){

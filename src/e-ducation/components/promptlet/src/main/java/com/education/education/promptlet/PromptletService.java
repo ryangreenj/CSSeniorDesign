@@ -33,19 +33,19 @@ public class PromptletService {
         return promptletDataAccessService.getPromptlets(promptletIds);
     }
 
-    public void answerPromptlet(final String promptletId, final String profileId, final String profileName, final List<String> response){
-        final String id = promptletDataAccessService.answerPromptlet(promptletId,profileId,response);
-        notifyOwnerOfPromptletResponse(promptletId, id, profileId, profileName, response);
+    public void answerPromptlet(final String activeSessionId,final String promptletId, final String profileId, final String profileName, final List<String> response){
+        final UserResponse userResponse = promptletDataAccessService.answerPromptlet(promptletId,profileId,response);
+        notifyOwnerOfPromptletResponse(activeSessionId, promptletId, userResponse.getId(), profileId, profileName, userResponse.getTimestamp(), response);
     }
 
     public List<UserResponse> getPromptletResponses(final List<String> responseIds){
         return promptletDataAccessService.getPromptletResponse(responseIds);
     }
 
-    public void notifyOwnerOfPromptletResponse(final String promptletId, final String id, final String profileId, final String profileName, final List<String> response){
-
-        template.convertAndSend("/topic/notification/" + promptletId, aPromptletNotificationOwnerBuilder()
-                .id(id).profileId(profileId).profileName(profileName).responses(response).build());
+    public void notifyOwnerOfPromptletResponse(final String activeSessionId, final String promptletId, final String id, final String profileId, final String profileName, final long timestamp, final List<String> response){
+        template.convertAndSend("/topic/notification/" + activeSessionId, aPromptletNotificationOwnerBuilder()
+                    .id(id).promptletId(promptletId).profileId(profileId).profileName(profileName)
+                    .timestamp(timestamp).responses(response).build());
     }
 
     public void activatePromptlet(final String promptletId, final boolean status) {

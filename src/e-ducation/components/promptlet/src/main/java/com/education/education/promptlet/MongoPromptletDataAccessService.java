@@ -3,10 +3,13 @@ package com.education.education.promptlet;
 import com.education.education.promptlet.repositories.PromptletRepository;
 import com.education.education.promptlet.repositories.UserResponseRepository;
 import com.education.education.promptlet.repositories.entities.PromptletEntity;
+import com.education.education.promptlet.repositories.entities.UserResponseEntity;
+import com.education.education.promptlet.repositories.entities.mappers.UserResponseEntityToUserResponseMapper;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,18 +64,20 @@ public class MongoPromptletDataAccessService implements PromptletDataAccessServi
     }
 
     @Override
-    public String answerPromptlet(final String promptletId, final String profileId, final List<String> response) {
-        final String id = userResponseRepository.save(aUserResponseEntityBuilder()
+    public UserResponse answerPromptlet(final String promptletId, final String profileId, final List<String> response) {
+        final Instant instant = Instant.now();
+        final UserResponseEntity userResponseEntity = userResponseRepository.save(aUserResponseEntityBuilder()
                 .profileId(profileId)
                 .response(response)
-                .build()).getId();
+                .timestamp(instant.getEpochSecond())
+                .build());
 
         PromptletEntity promptletEntity = promptletRepository.findPromptletEntityById(promptletId);
         promptletEntity.setUserResponses(promptletEntity.getUserResponses().stream().filter(x -> !userResponseRepository.findUserResponseEntityById(x).getProfileId().equals(profileId)).collect(toList()));
-        promptletEntity.getUserResponses().add(id);
+        promptletEntity.getUserResponses().add(userResponseEntity.getId());
         promptletRepository.save(promptletEntity);
 
-        return id;
+        return mapUserResponseEntityToUserResponse(userResponseEntity);
     }
 
     @Override

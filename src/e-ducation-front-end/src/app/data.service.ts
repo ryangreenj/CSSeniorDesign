@@ -134,15 +134,25 @@ export class DataService {
       .subscribe((_: string) => {});
   }
   setActiveSession(sessionId: string, fetchData: boolean){
+    // this.disconnectUserResponse();
     const courseId = this.dataSource.getValue().currentClass.id;
-    const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
-    return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
-      .subscribe((_: string) => {
-        this.updateProfileAndClasses();
-        if (fetchData){
-          // this.fetchPromptletData();
-        }
-      });
+
+    if (sessionId == ""){
+      const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
+      return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
+        .subscribe((_: string) => {
+          this.updateProfileAndClasses();
+        });
+    } else {
+
+      this.disconnectUserResponse();
+      const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
+      return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
+        .subscribe((_: string) => {
+          this.updateProfileAndClasses();
+        });
+    }
+
   }
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
@@ -161,7 +171,7 @@ export class DataService {
     const profileId = this.dataSource.getValue().user.profileId;
     // Unsure if this should be UserData or Profile
     // Perhaps we can concatenate user ID as the first line of 'response' so we only send one string per response
-    let promptletResponse = {promptletId: promptletId, profileId: profileId, response: response};
+    let promptletResponse = {activeSessionId:this.dataSource.getValue().currentClass.activeSessionId, promptletId: promptletId, profileId: profileId, response: response};
 
     return this.http.post<string>("http://" + this.ipAddr + ":8080/course/session/promptlet/answer", promptletResponse, {headers:this.getHeaders()})
       .subscribe((_: string) => {});
@@ -171,31 +181,74 @@ export class DataService {
     const userResponseRequest = {userResponseIds: userResponseIds};
 
     return this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
-      .subscribe((data: UserResponse[]) => {
+      .subscribe((data: UserResponse[] ) => {
         let localData = this.dataSource.getValue();
-        localData.currentPromptlet.userResponses = data;
+        let oldUserData = localData.currentPromptlet.userResponses;
+        let newUserData : UserResponse[] = [];
+
+        const profileIds = oldUserData.map(x => x.profileId);
+        for (const d of data){
+          // console.log(d);
+          if (profileIds.indexOf(d.profileId) > -1){
+            const response : UserResponse = oldUserData.filter(x => x.profileId == d.profileId)[0];
+            if (d.timestamp > response.timestamp){
+              newUserData.push(d);
+            } else {
+              newUserData.push(response);
+            }
+          } else {
+            newUserData.push(d);
+          }
+        }
+        localData.currentPromptlet.userResponses= newUserData;
         this.changeData(localData);
       });
   }
-  fetchUserResponse(){
+  fetchUserResponses(){
 
+    this.disconnectUserResponse();
     this.stompClientUserResponse = Stomp.over(new SockJS("http://" + this.ipAddr + ":8080/socket"));
 
     this.stompClientUserResponse.connect({}, frame => {
-      this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentPromptlet.id, (notification) => {
+      this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentClass.activeSessionId, (notification) => {
         // observer.next(notifications);
         const jsonBody = JSON.parse(notification.body)
-        const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName, response:jsonBody.responses};
+        console.log(jsonBody.promptletId);
+        const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName,
+              response:jsonBody.responses, timestamp:jsonBody.timestamp};
 
         let localData = this.dataSource.getValue();
-        localData.currentPromptlet.userResponses = localData.currentPromptlet.userResponses.filter(x => x.profileId != userResponse.profileId);
-        localData.currentPromptlet.userResponses.push(userResponse);
+        const promptletId : number = localData.currentSession.promptlets.indexOf(localData.currentSession.promptlets.find(x => x.id === jsonBody.promptletId));
+        if (promptletId > -1){
+          let currentPromptlet : Promptlet = localData.currentSession.promptlets[promptletId];
+          let currentResponses : UserResponse[] = currentPromptlet.userResponses;
+          if (currentPromptlet.userResponses.filter(x => x.profileId == userResponse.profileId).length > 0){
+            currentResponses = currentPromptlet.userResponses.filter(x => x.profileId != userResponse.profileId);
+          }
+          currentResponses.push(userResponse);
+          localData.currentSession.promptlets[promptletId].userResponses = currentResponses;
+        }
+
+        if (jsonBody.promptletId == localData.currentPromptlet.id){
+          localData.currentPromptlet = localData.currentSession.promptlets[promptletId];
+        }
         this.changeData(localData);
       })
     })
   }
   disconnectUserResponse(){
-    this.stompClientUserResponse.disconnect({});
+    if (this.stompClientUserResponse != undefined){
+      this.stompClientUserResponse.disconnect({});
+    }
+  }
+  reConnectUserResponse(){
+    if (this.stompClientUserResponse != undefined){
+     console.log(this.stompClientUserResponse.status)
+      this.stompClientUserResponse.unsubscribe({} , frame => {
+        console.log("HERE")
+        // this.fetchUserResponses();
+      });
+    }
   }
 
   updatePromptletStatus(promptletId : string, status : boolean){
@@ -220,7 +273,6 @@ export class DataService {
             localData.currentSession = data[data.findIndex(x => x.id == localData.currentSession.id)];
             this.changeData(localData);
             this.loadPromptletsByCurrentSessionId(possibleHide);
-
           }
         });
   }
@@ -230,7 +282,6 @@ export class DataService {
       .subscribe((data: any[]) => {
         let localData = this.dataSource.getValue();
         let promptlets : Promptlet[] = [];
-
         data.forEach(x => {
           const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
           const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
@@ -307,11 +358,11 @@ export class DataService {
 
         });
     } else if (this.dataSource.getValue().currentClass != undefined) {
-      let localData = this.dataSource.getValue();
-      localData.currentSession = {id:"", sessionName:"", promptletIds: [], promptlets:[]}
-      this.changeData(localData);
-      this.disconnectPromptlets()
-      this.fetchPromptletData();
+        let localData = this.dataSource.getValue();
+        localData.currentSession = {id:"", sessionName:"", promptletIds: [], promptlets:[]}
+        this.changeData(localData);
+        this.disconnectPromptlets()
+        this.fetchPromptletData();
     } else {
     }
   }
@@ -349,6 +400,7 @@ export class DataService {
       this.changeData(localData);
       if (isOwnedClass){
         this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass, false);
+        this.fetchUserResponses();
       } else {
         this.loadPromptletsByActiveSession();
       }
@@ -489,6 +541,7 @@ export type UserResponse = {
   profileId: string;
   profileName: string;
   response: string[];
+  timestamp: bigint;
 }
 
 export type StudentPromptlet = {

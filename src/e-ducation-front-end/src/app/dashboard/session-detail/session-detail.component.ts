@@ -10,7 +10,7 @@ import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-
   templateUrl: './session-detail.component.html',
   styleUrls: ['./session-detail.component.css']
 })
-export class SessionDetailComponent implements OnInit {
+export class SessionDetailComponent implements OnInit, OnDestroy {
 
   sharedData: SharedData;
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private dialog: MatDialog) { }
@@ -22,9 +22,17 @@ export class SessionDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.dataService.disconnectUserResponse();
     this.dataService.currentData.subscribe(data => this.sharedData = data);
-    this.dataService.loadPromptletsByCurrentSessionId(false);
-    // this.dataService.fetchPromptletData();
+    // console.log(this.sharedData.currentClass.activeSessionId);
+    this.dataService.updateProfileAndClasses();
+    // this.dataService.loadPromptletsByCurrentSessionId(false);
+    // this.dataService.fetchUserResponses();
+  }
+
+  ngOnDestroy(): void {
+    // this.dataService.disconnectUserResponse();
   }
 
   public routeToPromptlet(destPromptlet: string) {
@@ -41,14 +49,14 @@ export class SessionDetailComponent implements OnInit {
     let dialogRef = this.dialog.open(CreatePromptletDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-
+      this.dataService.updateProfileAndClasses();
     })
   }
 
   setActiveSession(sessionId : string){
-    this.dataService.setActiveSession(sessionId, false);
+    this.dataService.setActiveSession(sessionId, true);
   }
-  
+
   goBack(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
