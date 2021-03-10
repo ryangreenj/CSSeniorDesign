@@ -22,11 +22,13 @@ export class SessionDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.dataService.disconnectUserResponse();
     this.dataService.currentData.subscribe(data => this.sharedData = data);
-    this.dataService.loadPromptletsByCurrentSessionId(false);
-    this.dataService.fetchUserResponses();
-    // this.dataService.fetchPromptletData();
+    // console.log(this.sharedData.currentClass.activeSessionId);
+    this.dataService.updateProfileAndClasses();
+    // this.dataService.loadPromptletsByCurrentSessionId(false);
+    // this.dataService.fetchUserResponses();
   }
 
   ngOnDestroy(): void {
@@ -52,7 +54,7 @@ export class SessionDetailComponent implements OnInit, OnDestroy {
   }
 
   setActiveSession(sessionId : string){
-    this.dataService.setActiveSession(sessionId, false);
+    this.dataService.setActiveSession(sessionId, true);
   }
 
   goBack(): void {

@@ -18,6 +18,7 @@ export class ClassDetailComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
     this.dataService.loadSessionsByCurrentClassId(this.sharedData.currentClass, false);
+    this.dataService.disconnectUserResponse();
   }
 
   public routeToSession(destSession: string) {
@@ -37,9 +38,9 @@ export class ClassDetailComponent implements OnInit {
       this.dataService.updateProfileAndClasses();
     })
   }
-  
+
   goBack(): void {
     this.router.navigate(['../classlist'], { relativeTo: this.route });
   }
-  
+
 }

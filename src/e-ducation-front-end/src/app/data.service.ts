@@ -134,15 +134,25 @@ export class DataService {
       .subscribe((_: string) => {});
   }
   setActiveSession(sessionId: string, fetchData: boolean){
+    // this.disconnectUserResponse();
     const courseId = this.dataSource.getValue().currentClass.id;
-    const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
-    return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
-      .subscribe((_: string) => {
-        this.updateProfileAndClasses();
-        if (fetchData){
-          // this.fetchPromptletData();
-        }
-      });
+
+    if (sessionId == ""){
+      const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
+      return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
+        .subscribe((_: string) => {
+          this.updateProfileAndClasses();
+        });
+    } else {
+
+      this.disconnectUserResponse();
+      const activeSessionRequest = {courseId:courseId, sessionId:sessionId};
+      return this.http.post<string>("http://" + this.ipAddr + ":8080/course/activeSession",activeSessionRequest, {headers:this.getHeaders()})
+        .subscribe((_: string) => {
+          this.updateProfileAndClasses();
+        });
+    }
+
   }
 
   createPromptlet(prompt: string, promptlet_type: string, answerPool: string[], correctAnswer: string[]) {
@@ -178,6 +188,7 @@ export class DataService {
 
         const profileIds = oldUserData.map(x => x.profileId);
         for (const d of data){
+          // console.log(d);
           if (profileIds.indexOf(d.profileId) > -1){
             const response : UserResponse = oldUserData.filter(x => x.profileId == d.profileId)[0];
             if (d.timestamp > response.timestamp){
@@ -195,6 +206,7 @@ export class DataService {
   }
   fetchUserResponses(){
 
+    this.disconnectUserResponse();
     this.stompClientUserResponse = Stomp.over(new SockJS("http://" + this.ipAddr + ":8080/socket"));
 
     this.stompClientUserResponse.connect({}, frame => {
@@ -229,6 +241,15 @@ export class DataService {
       this.stompClientUserResponse.disconnect({});
     }
   }
+  reConnectUserResponse(){
+    if (this.stompClientUserResponse != undefined){
+     console.log(this.stompClientUserResponse.status)
+      this.stompClientUserResponse.unsubscribe({} , frame => {
+        console.log("HERE")
+        // this.fetchUserResponses();
+      });
+    }
+  }
 
   updatePromptletStatus(promptletId : string, status : boolean){
     const getPromptletActiveRequest = {sessionId: this.dataSource.getValue().currentSession.id,promptletId: promptletId, status:status};
@@ -252,7 +273,6 @@ export class DataService {
             localData.currentSession = data[data.findIndex(x => x.id == localData.currentSession.id)];
             this.changeData(localData);
             this.loadPromptletsByCurrentSessionId(possibleHide);
-
           }
         });
   }
@@ -338,11 +358,11 @@ export class DataService {
 
         });
     } else if (this.dataSource.getValue().currentClass != undefined) {
-      let localData = this.dataSource.getValue();
-      localData.currentSession = {id:"", sessionName:"", promptletIds: [], promptlets:[]}
-      this.changeData(localData);
-      this.disconnectPromptlets()
-      this.fetchPromptletData();
+        let localData = this.dataSource.getValue();
+        localData.currentSession = {id:"", sessionName:"", promptletIds: [], promptlets:[]}
+        this.changeData(localData);
+        this.disconnectPromptlets()
+        this.fetchPromptletData();
     } else {
     }
   }
@@ -380,6 +400,7 @@ export class DataService {
       this.changeData(localData);
       if (isOwnedClass){
         this.loadSessionsByCurrentClassId(this.dataSource.getValue().currentClass, false);
+        this.fetchUserResponses();
       } else {
         this.loadPromptletsByActiveSession();
       }
