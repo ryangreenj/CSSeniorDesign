@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DataService, Promptlet } from 'src/app/data.service';
+import {DataService, Promptlet, UserResponse} from 'src/app/data.service';
 
 interface CheckBox {
   choice: string;
@@ -29,14 +29,41 @@ export class PromptletDisplayComponent implements OnInit {
     if (this.promptlet) {
       switch (this.promptlet.promptlet_type) {
         case "MULTI_CHOICE":
+          if (this.promptlet.submitted && this.promptlet.userResponses[0].response[0] != undefined){
+            // TODO - uncomment this if you want submit to be active without change
+            // this.canSubmit = true;
+            this.multiChoiceAnswer = this.promptlet.userResponses[0].response[0];
+          }
           break;
         case "MULTI_RESPONSE":
           this.canSubmit = true;
-          this.promptlet.answerPool.forEach(choice => this.checkBoxes.push({"choice": choice, "selected": false}));
+          if (this.promptlet.submitted && this.promptlet.userResponses[0] != undefined){
+            this.canSubmit = true;
+            this.promptlet.answerPool.forEach(choice => {
+              if (this.promptlet.userResponses[0].response.indexOf(choice) > -1){
+                this.checkBoxes.push({"choice": choice, "selected": true})
+              } else {
+                this.checkBoxes.push({"choice": choice, "selected": false})
+              }
+            });
+          } else {
+            this.promptlet.answerPool.forEach(choice => this.checkBoxes.push({"choice": choice, "selected": false}));
+          }
+
           break;
         case "OPEN_RESPONSE":
+          if (this.promptlet.submitted && this.promptlet.userResponses[0].response[0] != undefined){
+            // TODO - uncomment this if you want submit to be active without change
+            // this.canSubmit = true;
+            this.openResponseAnswer = this.promptlet.userResponses[0].response[0];
+          }
           break;
         case "SLIDER":
+          if (this.promptlet.submitted && this.promptlet.userResponses[0].response[0] != undefined){
+            // TODO - uncomment this if you want submit to be active without change
+            // this.canSubmit = true;
+            this.sliderValue = this.promptlet.userResponses[0].response[0];
+          }
           break;
         default:
           console.log("Unknown promptlet type " + this.promptlet.promptlet_type);
@@ -45,14 +72,45 @@ export class PromptletDisplayComponent implements OnInit {
     }
   }
 
-  checkCanSubmit() {
+  checkCanSubmit(choice: string) {
     switch (this.promptlet.promptlet_type) {
       case "MULTI_CHOICE":
-        this.canSubmit = this.multiChoiceAnswer != "";
+        console.log(this.promptlet.userResponses)
+        if (this.promptlet.userResponses.length > 0){
+          this.canSubmit = this.multiChoiceAnswer != "" && choice != this.promptlet.userResponses[0].response[0];
+        } else {
+          this.canSubmit = this.multiChoiceAnswer != ""
+        }
         break;
       case "OPEN_RESPONSE":
-        this.canSubmit = this.openResponseAnswer != "";
+        if (this.promptlet.userResponses.length > 0){
+          this.canSubmit = this.openResponseAnswer != "" && choice != this.promptlet.userResponses[0].response[0];
+        } else {
+          this.canSubmit = this.openResponseAnswer != ""
+        }
         break;
+      case "MULTI_RESPONSE":
+        if (this.promptlet.userResponses.length > 0) {
+          let tempCanSubmit = true;
+          for (let check of this.checkBoxes){
+            if (check.selected){
+              if (this.promptlet.userResponses[0].response.indexOf(check.choice) < 0 ||
+                (check.choice == choice[choice.length - 1] && choice[0] == "-")){
+                tempCanSubmit = false;
+                break;
+              }
+            } else {
+              if (this.promptlet.userResponses[0].response.indexOf(check.choice) > -1 ||
+                (check.choice == choice[choice.length - 1] && choice[0] != "-")){
+                tempCanSubmit = false;
+                break;
+              }
+            }
+          }
+
+          this.canSubmit = !tempCanSubmit;
+          break;
+        }
       default:
         this.canSubmit = true;
         break;
@@ -63,14 +121,18 @@ export class PromptletDisplayComponent implements OnInit {
     if (this.context != "student") {
       return;
     }
-    
+
     let response = [];
 
     switch (this.promptlet.promptlet_type) {
       case "MULTI_CHOICE":
         response = [this.multiChoiceAnswer];
+        if (this.promptlet.userResponses.length > 0){
+          this.promptlet.userResponses[0].response[0] = this.multiChoiceAnswer;
+        }
         break;
       case "MULTI_RESPONSE":
+
         this.checkBoxes.forEach(function(box) {
           if (box.selected == true) {
             response.push(box.choice);
@@ -78,12 +140,17 @@ export class PromptletDisplayComponent implements OnInit {
         });
         break;
       case "OPEN_RESPONSE":
+        if (this.promptlet.userResponses.length > 0){
+          this.promptlet.userResponses[0].response[0] = this.openResponseAnswer;
+        }
         response = [this.openResponseAnswer];
         break;
       case "SLIDER":
         response = [this.sliderValue];
         break;
     }
+    this.canSubmit = false;
+    this.promptlet.submitted = true;
     this.dataService.submitPromptletResponse(this.promptlet.id, response);
   }
 

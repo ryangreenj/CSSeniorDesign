@@ -19,3 +19,26 @@
 mat-slider {
     width: 100%;
 }
+
+.submitted-field:hover{
+  background-color: #3F51B5;
+  color: #FFFFFF;
+  /*content: 'Submit';*/
+}
+
+.button-placeholder{
+  size: inherit;
+  width: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin: 0;
+}
+.submitted-field :after{
+  content: 'Submitted';
+}
+
+.submitted-field:hover :after{
+  content: 'Submit';
+  padding-left: 8px;
+  padding-right: 8px;
+}
