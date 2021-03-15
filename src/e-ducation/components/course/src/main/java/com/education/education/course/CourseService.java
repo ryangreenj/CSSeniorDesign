@@ -89,10 +89,10 @@ public class CourseService {
     }
 
     private void notifyWebClientStudentOfPromptlet(final String sessionId, final String id, final String prompt,
-                                                   final String promptletType, final List<String> responsePool, final boolean visible){
+                                                   final String promptletType, final List<String> responsePool, final List<String> userResponses, final boolean visible){
         template.convertAndSend("/topic/notification/" + sessionId, aPromptletNotificationStudentBuilder()
                 .id(id).prompt(prompt).promptletType(promptletType).responsePool(responsePool).correctAnswer(new ArrayList<>())
-                .userResponses(new ArrayList<>()).visible(visible).build());
+                .userResponses(userResponses).visible(visible).build());
     }
 
     private void notifyWebClientStudentOfNewActiveSession(final String courseId, final String oldSessionId, final String newSessionId){
@@ -108,6 +108,6 @@ public class CourseService {
     public void activatePromptlet(final String sessionId, final String promptletId, final boolean status) {
         sessionService.activatePromptlet(promptletId, status);
         final Promptlet p = sessionService.getPromptlets(Collections.singletonList(promptletId)).get(0);
-        notifyWebClientStudentOfPromptlet(sessionId, promptletId, p.getPrompt(), p.getPROMPTLET_TYPE().toString(), p.getResponsePool(), p.isVisible());
+        notifyWebClientStudentOfPromptlet(sessionId, promptletId, p.getPrompt(), p.getPROMPTLET_TYPE().toString(), p.getResponsePool(), p.getUserResponses(), p.isVisible());
     }
 }

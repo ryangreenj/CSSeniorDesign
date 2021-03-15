@@ -211,9 +211,8 @@ export class DataService {
 
     this.stompClientUserResponse.connect({}, frame => {
       this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentClass.activeSessionId, (notification) => {
-        // observer.next(notifications);
+
         const jsonBody = JSON.parse(notification.body)
-        console.log(jsonBody.promptletId);
         const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName,
               response:jsonBody.responses, timestamp:jsonBody.timestamp};
 
@@ -239,15 +238,6 @@ export class DataService {
   disconnectUserResponse(){
     if (this.stompClientUserResponse != undefined){
       this.stompClientUserResponse.disconnect({});
-    }
-  }
-  reConnectUserResponse(){
-    if (this.stompClientUserResponse != undefined){
-     console.log(this.stompClientUserResponse.status)
-      this.stompClientUserResponse.unsubscribe({} , frame => {
-        console.log("HERE")
-        // this.fetchUserResponses();
-      });
     }
   }
 
@@ -285,7 +275,7 @@ export class DataService {
         data.forEach(x => {
           const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
           const promptlet : Promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
-            correctAnswer:x.correctAnswer, userResponses: userResponses, visible:x.visible};
+            correctAnswer:x.correctAnswer, userResponses: userResponses, visible:x.visible, submitted:false};
           if (promptlet.visible || !possibleHide){
             promptlets.push(promptlet);
           }
@@ -295,6 +285,42 @@ export class DataService {
             this.changeData(localData);
             this.getUserResponse(x.userResponses);
           }
+        });
+        localData.currentSession.promptlets = promptlets;
+        this.changeData(localData);
+      });
+  }
+  loadPromptletsByCurrentSessionIdByUser(){
+    this.getPromptletData(this.dataSource.getValue().currentSession.promptletIds)
+      .subscribe((data: any[]) => {
+        let localData = this.dataSource.getValue();
+        let promptlets : Promptlet[] = [];
+        data.forEach(x => {
+          // const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
+
+          const userResponseRequest = {userResponseIds: x.userResponses};
+          return this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
+            .subscribe((data: UserResponse[] ) => {
+
+              let promptlet : Promptlet;
+              if (data.filter(y => y.profileId === x.promptletId)){
+                promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
+                  correctAnswer:x.correctAnswer, userResponses: [], visible:x.visible, submitted:true};
+              } else {
+                promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
+                  correctAnswer:x.correctAnswer, userResponses: [], visible:x.visible, submitted:false};
+              }
+
+              if (promptlet.visible){
+                promptlets.push(promptlet);
+              }
+
+              if (localData.currentPromptlet != undefined && localData.currentPromptlet.id == promptlet.id){
+                localData.currentPromptlet = promptlet;
+                this.changeData(localData);
+                this.getUserResponse(x.userResponses);
+              }
+            });
         });
         localData.currentSession.promptlets = promptlets;
         this.changeData(localData);
@@ -310,17 +336,32 @@ export class DataService {
           (this.dataSource.getValue().currentSession == undefined ||  this.dataSource.getValue().currentClass.activeSessionId == "" ? this.dataSource.getValue().currentClass.id : this.dataSource.getValue().currentSession.id), (notification) => {
           // observer.next(notifications);
           const jsonBody = JSON.parse(notification.body)
-          if (jsonBody.notificationType == "PROMPTLET"){
-            const studentPromptlet : Promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
-              answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[], visible:jsonBody.visible};
 
-            let localData = this.dataSource.getValue();
-            if (studentPromptlet.visible == true){
-              localData.currentSession.promptlets.push(studentPromptlet);
-            } else {
-              localData.currentSession.promptlets = localData.currentSession.promptlets.filter(x => x.id != studentPromptlet.id);
-            }
-            this.changeData(localData);
+          let localData = this.dataSource.getValue();
+          if (jsonBody.notificationType == "PROMPTLET"){
+            console.log(jsonBody.userResponses)
+            const userResponseRequest = {userResponseIds: jsonBody.userResponses};
+            this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
+              .subscribe((data2: UserResponse[] ) => {
+
+                let promptlet : Promptlet;
+                console.log(data2)
+                if (data2.filter(y => y.profileId === localData.profile.id).length > 0){
+                  promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
+                    answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[data2.filter(y => y.profileId === localData.profile.id)[0]], visible:jsonBody.visible, submitted:true};
+                } else {
+                  promptlet = {id:jsonBody.id, prompt:jsonBody.prompt, promptlet_type:jsonBody.promptletType,
+                    answerPool:jsonBody.responsePool, correctAnswer:[], userResponses:[], visible:jsonBody.visible, submitted:false};
+                }
+
+                if (promptlet.visible == true){
+                  localData.currentSession.promptlets.push(promptlet);
+                } else {
+                  localData.currentSession.promptlets = localData.currentSession.promptlets.filter(x => x.id != promptlet.id);
+                }
+                this.changeData(localData);
+              });
+
           } else if (jsonBody.notificationType == "SESSION") {
 
             this.setActiveSession(jsonBody.newSessionId, true);
@@ -349,9 +390,37 @@ export class DataService {
           this.getPromptletData(data[0].promptletIds)
             .subscribe((data: Promptlet[]) => {
               let localData = this.dataSource.getValue();
+              let promptlets : Promptlet[] = [];
+
+              data.forEach(x => {
+                const userResponseRequest = {userResponseIds: x.userResponses};
+                this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
+                  .subscribe((data2: UserResponse[] ) => {
+
+                    let promptlet : Promptlet;
+                    if (data2.filter(y => y.profileId === localData.profile.id).length > 0){
+                      promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
+                        correctAnswer:x.correctAnswer, userResponses: [data2.filter(y => y.profileId === localData.profile.id)[0]], visible:x.visible, submitted:true};
+                    } else {
+                      promptlet = {id:x.id, prompt:x.prompt, promptlet_type:x.promptlet_type, answerPool: x.answerPool,
+                        correctAnswer:x.correctAnswer, userResponses: [], visible:x.visible, submitted:false};
+                    }
+
+                    if (promptlet.visible){
+                      promptlets.push(promptlet);
+                    }
+
+                    if (localData.currentPromptlet != undefined && localData.currentPromptlet.id == promptlet.id){
+                      localData.currentPromptlet = promptlet;
+                      this.changeData(localData);
+                    }
+                    localData.currentSession.promptlets = promptlets;
+
+                    this.changeData(localData);
+                  });
+              });
 
               localData.currentSession.promptlets = data.filter(x => x.visible);
-              this.changeData(localData);
               this.disconnectPromptlets()
               this.fetchPromptletData();
             });
@@ -534,6 +603,7 @@ export type Promptlet = {
   correctAnswer: string[];
   userResponses: UserResponse[];
   visible: boolean;
+  submitted: boolean;
 }
 
 export type UserResponse = {
