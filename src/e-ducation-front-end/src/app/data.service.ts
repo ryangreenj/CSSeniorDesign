@@ -211,9 +211,8 @@ export class DataService {
 
     this.stompClientUserResponse.connect({}, frame => {
       this.stompClientUserResponse.subscribe('/topic/notification/' + this.dataSource.getValue().currentClass.activeSessionId, (notification) => {
-        // observer.next(notifications);
+
         const jsonBody = JSON.parse(notification.body)
-        // console.log(jsonBody.promptletId);
         const userResponse : UserResponse = {id:jsonBody.id, profileId:jsonBody.profileId, profileName: jsonBody.profileName,
               response:jsonBody.responses, timestamp:jsonBody.timestamp};
 
@@ -239,15 +238,6 @@ export class DataService {
   disconnectUserResponse(){
     if (this.stompClientUserResponse != undefined){
       this.stompClientUserResponse.disconnect({});
-    }
-  }
-  reConnectUserResponse(){
-    if (this.stompClientUserResponse != undefined){
-     console.log(this.stompClientUserResponse.status)
-      this.stompClientUserResponse.unsubscribe({} , frame => {
-        console.log("HERE")
-        // this.fetchUserResponses();
-      });
     }
   }
 
@@ -403,8 +393,6 @@ export class DataService {
               let promptlets : Promptlet[] = [];
 
               data.forEach(x => {
-                // const userResponses : UserResponse[] = x.userResponses.map(x => ({id:x, profileId:"", response:[]}));
-
                 const userResponseRequest = {userResponseIds: x.userResponses};
                 this.http.put<UserResponse[]>("http://" + this.ipAddr + ":8080/course/session/promptlet/answers", userResponseRequest, {headers:this.getHeaders()})
                   .subscribe((data2: UserResponse[] ) => {
@@ -433,7 +421,6 @@ export class DataService {
               });
 
               localData.currentSession.promptlets = data.filter(x => x.visible);
-              // this.changeData(localData);
               this.disconnectPromptlets()
               this.fetchPromptletData();
             });
@@ -609,17 +596,6 @@ export type Session = {
 }
 
 export type Promptlet = {
-  id: string;
-  prompt: string;
-  promptlet_type: string;
-  answerPool: string[];
-  correctAnswer: string[];
-  userResponses: UserResponse[];
-  visible: boolean;
-  submitted: boolean;
-}
-
-export type UserPromptlets = {
   id: string;
   prompt: string;
   promptlet_type: string;

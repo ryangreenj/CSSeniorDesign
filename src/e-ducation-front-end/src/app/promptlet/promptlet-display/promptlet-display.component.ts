@@ -34,7 +34,6 @@ export class PromptletDisplayComponent implements OnInit {
           }
           break;
         case "MULTI_RESPONSE":
-          // this.canSubmit = true;
           if (this.promptlet.submitted && this.promptlet.userResponses[0] != undefined){
             this.promptlet.answerPool.forEach(choice => {
               if (this.promptlet.userResponses[0].response.indexOf(choice) > -1){
