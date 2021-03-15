@@ -1,11 +1,7 @@
 
 
-<div *ngIf="!visible">
-  <ul *ngIf="sharedData.currentPromptlet.userResponses">
-    <li *ngFor="let userResponse of sharedData.currentPromptlet.userResponses">
-      <p> {{ userResponse.profileName }}, {{ userResponse.response.length > 1 ? ' [' + userResponse.response + ']' : userResponse.response}}</p>
-    </li>
-  </ul>
+<div *ngIf="!visible" style="padding-right: 3rem">
+  <app-user-response-list [userResponses]="sharedData.currentPromptlet.userResponses"></app-user-response-list>
 </div>
 
 <ng-template [ngIf]="visible">
@@ -20,12 +16,8 @@
 
     <div class="charts" [ngSwitch]="group.value">
         <div *ngSwitchCase="'responses'">
-          <div *ngSwitchCase="'responses'">
-            <ul *ngIf="sharedData.currentPromptlet.userResponses">
-              <li *ngFor="let userResponse of sharedData.currentPromptlet.userResponses">
-                <p> {{ userResponse.profileName }}, {{ userResponse.response.length > 1 ? ' [' + userResponse.response + ']' : userResponse.response}}</p>
-              </li>
-            </ul>
+          <div style="padding-right: 3rem">
+            <app-user-response-list [userResponses]="sharedData.currentPromptlet.userResponses"></app-user-response-list>
           </div>
         </div>
         <ngx-charts-bar-vertical *ngSwitchCase="'bar'"

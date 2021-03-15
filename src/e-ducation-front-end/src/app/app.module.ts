@@ -35,6 +35,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptlet-display.component';
 import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/enrolled-class-detail.component';
 import { ResultsDisplayComponent } from './promptlet/results-display/results-display.component';
+import { UserResponseListComponent } from './promptlet/user-response-list/user-response-list.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { ResultsDisplayComponent } from './promptlet/results-display/results-dis
     CreatePromptletDialogComponent,
     PromptletDisplayComponent,
     EnrolledClassDetailComponent,
-    ResultsDisplayComponent
+    ResultsDisplayComponent,
+    UserResponseListComponent
   ],
   entryComponents: [
     CreateClassDialogComponent,

@@ -1,0 +1,19 @@
+<div>
+  <mat-table class="mat-elevation-z8" [dataSource]="userResponses" *ngIf="userResponses" >
+    <ng-container matColumnDef="username">
+      <mat-header-cell  *matHeaderCellDef class="username-column"> Username </mat-header-cell>
+      <mat-cell *matCellDef="let userResponse" class="username-column"> <p> {{ userResponse.profileName }}</p> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="response" class="response-column">
+      <mat-header-cell  *matHeaderCellDef class="response-column"> Response </mat-header-cell>
+      <mat-cell *matCellDef="let userResponse" class="response-column"> <p class="word-wrapper"> {{ userResponse.response.length > 1 ? ' [' + userResponse.response + ']' : userResponse.response}}</p> </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['username','response']"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: ['username','response']"></mat-row>
+  </mat-table>
+
+</div>
+
