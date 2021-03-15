@@ -36,9 +36,8 @@ export class PromptletDisplayComponent implements OnInit {
           }
           break;
         case "MULTI_RESPONSE":
-          this.canSubmit = true;
+          // this.canSubmit = true;
           if (this.promptlet.submitted && this.promptlet.userResponses[0] != undefined){
-            this.canSubmit = true;
             this.promptlet.answerPool.forEach(choice => {
               if (this.promptlet.userResponses[0].response.indexOf(choice) > -1){
                 this.checkBoxes.push({"choice": choice, "selected": true})
@@ -47,6 +46,7 @@ export class PromptletDisplayComponent implements OnInit {
               }
             });
           } else {
+            this.canSubmit = true;
             this.promptlet.answerPool.forEach(choice => this.checkBoxes.push({"choice": choice, "selected": false}));
           }
 
@@ -132,12 +132,17 @@ export class PromptletDisplayComponent implements OnInit {
         }
         break;
       case "MULTI_RESPONSE":
-
-        this.checkBoxes.forEach(function(box) {
+        if (this.promptlet.userResponses.length > 0){
+          this.promptlet.userResponses[0].response = [];
+        }
+        for (let box of this.checkBoxes){
           if (box.selected == true) {
             response.push(box.choice);
+            if (this.promptlet.userResponses.length > 0){
+              this.promptlet.userResponses[0].response.push(box.choice);
+            }
           }
-        });
+        }
         break;
       case "OPEN_RESPONSE":
         if (this.promptlet.userResponses.length > 0){
