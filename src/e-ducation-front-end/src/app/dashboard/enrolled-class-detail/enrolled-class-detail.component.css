@@ -1,0 +1,9 @@
+.promptletContainer {
+    margin: 10px 0 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.promptlet {
+    margin: 10px;
+}
