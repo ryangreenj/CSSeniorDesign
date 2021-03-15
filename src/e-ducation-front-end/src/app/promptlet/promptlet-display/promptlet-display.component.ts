@@ -30,8 +30,6 @@ export class PromptletDisplayComponent implements OnInit {
       switch (this.promptlet.promptlet_type) {
         case "MULTI_CHOICE":
           if (this.promptlet.submitted && this.promptlet.userResponses[0].response[0] != undefined){
-            // TODO - uncomment this if you want submit to be active without change
-            // this.canSubmit = true;
             this.multiChoiceAnswer = this.promptlet.userResponses[0].response[0];
           }
           break;
@@ -53,15 +51,11 @@ export class PromptletDisplayComponent implements OnInit {
           break;
         case "OPEN_RESPONSE":
           if (this.promptlet.submitted && this.promptlet.userResponses[0].response[0] != undefined){
-            // TODO - uncomment this if you want submit to be active without change
-            // this.canSubmit = true;
             this.openResponseAnswer = this.promptlet.userResponses[0].response[0];
           }
           break;
         case "SLIDER":
           if (this.promptlet.submitted && this.promptlet.userResponses[0].response[0] != undefined){
-            // TODO - uncomment this if you want submit to be active without change
-            // this.canSubmit = true;
             this.sliderValue = this.promptlet.userResponses[0].response[0];
           }
           break;
@@ -75,7 +69,6 @@ export class PromptletDisplayComponent implements OnInit {
   checkCanSubmit(choice: string) {
     switch (this.promptlet.promptlet_type) {
       case "MULTI_CHOICE":
-        console.log(this.promptlet.userResponses)
         if (this.promptlet.userResponses.length > 0){
           this.canSubmit = this.multiChoiceAnswer != "" && choice != this.promptlet.userResponses[0].response[0];
         } else {
@@ -109,8 +102,16 @@ export class PromptletDisplayComponent implements OnInit {
           }
 
           this.canSubmit = !tempCanSubmit;
-          break;
         }
+
+        break;
+      case "SLIDER":
+        if (this.promptlet.userResponses.length > 0){
+          this.canSubmit = this.sliderValue != "" && choice != this.promptlet.userResponses[0].response[0];
+        } else {
+          this.canSubmit = this.sliderValue != ""
+        }
+        break;
       default:
         this.canSubmit = true;
         break;
@@ -152,6 +153,9 @@ export class PromptletDisplayComponent implements OnInit {
         break;
       case "SLIDER":
         response = [this.sliderValue];
+        if (this.promptlet.userResponses.length > 0){
+          this.promptlet.userResponses[0].response[0] = this.sliderValue;
+        }
         break;
     }
     this.canSubmit = false;
