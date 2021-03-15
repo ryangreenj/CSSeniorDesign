@@ -51,7 +51,7 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button *ngIf="!promptlet.submitted" mat-raised-button color="primary" [disabled]="!canSubmit" (click)="onSubmit()">Submit</button>
-      <button class="{{canSubmit ? 'submitted-field' : 'submitted-field-disabled'}}" *ngIf="promptlet.submitted" mat-stroked-button color="primary" [disabled]="!canSubmit" (click)="onSubmit()"><p class="button-placeholder"></p></button>
+      <button *ngIf="!promptlet.submitted" mat-raised-button class="custom-mat-button" [disabled]="!canSubmit" (click)="onSubmit()">Submit</button>
+      <button class=" custom-mat-button {{canSubmit ? 'submitted-field' : 'submitted-field-disabled'}}" *ngIf="promptlet.submitted" mat-stroked-button color="primary" [disabled]="!canSubmit" (click)="onSubmit()"><p class="button-placeholder"></p></button>
     </mat-card-actions>
 </mat-card>

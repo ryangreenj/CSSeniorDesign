@@ -581,7 +581,6 @@ export type Profile = {
 
 export type ClassData = {
   id: string;
-  // code: string;
   className: string;
   sessionIds: string[];
   activeSessionId: string;
@@ -612,11 +611,4 @@ export type UserResponse = {
   profileName: string;
   response: string[];
   timestamp: bigint;
-}
-
-export type StudentPromptlet = {
-  id: string;
-  prompt: string;
-  promptlet_type: string;
-  answerPool: string[];
 }

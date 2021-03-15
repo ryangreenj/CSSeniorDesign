@@ -8,7 +8,7 @@ import { CreatePromptletDialogComponent } from 'src/app/dialog/create-promptlet-
 @Component({
   selector: 'app-session-detail',
   templateUrl: './session-detail.component.html',
-  styleUrls: ['./session-detail.component.css']
+  styleUrls: ['./session-detail.component.scss']
 })
 export class SessionDetailComponent implements OnInit, OnDestroy {
 

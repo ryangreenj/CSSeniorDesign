@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 .header {
     margin: 15px 40px 20px 15px;
     display: flex;
@@ -30,4 +32,21 @@
 
 h1 {
     margin: 0 0 30px 35px;
+}
+
+.mat-column-prompt {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 40% !important;
+  width: 40% !important;
+  overflow-wrap: break-word;
+
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  margin-right: 2rem;
 }

@@ -11,14 +11,11 @@
   <h1>{{ sharedData.currentSession.sessionName }}</h1>
 
   <mat-table class="lessons-table mat-elevation-z8" [dataSource]="sharedData.currentSession.promptlets">
-    <ng-container matColumnDef="prompt">
+    <ng-container matColumnDef="prompt" class="mat-column-prompt">
       <mat-header-cell  *matHeaderCellDef> Prompt </mat-header-cell>
-      <mat-cell  *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.prompt }}</span></p> </mat-cell>
+      <mat-cell *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.prompt }}</span></p> </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef> id </mat-header-cell>
-      <mat-cell *matCellDef="let promptlet"> <p><span (click)="routeToPromptlet(promptlet.id)">{{ promptlet.id }}</span></p></mat-cell>
-    </ng-container>
+
     <ng-container matColumnDef="visible">
       <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
 
@@ -27,9 +24,14 @@
       </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="['id','prompt','visible']"></mat-header-row>
+    <ng-container matColumnDef="answer_count">
+      <mat-header-cell *matHeaderCellDef> Answer Count </mat-header-cell>
+      <mat-cell  *matCellDef="let promptlet"> <p>{{ promptlet.userResponses.length }}</p> </mat-cell>
+    </ng-container>
 
-    <mat-row *matRowDef="let row; columns: ['id','prompt','visible']"></mat-row>
+    <mat-header-row *matHeaderRowDef="['prompt','visible','answer_count']"></mat-header-row>
+
+    <mat-row *matRowDef="let row; columns: ['prompt','visible','answer_count']"></mat-row>
   </mat-table>
 
 

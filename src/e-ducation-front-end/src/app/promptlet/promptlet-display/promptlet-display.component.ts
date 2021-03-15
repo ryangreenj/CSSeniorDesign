@@ -9,7 +9,7 @@ interface CheckBox {
 @Component({
   selector: 'app-promptlet-display',
   templateUrl: './promptlet-display.component.html',
-  styleUrls: ['./promptlet-display.component.css']
+  styleUrls: ['./promptlet-display.component.scss']
 })
 export class PromptletDisplayComponent implements OnInit {
 

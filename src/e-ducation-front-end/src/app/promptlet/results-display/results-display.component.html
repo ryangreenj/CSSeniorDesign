@@ -1,14 +1,33 @@
 
+
+<div *ngIf="!visible">
+  <ul *ngIf="sharedData.currentPromptlet.userResponses">
+    <li *ngFor="let userResponse of sharedData.currentPromptlet.userResponses">
+      <p> {{ userResponse.profileName }}, {{ userResponse.response.length > 1 ? ' [' + userResponse.response + ']' : userResponse.response}}</p>
+    </li>
+  </ul>
+</div>
+
 <ng-template [ngIf]="visible">
-    
+
     <mat-button-toggle-group class="switch" #group='matButtonToggleGroup' [value]="'bar'">
         <mat-button-toggle value="bar">Bar Chart</mat-button-toggle>
         <mat-button-toggle value="pie">Pie Chart</mat-button-toggle>
-        <mat-button-toggle value="cards">cards</mat-button-toggle>
+        <mat-button-toggle value="cards">Cards</mat-button-toggle>
+        <mat-button-toggle value="responses">Response List</mat-button-toggle>
     </mat-button-toggle-group>
-    
-    
+
+
     <div class="charts" [ngSwitch]="group.value">
+        <div *ngSwitchCase="'responses'">
+          <div *ngSwitchCase="'responses'">
+            <ul *ngIf="sharedData.currentPromptlet.userResponses">
+              <li *ngFor="let userResponse of sharedData.currentPromptlet.userResponses">
+                <p> {{ userResponse.profileName }}, {{ userResponse.response.length > 1 ? ' [' + userResponse.response + ']' : userResponse.response}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
         <ngx-charts-bar-vertical *ngSwitchCase="'bar'"
             [view]="[1000,400]"
             [results]="processedResults"
@@ -32,3 +51,4 @@
         </ngx-charts-number-card>
     </div>
 </ng-template>
+
