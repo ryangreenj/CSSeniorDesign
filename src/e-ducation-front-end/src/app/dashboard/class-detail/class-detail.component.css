@@ -17,3 +17,8 @@
     width: 230px;
     font-size: 18px;
 }
+
+.session-table-padding{
+  padding-right: 3rem;
+  padding-left: 3rem;
+}
