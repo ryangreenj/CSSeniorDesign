@@ -1,26 +1,19 @@
 .header {
-    margin: 15px 40px 20px 15px;
+    margin: 15px 0 20px 0;
     display: flex;
     justify-content: space-between;
 }
 
 .backButton {
-    margin-right: 15px;
     height: 60px;
     width: 150px;
     font-size: 18px;
 }
 
 .routeButton {
-    margin-right: 15px;
     height: 60px;
     width: 230px;
     font-size: 18px;
-}
-
-.session-table-padding{
-  padding-right: 3rem;
-  padding-left: 3rem;
 }
 
 .same-line{

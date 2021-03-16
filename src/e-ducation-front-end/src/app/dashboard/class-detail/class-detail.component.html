@@ -9,7 +9,8 @@
       <h2 class="same-line">Enroll Code: </h2>
       <p class="same-line class-code"> {{ sharedData.currentClass.id }}</p></div>
     <h2>Sessions:</h2>
-    <div class="session-table-padding">
+
+    <div>
       <mat-table class="lessons-table mat-elevation-z8" [dataSource]="sharedData.currentClassSessions">
         <ng-container matColumnDef="name">
           <mat-header-cell  *matHeaderCellDef> Session Name </mat-header-cell>
