@@ -21,4 +21,8 @@ export class PromptletDetailComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
+
+  updatePromptletValue(id: string,value: boolean) {
+    this.dataService.updatePromptletStatus(id, !value);
+  }
 }
