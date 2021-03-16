@@ -5,26 +5,10 @@
 
 <div  *ngIf="sharedData.ownedClasses">
   <h2> Owned Classes</h2>
-  <ul>
-    <li *ngFor="let class of sharedData.ownedClasses">
-      <mat-card (click)="routeToClass(class)">
-        <p>{{ class.className }}</p>
-        <p>{{ class.className }}</p>
-        <p>Status: {{ class.activeSessionId != "" ? 'ONLINE' : 'OFFLINE' }}</p>
-      </mat-card>
-    </li>
-  </ul>
+  <app-class-list-display (routeToClassEvent)="routeToClass($event)" [clazzList]="sharedData.ownedClasses"></app-class-list-display>
 </div>
 
 <div  *ngIf="sharedData.enrolledClasses">
   <h2> Enrolled Classes</h2>
-  <ul>
-    <li *ngFor="let class of sharedData.enrolledClasses">
-      <mat-card (click)="routeToEnrolledClass(class)">
-        <p>{{ class.className }}</p>
-        <p>{{ class.className }}</p>
-        <p>Status: {{ class.activeSessionId != "" ? 'ONLINE' : 'OFFLINE' }}</p>
-      </mat-card>
-    </li>
-  </ul>
+  <app-class-list-display (routeToClassEvent)="routeToEnrolledClass($event)" [clazzList]="sharedData.enrolledClasses"></app-class-list-display>
 </div>

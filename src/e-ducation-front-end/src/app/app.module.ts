@@ -36,6 +36,7 @@ import { PromptletDisplayComponent } from './promptlet/promptlet-display/promptl
 import { EnrolledClassDetailComponent } from './dashboard/enrolled-class-detail/enrolled-class-detail.component';
 import { ResultsDisplayComponent } from './promptlet/results-display/results-display.component';
 import { UserResponseListComponent } from './promptlet/user-response-list/user-response-list.component';
+import { ClassListDisplayComponent } from './dashboard/class-list/class-list-display/class-list-display.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { UserResponseListComponent } from './promptlet/user-response-list/user-r
     PromptletDisplayComponent,
     EnrolledClassDetailComponent,
     ResultsDisplayComponent,
-    UserResponseListComponent
+    UserResponseListComponent,
+    ClassListDisplayComponent
   ],
   entryComponents: [
     CreateClassDialogComponent,

@@ -5,8 +5,9 @@
 
 <div *ngIf="sharedData.currentClass">
     <h1>{{ sharedData.currentClass.className }}</h1>
-    <h2>Enroll Code:</h2>
-    <p>{{ sharedData.currentClass.id }}</p>
+    <div style="display: inline">
+      <h2 class="same-line">Enroll Code: </h2>
+      <p class="same-line class-code"> {{ sharedData.currentClass.id }}</p></div>
     <h2>Sessions:</h2>
     <div class="session-table-padding">
       <mat-table class="lessons-table mat-elevation-z8" [dataSource]="sharedData.currentClassSessions">
