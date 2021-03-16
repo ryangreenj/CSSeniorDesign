@@ -16,7 +16,6 @@ export class PromptletDetailComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
     this.dataService.getUserResponse(this.sharedData.currentPromptlet.userResponses.map(x => x.id))
-    // this.dataService.fetchUserResponse();
   }
 
   goBack(): void {

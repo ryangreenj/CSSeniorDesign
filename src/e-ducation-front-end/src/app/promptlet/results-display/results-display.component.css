@@ -11,3 +11,8 @@
   margin-left: 3rem;
   margin-right: 4rem;
 }
+
+.result-body{
+  overflow:hidden;
+  margin-bottom: 2rem;
+}
