@@ -20,7 +20,7 @@
       <mat-header-cell *matHeaderCellDef> Visible </mat-header-cell>
 
       <mat-cell *matCellDef="let promptlet">
-        <mat-checkbox [checked]='promptlet.visible' (click)="changeValue(promptlet.id,promptlet.visible)" ></mat-checkbox>
+        <mat-checkbox class="custom-check"[checked]='promptlet.visible' (click)="changeValue(promptlet.id,promptlet.visible)" ></mat-checkbox>
       </mat-cell>
     </ng-container>
 
