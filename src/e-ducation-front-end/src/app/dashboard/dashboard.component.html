@@ -1,20 +1,21 @@
 
 <mat-drawer-container class="container">
     <mat-drawer mode="side" opened class="sidebar">
-        <p>Side bar</p>
-        <a routerLink="classlist">Owned Class List</a>
-        <ul *ngIf="sharedData.ownedClasses">
-            <li *ngFor="let clazz of sharedData.ownedClasses">
-                <p><span (click)="routeToClass(clazz)">{{ clazz.className }}</span></p>
-            </li>
-        </ul>
-      <a routerLink="classlist">Enrolled Class List</a>
-      <ul *ngIf="sharedData.enrolledClasses">
-        <li *ngFor="let clazz of sharedData.enrolledClasses">
-          <p><span (click)="routeToEnrolledClass(clazz)">{{ clazz.className }}</span></p>
-        </li>
-      </ul>
-      <p><span (click)="signOut()">Sign Out</span></p>
+      <div class="navHeader">
+        <a routerLink="classlist"><span>Owned Class List</span></a>
+      </div>
+      <div class="navContainer" *ngIf="sharedData.ownedClasses">
+        <span *ngFor="let clazz of sharedData.ownedClasses" [class.active]="!(this.router.url === '/dashboard/classlist') && clazz.id == sharedData.currentClass.id" (click)="routeToClass(clazz)">{{ clazz.className }}</span>
+      </div>
+      <div class="navHeader">
+        <a routerLink="classlist"><span>Enrolled Class List</span></a>
+      </div>
+      <div class="navContainer" *ngIf="sharedData.enrolledClasses">
+        <span *ngFor="let clazz of sharedData.enrolledClasses" [class.active]="!(this.router.url === '/dashboard/classlist') && clazz.id == sharedData.currentClass.id" (click)="routeToEnrolledClass(clazz)">{{ clazz.className }}</span>
+      </div>
+      <div class="signOut">
+        <span (click)="signOut()">Sign Out</span>
+      </div>
     </mat-drawer>
     <mat-drawer-content class="main-panel"><router-outlet></router-outlet></mat-drawer-content>
 </mat-drawer-container>

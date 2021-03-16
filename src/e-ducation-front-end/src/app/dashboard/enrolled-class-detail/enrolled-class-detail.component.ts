@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, Promptlet, SharedData } from 'src/app/data.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class EnrolledClassDetailComponent implements OnInit, OnDestroy {
 
   activePromptlets: Promptlet[];
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
@@ -20,8 +21,11 @@ export class EnrolledClassDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.dataService.setCurrentClass(undefined);
     this.dataService.disconnectPromptlets();
   }
-
+  
+  goBack(): void {
+    this.router.navigate(['../classlist'], { relativeTo: this.route });
+  }
+  
 }
