@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
   userId: string;
   sharedData: SharedData;
 
-  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, public router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);
