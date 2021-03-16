@@ -5,3 +5,14 @@
 .charts {
     margin: 40px 0 0 20px;
 }
+
+.no-block-padding{
+  margin-top: 2rem;
+  margin-left: 3rem;
+  margin-right: 4rem;
+}
+
+.result-body{
+  overflow:hidden;
+  margin-bottom: 2rem;
+}

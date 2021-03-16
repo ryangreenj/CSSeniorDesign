@@ -1,32 +1,37 @@
 <div class="header">
-    <button mat-raised-button class="backButton" (click)="goBack()">Back</button>
+  <button mat-raised-button class="backButton" (click)="goBack()">Back</button>
+  <div class="headerRight">
+    <button mat-raised-button class="routeButton" (click)="updatePromptletValue(sharedData.currentPromptlet.id, true)" *ngIf="sharedData.currentPromptlet.visible">Hide Promptlet</button>
+    <button mat-raised-button class="routeButton" (click)="updatePromptletValue(sharedData.currentPromptlet.id, false)" *ngIf="!sharedData.currentPromptlet.visible">Show Promptlet</button>
+  </div>
 </div>
-
 <div class="container" *ngIf="sharedData.currentPromptlet">
-    <h1>{{ sharedData.currentPromptlet.prompt }}</h1>
-    <p>Type: {{ sharedData.currentPromptlet.promptlet_type }}</p>
-    <p>Answers: </p>
-    <ul *ngIf="sharedData.currentPromptlet.answerPool">
+  <h1>{{ sharedData.currentPromptlet.prompt }}</h1>
+  <p>Type: {{ sharedData.currentPromptlet.promptlet_type }}</p>
+  <div style="display: flex">
+    <div style="flex: 1">
+      <p>Answers: </p>
+      <ul *ngIf="sharedData.currentPromptlet.answerPool">
         <li *ngFor="let answer of sharedData.currentPromptlet.answerPool">
-            <p>{{ answer }}</p>
+          <p>{{ answer }}</p>
         </li>
-    </ul>
-    <p>Correct Answer(s): </p>
-    <ul *ngIf="sharedData.currentPromptlet.correctAnswer">
+      </ul>
+    </div>
+    <div style="flex: 1">
+      <p>Correct Answer(s): </p>
+      <ul *ngIf="sharedData.currentPromptlet.correctAnswer">
         <li *ngFor="let correctAnswer of sharedData.currentPromptlet.correctAnswer">
-            <p>{{ correctAnswer }}</p>
+          <p>{{ correctAnswer }}</p>
         </li>
-    </ul>
+      </ul>
+    </div>
+    <div style="flex: 1">
+      <p>Template:</p>
+      <app-promptlet-display [promptlet]="sharedData.currentPromptlet" [context]="'instructor'"></app-promptlet-display>
+    </div>
+  </div>
 
-    <p>Template:</p>
-    <app-promptlet-display [promptlet]="sharedData.currentPromptlet" [context]="'instructor'"></app-promptlet-display>
-
-    <p>User Responses:</p>
-    <ul *ngIf="sharedData.currentPromptlet.userResponses">
-      <li *ngFor="let userResponse of sharedData.currentPromptlet.userResponses">
-        <p>{{ userResponse.id }}, {{ userResponse.profileName }}, {{ userResponse.profileId }}, [{{ userResponse.response }}]</p>
-      </li>
-    </ul>
-    <br>
+  <div>
     <app-results-display [promptlet]="sharedData.currentPromptlet"></app-results-display>
+  </div>
 </div>

@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+
 .promptletCard {
     width: 300px;
 }
@@ -27,6 +29,17 @@ mat-slider {
   padding-bottom: 2px;
   margin: 0;
 }
+
+.fresh-submit{
+  background-color: $custom-dark-blue;
+  color: $custom-lighter-grey
+}
+
+.submitted-field{
+  content: 'Submitted';
+  color: $custom-dark-blue;
+}
+
 .submitted-field :after{
   content: 'Submitted';
 }
@@ -37,11 +50,11 @@ mat-slider {
 
 .submitted-field:hover :after{
   content: 'Submit';
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .submitted-field:hover{
-  background-color: #3F51B5;
-  color: #FFFFFF;
+  background-color: $custom-dark-blue;
+  color: $custom-lighter-grey;
 }

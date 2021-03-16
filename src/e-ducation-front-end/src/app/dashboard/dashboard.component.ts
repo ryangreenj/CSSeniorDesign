@@ -5,14 +5,14 @@ import { ClassData, DataService, SharedData } from '../data.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
   userId: string;
   sharedData: SharedData;
 
-  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, public router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.dataService.currentData.subscribe(data => this.sharedData = data);

@@ -42,6 +42,12 @@ export class ResultsDisplayComponent implements OnInit {
         this.visible = true;
         this.handleResultsSlider(promptlet, 0, 100, 10);
         break;
+      case "OPEN_RESPONSE":
+        this.visible = false;
+        for (const answer of promptlet.answerPool) {
+          this.processedResults.push({"name": answer, "value": 0});
+        }
+        break;
     }
   }
 
@@ -52,9 +58,6 @@ export class ResultsDisplayComponent implements OnInit {
         this.processedResults.push({"name": answer, "value": 0});
       }
 
-      // for (const result of this.processedResults){
-      //     result.value = 0;
-      // }
       for (const response of promptlet.userResponses) {
         for (const r of response.response) {
           this.processedResults.find(element => element.name == r).value += 1;

@@ -1,19 +1,26 @@
 .header {
-    margin: 15px 40px 20px 15px;
+    margin: 15px 0 20px 0;
     display: flex;
     justify-content: space-between;
 }
 
 .backButton {
-    margin-right: 15px;
     height: 60px;
     width: 150px;
     font-size: 18px;
 }
 
 .routeButton {
-    margin-right: 15px;
     height: 60px;
     width: 230px;
     font-size: 18px;
+}
+
+.same-line{
+  display: inline-block
+}
+
+.class-code {
+  padding-left: .25rem;
+  font-size: 1.25rem;
 }

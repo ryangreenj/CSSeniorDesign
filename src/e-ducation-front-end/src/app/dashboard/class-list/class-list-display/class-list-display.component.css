@@ -1,0 +1,23 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+li {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-card-left{
+  margin: 1rem 1.5rem 1rem 0;
+}
+.custom-card-center{
+  margin: 1rem 0.75rem 1rem 0.75rem;
+}
+.custom-card-right{
+  margin: 1rem 0 1rem 1.5rem;
+}

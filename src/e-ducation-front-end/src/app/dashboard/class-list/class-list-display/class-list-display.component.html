@@ -1,0 +1,27 @@
+<div>
+  <ul>
+    <li *ngFor="let clazz of clazzList; index as i">
+      <div class="custom-card-left" *ngIf="i % 3 == 0">
+        <mat-card (click)="routeToClass(clazz)">
+          <p>{{ clazz.className}}</p>
+          <p>{{ clazz.className }}</p>
+          <p>Status: {{ clazz.activeSessionId != "" ? 'ONLINE' : 'OFFLINE' }}</p>
+        </mat-card>
+      </div>
+      <div class="custom-card-center" *ngIf="i % 3 == 1">
+        <mat-card (click)="routeToClass(clazz)">
+          <p>{{ clazz.className}}</p>
+          <p>{{ clazz.className }}</p>
+          <p>Status: {{ clazz.activeSessionId != "" ? 'ONLINE' : 'OFFLINE' }}</p>
+        </mat-card>
+      </div>
+      <div class="custom-card-right" *ngIf="i % 3 == 2">
+        <mat-card (click)="routeToClass(clazz)">
+          <p>{{ clazz.className}}</p>
+          <p>{{ clazz.className }}</p>
+          <p>Status: {{ clazz.activeSessionId != "" ? 'ONLINE' : 'OFFLINE' }}</p>
+        </mat-card>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,22 @@
+.header {
+    margin: 15px 40px 20px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.backButton {
+    margin-right: 15px;
+    height: 60px;
+    width: 150px;
+    font-size: 18px;
+}
+
+.promptletContainer {
+    margin: 10px 0 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.promptlet {
+    margin: 10px;
+}
