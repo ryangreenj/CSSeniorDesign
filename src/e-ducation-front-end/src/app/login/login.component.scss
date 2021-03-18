@@ -1,17 +1,17 @@
+@import '../../variables.scss';
+
 .container {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    background-color: $custom-light-grey;
 }
 
 .loginForm {
     padding: 1em 1em;
-}
-
-.loginForm.h1 {
-    text-align: center;
 }
 
 .inputField {
@@ -21,6 +21,8 @@
 
 .submitButton {
     margin-right: 1em;
+    background-color: $custom-dark-blue;
+    color: $custom-lighter-grey
 }
 
 .submitOptions {
@@ -37,5 +39,13 @@
 
 a {
     text-decoration: none;
-    color: gray;
+    color: $custom-dark-blue;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+    color: $custom-blue !important;
+}
+
+::ng-deep .mat-form-field-ripple {
+    background-color: $custom-dark-blue !important;
 }
