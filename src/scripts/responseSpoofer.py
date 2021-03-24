@@ -2,6 +2,8 @@ import requests, json
 import random
 import string
 
+url_base = 'http://localhost:8080'
+
 def random_string(x):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for i in range(x))
@@ -37,6 +39,14 @@ def create_profile(username):
 
     response = requests.post(url_base + end_point, headers=headers, data = body)
     return response.json()['id']
+
+def get_profile(profileId, jwt):
+    end_point = '/profile'
+    body = json.dumps({"id":profileId})
+    headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt}
+
+    response = requests.put(url_base + end_point, headers=headers, data = body)
+    return response.json()
 
 def create_user(username, password, profile_id):
     url_base = 'http://localhost:8080'
@@ -95,60 +105,44 @@ def get_promptlet(promptletId,jwt):
     response = requests.put(url_base + end_point, headers=headers, data = body)
     return response.json()
 
-def answer_multi(promptletId, profileId, responses,jwt):
-    url_base = 'http://localhost:8080'
+def answer_multi(activeSessionId, promptletId, profileId, responses,jwt):
+    
     end_point = '/course/session/promptlet/answer'
-    body = json.dumps({"promptletId":promptletId,"profileId":profileId,"response":responses})
+    body = json.dumps({"activeSessionId":activeSessionId,"promptletId":promptletId,"profileId":profileId,"response":responses})
     headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt}
 
     response = requests.post(url_base + end_point, headers=headers, data = body)
     # return response.json()
 
-# auth_user()
-# create_user_if_not_exist("1", "password")
-# create_user_if_not_exist("jakeocinco@me.com", "password")
+def set_active_session(courseId, sessionId, jwt):
+    end_point = '/course/activeSession'
+    body = json.dumps({"courseId":courseId,"sessionId":sessionId})
+    headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt}
 
-# username = random_string(15)
-
-# id = create_profile(username)
-# create_user(username, password, id)
-
-# print(create_user_if_not_exist(username, password))
+    response = requests.post(url_base + end_point, headers=headers, data = body)
 
 password = "password"
 class_id = "6051016aa2ef9f3055c4bc5e"
-activeSessionId = "" # Leave alone
-promptletIds = [] # Leave alone
-answerPool = [] # Leave alone
-for xx in range(20)[0:1]:
-    print("--")
+
+
+#Getting data 
+auth = create_user_if_not_exist(str(20) + "@a.com", password)
+temp_jwt = auth['jwt']
+profile_id = auth['userResponse']['profileId']
+
+activeSessionId = get_course(class_id, temp_jwt)[0]['activeSessionId']
+promptletIds = get_session(activeSessionId, temp_jwt)[0]['promptletIds']
+promptlet = get_promptlet(promptletIds[0], temp_jwt)[0]
+answerPool = promptlet['answerPool']
+
+for xx in range(20,34)[0:3]:
     auth = create_user_if_not_exist(str(xx) + "@a.com", password)
     jwt = auth['jwt']
     profile_id = auth['userResponse']['profileId']
-    join_course(profile_id,class_id , jwt)
-    
-    activeSessionId = get_course(class_id, jwt)[0]['activeSessionId']
-    promptletIds = get_session(activeSessionId, jwt)[0]['promptletIds']
-    promptlet = get_promptlet(promptletIds[0], jwt)[0]
-    answerPool = promptlet['answerPool']
-    # answer_multi(promptletIds[0], profile_id, ['3'], jwt)
-    print(promptlet)
-    # {{api}}/profile/join
+    profile = get_profile(profile_id, jwt)
 
-print(activeSessionId)
-print(promptletIds)
-print(answerPool)
+    if class_id not in profile['coursesEnrolled']:
+        print('Joining course')
+        join_course(profile_id,class_id , jwt)
 
-for xx in range(20):
-    auth = create_user_if_not_exist(str(xx) + "@a.com", password)
-    jwt = auth['jwt']
-    profile_id = auth['userResponse']['profileId']
-    # join_course(profile_id,class_id , jwt)
-    print(profile_id)
-    # activeSessionId = get_course(class_id, jwt)[0]['activeSessionId']
-    # promptletIds = get_session(activeSessionId, jwt)[0]['promptletIds']
-    # promptlet = get_promptlet(promptletIds[0], jwt)[0]
-    # answerPool = promptlet['answerPool']
-    answer_multi(promptletIds[0], profile_id, [answerPool[3]], jwt)
-    # print(promptlet)
-    # {{api}}/profile/join
+    answer_multi(activeSessionId, promptletIds[0], profile_id, [answerPool[0]], jwt)
