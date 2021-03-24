@@ -8,19 +8,6 @@ def random_string(x):
     letters = string.ascii_letters
     return ''.join(random.choice(letters) for i in range(x))
 
-def get_user_list():
-
-    url_base = 'http://localhost:8080'
-    end_point = '/user/all'
-    body = {'username':'jakeocinco@me.com','password':'password'}
-    headers = {'Content-Type': 'application/json'}
-    # headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWtlb2NpbmNvQG1lLmNvbSIsImV4cCI6MTYxNjYzOTM5NSwiaWF0IjoxNjE2NTUyOTk1fQ.aWcWZ_wGk1slky4l4z8hxN73kd0YmCidi1kft3xBSJrYbPLjClaEddvnv8sJ0PisC7HqvNADxZzoM8bUp-xA8Q'}
-
-
-
-    response = requests.get(url_base + end_point, headers=headers)
-    print(response.json())
-
 def create_user_if_not_exist(username, password):
     auth = auth_user(username, password)
 
@@ -114,35 +101,39 @@ def answer_multi(activeSessionId, promptletId, profileId, responses,jwt):
     response = requests.post(url_base + end_point, headers=headers, data = body)
     # return response.json()
 
-def set_active_session(courseId, sessionId, jwt):
-    end_point = '/course/activeSession'
-    body = json.dumps({"courseId":courseId,"sessionId":sessionId})
-    headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + jwt}
 
-    response = requests.post(url_base + end_point, headers=headers, data = body)
+# class_id - id for the class you want to spoof
+# promptlet_index - the index of the promptlet you want to spoof (multichoice or single answer multiresponse only)
+# class_size - number of accounts to spoof with
+# answer_index - the index of the 'answer pool' in which to answer with, omit parameter for random 
+def spoof_promptlet_responses(class_id, promptlet_index, class_size, answer_index = -1):
+    password = "password" # for new accounts, can be whatever
+    
+    # this block gathers all the needed class data -- do not change
+    temp_jwt = create_user_if_not_exist(str(0) + "@a.com", password)['jwt']
+    activeSessionId = get_course(class_id, temp_jwt)[0]['activeSessionId']
+    promptletIds = get_session(activeSessionId, temp_jwt)[0]['promptletIds']
+    answerPool = get_promptlet(promptletIds[promptlet_index], temp_jwt)[0]['answerPool']
 
-password = "password"
-class_id = "6051016aa2ef9f3055c4bc5e"
+    # this is the index of the answer pool that each student will answer
+    if answer_index < 0:
+        answer_set = [random.randint(0, len(answerPool) - 1) for _ in range(class_size)]
+    else:
+        answer_set = [answer_index for _ in range(class_size)]
+    
+    # Joins the desired class (if neccesary) and submites an answer
+    # the usernames just iterate from 0@a.com to wherever it finished
+    for xx in range(0,class_size):
+        auth = create_user_if_not_exist(str(xx) + "@a.com", password)
+        jwt = auth['jwt']
+        profile_id = auth['userResponse']['profileId']
+        profile = get_profile(profile_id, jwt)
 
+        if class_id not in profile['coursesEnrolled']:
+            print('Joining course')
+            join_course(profile_id,class_id , jwt)
 
-#Getting data 
-auth = create_user_if_not_exist(str(20) + "@a.com", password)
-temp_jwt = auth['jwt']
-profile_id = auth['userResponse']['profileId']
+        answer_multi(activeSessionId, promptletIds[promptlet_index], profile_id, [answerPool[answer_set[xx]]], jwt)
 
-activeSessionId = get_course(class_id, temp_jwt)[0]['activeSessionId']
-promptletIds = get_session(activeSessionId, temp_jwt)[0]['promptletIds']
-promptlet = get_promptlet(promptletIds[0], temp_jwt)[0]
-answerPool = promptlet['answerPool']
-
-for xx in range(20,34)[0:3]:
-    auth = create_user_if_not_exist(str(xx) + "@a.com", password)
-    jwt = auth['jwt']
-    profile_id = auth['userResponse']['profileId']
-    profile = get_profile(profile_id, jwt)
-
-    if class_id not in profile['coursesEnrolled']:
-        print('Joining course')
-        join_course(profile_id,class_id , jwt)
-
-    answer_multi(activeSessionId, promptletIds[0], profile_id, [answerPool[0]], jwt)
+spoof_promptlet_responses("6058acecbbd2fa766e8ae3d0", 2, 20)
+spoof_promptlet_responses("6051016aa2ef9f3055c4bc5e", 1, 20)
